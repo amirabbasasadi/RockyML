@@ -3,3 +3,10 @@
 ![GitHub Workflow Status](https://img.shields.io/github/workflow/status/amirabbasasadi/RockyML/CTest?label=build%20%26%20test)
 ![GitHub commit activity](https://img.shields.io/github/commit-activity/m/amirabbasasadi/RockyML)
 ![GitHub](https://img.shields.io/github/license/amirabbasasadi/RockyML)  
+
+### Dependencies
+For usage:  
+- A BLAS implementation like OpenBLAS
+- TBB
+For development:  
+- Catch2
