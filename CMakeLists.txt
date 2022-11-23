@@ -12,7 +12,7 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(Catch2)
 
 include_directories(include/)
-add_executable(tests test/linear.cc)
+add_executable(tests tests/linear.cc)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain openblas)
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
