@@ -8,5 +8,6 @@
 For usage:  
 - A BLAS implementation like OpenBLAS
 - TBB  
+
 For development:  
 - Catch2
