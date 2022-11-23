@@ -3,6 +3,10 @@ name: CTest
 on:
   push:
     branches: [ "main" ]
+    paths:
+      - include/**
+      - test/**
+      - tests/**
   pull_request:
     branches: [ "main" ]
 
