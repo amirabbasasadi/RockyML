@@ -5,8 +5,8 @@ on:
     branches: [ "main" ]
     paths:
       - include/**
-      - test/**
       - tests/**
+      - CMakeLists.txt
   pull_request:
     branches: [ "main" ]
 
