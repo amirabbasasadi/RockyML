@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.2)
-project(RockyML)
+project(RockyML LANGUAGES CXX VERSION 0.0.1)
 
-set(CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 17)
 
 Include(FetchContent)
 FetchContent_Declare(
@@ -11,5 +11,11 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
-add_executable(tests test/)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+include_directories(include/)
+add_executable(tests test/linear.cc)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain openblas)
+
+list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
+include(CTest)
+include(Catch)
+catch_discover_tests(tests)
