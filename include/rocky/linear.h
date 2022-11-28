@@ -1,6 +1,6 @@
 #ifndef ROCKY_LINEAR_GUARD
 #define ROCKY_LINEAR_GUARD
-#include <cblas.h>
+#include <Fastor/Fastor.h>
 #include <type_traits>
 #include <algorithm>
 namespace rocky{
@@ -11,58 +11,39 @@ enum opt {bias, no_bias};
  * @brief base class for static layers
  * 
  */
-class basic_layer{
-public:
-    virtual constexpr size_t deduce_num_params() = 0;
-};
-
-template<typename T_e, size_t T_in, size_t T_out,
-        opt T_bias_option=opt::bias>
-class linear: basic_layer{
+template<typename T_e, size_t T_in_dim, size_t T_in_num, size_t T_out_dim,
+        opt T_opt_bias=opt::bias>
+class linear{
 public:
     constexpr size_t deduce_num_params_weights(){
-        return T_in * T_out;
+        return T_in_dim * T_out_dim;
     }
     constexpr size_t deduce_num_params_bias(){
-        if constexpr(T_bias_option == opt::bias)
-            return T_out;
+        if constexpr(T_opt_bias == opt::bias)
+            return T_out_dim;
         else
             return 0;
     }
-    virtual constexpr size_t deduce_num_params(){
+    constexpr size_t deduce_num_params(){
         return deduce_num_params_weights() + deduce_num_params_bias(); 
     }
-private:
-    T_e* weights(T_e* mem_ptr) const{ return mem_ptr;}
-    T_e* bias(T_e* mem_ptr) const{ return mem_ptr + deduce_num_params_weights(); }
-public:
     /**
-     * (B_in * T_in) @ (T_in x T_out) -> (B_in * T_out)
+     * (T_in_num * T_in_dim) @ (T_in_dim x T_out_dim) -> (T_in_num * T_out_dim)
      * **/ 
-    void apply(T_e* layer_mem_ptr, T_e* in_mem_ptr, size_t B_in, T_e* out_mem_ptr){
-        // filling output matrix with bias vectors
-        T_e beta = 0.0;
-        if constexpr (T_bias_option == opt::bias){
-            T_e* bias = layer_mem_ptr + T_in * T_out;
-            for (int r=0; r<B_in; r++)
-                std::copy(bias, bias+T_out, out_mem_ptr + r*T_out); 
-            beta = 1.0;
-        }
-        // single precision matrix multiplication
-        if constexpr (std::is_same<T_e, float>::value)
-            cblas_sgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
-                B_in, T_out, T_in, 1.0, in_mem_ptr, T_in, layer_mem_ptr, T_out,
-                beta, out_mem_ptr, T_out);
-        // double precision version
-        if constexpr (std::is_same<T_e, double>::value)
-            cblas_dgemm(CblasRowMajor, CblasNoTrans, CblasNoTrans,
-                B_in, T_out, T_in, 1.0, in_mem_ptr, T_in, layer_mem_ptr, T_out,
-                beta, out_mem_ptr, T_out);
+    void feed(T_e* layer_mem_ptr, T_e* in_mem_ptr, T_e* out_mem_ptr){
+        Fastor::TensorMap<T_e, T_in_dim, T_out_dim> W_(layer_mem_ptr);
+        Fastor::TensorMap<T_e, T_in_num, T_in_dim> In_(in_mem_ptr);
+        Fastor::TensorMap<T_e, T_in_num, T_out_dim> Out_(out_mem_ptr);
+        Out_ = Fastor::matmul(In_, W_);
+        if constexpr (T_opt_bias == opt::bias){
+            for(int i=0; i<T_in_num; i++)
+                for(int j=0; j<T_out_dim; j++)
+                    out_mem_ptr[i*T_out_dim + j] += layer_mem_ptr[j];
+        }   
+            
 
     }
 }; // end linear
-
 };
 };
-
 #endif
