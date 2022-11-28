@@ -38,10 +38,8 @@ public:
         if constexpr (T_opt_bias == opt::bias){
             for(int i=0; i<T_in_num; i++)
                 for(int j=0; j<T_out_dim; j++)
-                    out_mem_ptr[i*T_out_dim + j] += layer_mem_ptr[j];
+                    out_mem_ptr[i*T_out_dim + j] += layer_mem_ptr[T_in_dim * T_out_dim + j];
         }   
-            
-
     }
 }; // end linear
 };
