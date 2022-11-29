@@ -11,7 +11,7 @@ enum opt {bias, no_bias};
  * @brief base class for static layers
  * 
  */
-template<typename T_e, size_t T_in_dim, size_t T_in_num, size_t T_out_dim,
+template<typename T_e, size_t T_in_num, size_t T_in_dim, size_t T_out_dim,
         opt T_opt_bias=opt::bias>
 class linear{
 public:
@@ -42,6 +42,65 @@ public:
         }   
     }
 }; // end linear
+
+template<typename T_e, size_t T_layers_num,
+         size_t T_in_num, size_t T_in_dim,
+         size_t T_out_dim, size_t T_hidden_dim,
+         opt T_opt_bias=opt::bias>
+class mlp{
+public:
+    constexpr size_t deduce_num_params_in(){
+        return linear<T_e, T_in_num, T_in_dim, T_hidden_dim, T_opt_bias>().deduce_num_params();
+    }
+    constexpr size_t deduce_num_params_hidden(){
+        return linear<T_e, T_in_num, T_hidden_dim, T_hidden_dim, T_opt_bias>().deduce_num_params();
+    }
+    constexpr size_t deduce_num_params_out(){
+        return linear<T_e, T_in_num, T_hidden_dim, T_out_dim, T_opt_bias>().deduce_num_params();
+    }
+    constexpr size_t deduce_num_params(){
+        return T_layers_num * deduce_num_params_hidden() + deduce_num_params_in() + deduce_num_params_out();
+    }
+    /**
+     * @brief apply the multi-layer perceptron on data in `in_mem_ptr`
+     * 
+     * @param layer_mem_ptr memory block containing layer parameters
+     * @param in_mem_ptr  memory block containing input data
+     * @param out_mem_ptr memory block for storing the result
+     * @return ** void 
+     * 
+     */
+    void feed(T_e* layer_mem_ptr, T_e* in_mem_ptr, T_e* out_mem_ptr){
+        // layers
+        linear<T_e, T_in_num, T_in_dim, T_hidden_dim, T_opt_bias> l_in;
+        linear<T_e, T_in_num, T_hidden_dim, T_hidden_dim, T_opt_bias> l_hidden;
+        linear<T_e, T_in_num, T_hidden_dim, T_out_dim, T_opt_bias> l_out;
+        // reserving space for intermediate matrices
+        T_e* H1_ = new T_e[T_in_num * T_hidden_dim];
+        T_e* H2_ = new T_e[T_in_num * T_hidden_dim];
+        // apply input layer
+        l_in.feed(layer_mem_ptr, in_mem_ptr, H1_);
+        // apply hidden layers
+        T_e* src, *dest;
+        for (size_t hidden=0; hidden<T_layers_num; hidden++){
+            if (hidden % 2 == 0){ src = H1_; dest = H2_;}
+            else{ src = H2_; dest = H1_;}
+
+            l_hidden.feed(layer_mem_ptr, src, dest);
+        }    
+        // apply output layer
+        if constexpr (T_layers_num % 2 == 0)
+            l_out.feed(layer_mem_ptr, H1_, out_mem_ptr);
+        else
+            l_out.feed(layer_mem_ptr, H2_, out_mem_ptr);
+        
+        delete[] H1_;
+        delete[] H2_;
+    }
+
+};
+
+
 };
 };
 #endif
