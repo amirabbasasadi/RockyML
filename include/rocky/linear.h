@@ -82,17 +82,18 @@ public:
         l_in.feed(layer_mem_ptr, in_mem_ptr, H1_);
         // apply hidden layers
         T_e* src, *dest;
+        size_t offset = l_in.deduce_num_params();
         for (size_t hidden=0; hidden<T_layers_num; hidden++){
             if (hidden % 2 == 0){ src = H1_; dest = H2_;}
             else{ src = H2_; dest = H1_;}
-
-            l_hidden.feed(layer_mem_ptr, src, dest);
+            l_hidden.feed(layer_mem_ptr + offset, src, dest);
+            offset += l_hidden.deduce_num_params();
         }    
         // apply output layer
         if constexpr (T_layers_num % 2 == 0)
-            l_out.feed(layer_mem_ptr, H1_, out_mem_ptr);
+            l_out.feed(layer_mem_ptr + offset, H1_, out_mem_ptr);
         else
-            l_out.feed(layer_mem_ptr, H2_, out_mem_ptr);
+            l_out.feed(layer_mem_ptr + offset, H2_, out_mem_ptr);
         
         delete[] H1_;
         delete[] H2_;
