@@ -1,10 +1,10 @@
-#ifndef ROCKY_LINEAR_GUARD
-#define ROCKY_LINEAR_GUARD
+#ifndef ROCKY_BLOCK_GUARD
+#define ROCKY_BLOCK_GUARD
 #include <Fastor/Fastor.h>
 #include <type_traits>
 #include <algorithm>
 namespace rocky{
-namespace layer{
+namespace blocks{
 enum opt {bias, no_bias};
 
 /**
