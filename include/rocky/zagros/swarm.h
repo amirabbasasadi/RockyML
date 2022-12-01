@@ -15,20 +15,29 @@
 namespace rocky{
 namespace zagros{
 
+/**
+ * @brief base class for swarm optimizers
+ * 
+ */
 template<typename T_e,
          int T_dim,
          int T_n_particles>
-class pso_mpi: public basic_mpi_optimizer{
+class swarm_mpi: public basic_mpi_optimizer{
 protected:
     zagros::system<T_e, T_dim>* problem_;
     // particles position
-    T_e particles_x_[T_n_particles * T_dim];
-    // particles velocity
-    T_e particles_v_[T_n_particles * T_dim];
+    T_e* particles_x_;
     // particles best solution
     T_e particles_best_[T_n_particles];
 public:
+    ~swarm_mpi(){
+        delete[] particles_x_;
+    }
     constexpr int n_particles() { return T_n_particles; } 
+    // allocate particles
+    void allocate(){
+        particles_x_ = new T_e[T_n_particles * T_dim];
+    }
     // initialize particles position
     void initialize_position(){
         Fastor::TensorMap<T_e, T_n_particles, T_dim> X_(particles_x_);
@@ -63,6 +72,10 @@ public:
      * @return ** std::pair<T_e, int> 
      */
     std::pair<T_e, int> best(){
+        auto min_el = std::min_element(particles_best_, particles_best_+T_n_particles);
+        return std::make_pair(*min_el, static_cast<int>(min_el - particles_best_));
+    }
+    std::pair<T_e, int> best_parallel(){
         std::pair<T_e, int> best = tbb::parallel_reduce(tbb::blocked_range<T_e>(0, n_particles()),
                     // initial answer
                     std::make_pair(std::numeric_limits<T_e>::max(), 0),
