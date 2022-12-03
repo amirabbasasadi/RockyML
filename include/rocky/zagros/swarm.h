@@ -145,15 +145,15 @@ public:
     }
     // update best tribes solutions
     virtual void update_tribes_best(){
-        tbb::parallel_for(0, T_n_tribes, [&](int t){
-            auto t_range = tribe_range(t);
-            auto min_el = std::min_element(particles_best_min_ + t_range.first,
-                                           particles_best_min_ + t_range.second);
+        tbb::parallel_for(0, T_n_tribes, [this](int t){
+            auto t_range = this->tribe_range(t);
+            auto min_el = std::min_element(this->particles_best_min_ + t_range.first,
+                                           this->particles_best_min_ + t_range.second);
             
-            if (*min_el < tribes_best_min_[t]){
-                int min_el_ind = static_cast<int>(min_el - particles_best_min_);
-                tribes_best_min_[t] = *min_el;
-                tribes_best_argmin_[t] = particles_best_argmin_ + min_el_ind * T_dim;
+            if (*min_el < this->tribes_best_min_[t]){
+                int min_el_ind = static_cast<int>(min_el - this->particles_best_min_);
+                this->tribes_best_min_[t] = *min_el;
+                this->tribes_best_argmin_[t] = this->particles_best_argmin_ + min_el_ind * T_dim;
             }
 
         });
@@ -163,7 +163,18 @@ public:
      * 
      * @return ** void 
      */
-    virtual void update_particles_v(){
+    virtual void update_particles_v_phase1(){
+        tbb::parallel_for(0, T_n_particles, [this](int p){
+            int p_tribe = this->tribe(p);
+            Fastor::TensorMap<T_e, T_dim> x(this->particles_x_ + p*T_dim);
+            Fastor::TensorMap<T_e, T_dim> v(this->particles_v_ + p*T_dim);
+            Fastor::TensorMap<T_e, T_dim> p_best(this->particles_best_argmin_ + p*T_dim);
+            Fastor::TensorMap<T_e, T_dim> p_best_t(this->tribes_best_argmin_[p_tribe]);
+            v = v * this->hyper_w + 1.0 * rand()/RAND_MAX * (p_best - x) + 1.0 * rand()/RAND_MAX + (p_best_t - x);
+            
+        });
+    }
+    virtual void update_particles_v_phase2(){
         tbb::parallel_for(0, T_n_particles, [this](int p){
             int p_tribe = this->tribe(p);
             Fastor::TensorMap<T_e, T_dim> x(this->particles_x_ + p*T_dim);
@@ -198,7 +209,9 @@ public:
         auto min_el = std::min_element(tribes_best_min_, tribes_best_min_ + T_n_tribes);
         int min_el_ind = static_cast<int>(min_el - tribes_best_min_);
         global_best_min_ = *min_el;
-        global_best_argmin_ = tribes_best_argmin_[min_el_ind];
+        std::copy(tribes_best_argmin_[min_el_ind],
+                  tribes_best_argmin_[min_el_ind] + T_dim,
+                  global_best_argmin_);
     }
     /**
      * @brief find best current solution in parallel
@@ -228,15 +241,17 @@ public:
     }
 
     virtual void iter(int iters){
-        hyper_w = 0.4;
+        hyper_w = 0.3;
         for(int it=0; it<iters; it++){
             update_particles_best();
 
             update_tribes_best();
 
-            update_particles_v();
+            update_particles_v_phase1();
         
             update_particles_x();
+
+            update_global_best();
         }
     }
     // release the reserved memory
