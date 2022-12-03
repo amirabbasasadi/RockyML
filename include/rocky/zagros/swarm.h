@@ -5,6 +5,7 @@
 #include<utility>
 #include<memory>
 #include<limits>
+#include<random>
 #include<mpi.h>
 #include<tbb/tbb.h>
 #include<chrono>
@@ -91,6 +92,11 @@ public:
 
         return std::make_pair(tribe_s, tribe_e);            
     }
+    T_e random_uniform(){
+        static thread_local std::mt19937 generator;
+        std::uniform_real_distribution<T_e> distribution(0.0,1.0);
+        return distribution(generator);
+    }
     // allocate the required memory
     virtual void allocate(){
         // allocate particles memory
@@ -164,13 +170,16 @@ public:
      * @return ** void 
      */
     virtual void update_particles_v_phase1(){
+        
         tbb::parallel_for(0, T_n_particles, [this](int p){
             int p_tribe = this->tribe(p);
             Fastor::TensorMap<T_e, T_dim> x(this->particles_x_ + p*T_dim);
             Fastor::TensorMap<T_e, T_dim> v(this->particles_v_ + p*T_dim);
             Fastor::TensorMap<T_e, T_dim> p_best(this->particles_best_argmin_ + p*T_dim);
             Fastor::TensorMap<T_e, T_dim> p_best_t(this->tribes_best_argmin_[p_tribe]);
-            v = v * this->hyper_w + 1.0 * rand()/RAND_MAX * (p_best - x) + 1.0 * rand()/RAND_MAX + (p_best_t - x);
+            // update the velocity
+            v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
+                                  + 2.0 * this->random_uniform() + (p_best_t - x);
             
         });
     }
