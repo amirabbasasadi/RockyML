@@ -23,6 +23,15 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "RockyML", "index.html", [
+    [ "RockyML - A High-Performance Toolkit for Non-Differentiable Learning Machines", "index.html", [
+      [ "Components", "index.html#autotoc_md1", [
+        [ "Rocky (Core)", "index.html#autotoc_md2", null ],
+        [ "Zagros", "index.html#autotoc_md3", null ]
+      ] ],
+      [ "Guide", "index.html#autotoc_md4", [
+        [ "Dependencies", "index.html#autotoc_md5", null ]
+      ] ]
+    ] ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],

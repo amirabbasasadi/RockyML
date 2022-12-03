@@ -2580,3 +2580,8 @@ DOT_CLEANUP            = YES
 
 
 FULL_SIDEBAR            = NO
+
+
+INPUT += README.md
+
+USE_MDFILE_AS_MAINPAGE = README.md
