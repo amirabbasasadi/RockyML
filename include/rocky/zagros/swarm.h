@@ -28,21 +28,13 @@ template<typename T_e,
 class swarm_mpi: public basic_mpi_optimizer{
 protected:
     zagros::system<T_e, T_dim>* problem_;
-
-
 public:
-    virtual ~swarm_mpi(){
-        delete[] particles_x_;
-    }
     constexpr int n_particles() { return T_n_particles; } 
     /**
      * @brief initialize best solution for each particle
      * 
      * @return ** void 
      */
-    virtual void initialize_best(){
-        std::fill(particles_best_, particles_best_+n_particles(), std::numeric_limits<T_e>::max());
-    }
     void add_system(zagros::system<T_e, T_dim>* sys){
         problem_ = sys;
     }
@@ -86,21 +78,21 @@ protected:
 
 public:
     constexpr int particles_per_tribe(){
-        return T_n_particles / T_n_tribes_;
+        return T_n_particles / T_n_tribes;
     }
     int tribe(int particle_ind){
         return particle_ind / particles_per_tribe();
     }
     std::pair<int, int> tribe_range(int t){
         int tribe_s = t * particles_per_tribe();
-        int tribe_e = tribes_s + particles_per_tribe();
+        int tribe_e = tribe_s + particles_per_tribe();
         if(t == T_n_tribes - 1)
             tribe_e = T_n_particles;
 
         return std::make_pair(tribe_s, tribe_e);            
     }
     // allocate the required memory
-    virtual allocate(){
+    virtual void allocate(){
         // allocate particles memory
         particles_best_min_ = new T_e[T_n_particles];
         particles_best_argmin_ = new T_e[T_n_particles * T_dim];
@@ -134,25 +126,25 @@ public:
     }
     // main initialization
     virtual void initialize(){
-        initial_best();
+        initialize_best();
         initialize_particles_x();
         initialize_particles_v();
     }
     // evaluate and update best solution of each particle in parallel
-    virtual void update_best_particles(){
-        tbb::parallel_for(0, n_particles(), [&](int p){
-            T_e obj = problem_->objective(particles_x_ + p*T_dim);
-            if (obj < particles_best_min_[p]){
-                particles_best_min_[p] = obj;
+    virtual void update_particles_best(){
+        tbb::parallel_for(0, T_n_particles, [this](int p){
+            T_e obj = this->problem_->objective(this->particles_x_ + p*T_dim);
+            if (obj < this->particles_best_min_[p]){
+                this->particles_best_min_[p] = obj;
                 // copy the particle solution
-                std::copy(particles_x_ + p*T_dim,
-                          particles_x_ + (p+1)*T_dim,
-                          particles_best_argmin_ + p*T_dim);
+                std::copy(this->particles_x_ + p*T_dim,
+                          this->particles_x_ + (p+1)*T_dim,
+                          this->particles_best_argmin_ + p*T_dim);
             }
         });
     }
     // update best tribes solutions
-    virtual void update_best_tribes(){
+    virtual void update_tribes_best(){
         tbb::parallel_for(0, T_n_tribes, [&](int t){
             auto t_range = tribe_range(t);
             auto min_el = std::min_element(particles_best_min_ + t_range.first,
@@ -172,26 +164,27 @@ public:
      * @return ** void 
      */
     virtual void update_particles_v(){
-        tbb::parallel_for(0, n_particles(), [&](int p){
-            int p_tribe = tribe(p);
-            Fastor::TensorMap<T_e, T_dim> x(particles_x_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> v(particles_v_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> p_best(particles_best_argmin_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> p_best_t(tribes_best_argmin_[p_tribe]);
-            v = v * hyper_w + 2.0 * 0.5 * (p_best - x) + 2.0 * 0.5 + (p_best_t - x);
+        tbb::parallel_for(0, T_n_particles, [this](int p){
+            int p_tribe = this->tribe(p);
+            Fastor::TensorMap<T_e, T_dim> x(this->particles_x_ + p*T_dim);
+            Fastor::TensorMap<T_e, T_dim> v(this->particles_v_ + p*T_dim);
+            Fastor::TensorMap<T_e, T_dim> p_best(this->particles_best_argmin_ + p*T_dim);
+            Fastor::TensorMap<T_e, T_dim> p_best_t(this->tribes_best_argmin_[p_tribe]);
+            v = v * this->hyper_w + 1.0 * rand()/RAND_MAX * (p_best - x) + 1.0 * rand()/RAND_MAX + (p_best_t - x);
+            
         });
     }
-
+    // 
     /**
      * @brief update particles position in parallel
      * 
      * @return ** void 
      */
     virtual void update_particles_x(){
-        tbb::parallel_for(0, n_particles(), [&](int p){
-            int p_tribe = tribe(p);
-            Fastor::TensorMap<T_e, T_dim> x(particles_x_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> v(particles_v_ + p*T_dim);
+        tbb::parallel_for(0, T_n_particles, [this](int p){
+            int p_tribe = this->tribe(p);
+            Fastor::TensorMap<T_e, T_dim> x(this->particles_x_ + p*T_dim);
+            Fastor::TensorMap<T_e, T_dim> v(this->particles_v_ + p*T_dim);
             x += v;
         });
     }
@@ -213,15 +206,15 @@ public:
      * 
      * @return void
      */
-   void update_global_best_parallel(){
-        std::pair<T_e, int> best = tbb::parallel_reduce(tbb::blocked_range<T_e>(0, n_particles()),
+   std::pair<T_e, int> find_global_best_parallel(){
+        std::pair<T_e, int> best = tbb::parallel_reduce(tbb::blocked_range<T_e>(0, T_n_particles),
                     // initial answer
                     std::make_pair(std::numeric_limits<T_e>::max(), 0),
                     // reducing each chunk
-                    [&](const tbb::blocked_range<T_e>& r, std::pair<T_e, int> init) -> std::pair<T_e, int>{
+                    [this](const tbb::blocked_range<T_e>& r, std::pair<T_e, int> init) -> std::pair<T_e, int>{
                         for (int i=r.begin(); i!=r.end(); i++){
-                            if (particles_best_[i] < init.first)
-                                init = std::make_pair(particles_best_[i], i);
+                            if (this->particles_best_min_[i] < init.first)
+                                init = std::make_pair(this->particles_best_min_[i], i);
                         }
                         return init;
                     },
@@ -235,18 +228,19 @@ public:
     }
 
     virtual void iter(int iters){
-        update_best_particles();
+        hyper_w = 0.4;
+        for(int it=0; it<iters; it++){
+            update_particles_best();
 
-        update_best_tribes();
+            update_tribes_best();
 
-        update_particles_v();
+            update_particles_v();
         
-        update_particles_x();
-
-        update_best_global();
+            update_particles_x();
+        }
     }
     // release the reserved memory
-    virtual ~pso_mpi(){
+    virtual ~pso_tribes_mpi(){
         delete[] particles_x_;
         delete[] particles_v_;
         delete[] particles_best_min_;
