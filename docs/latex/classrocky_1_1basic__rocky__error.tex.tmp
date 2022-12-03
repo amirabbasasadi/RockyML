@@ -1,0 +1,21 @@
+\hypertarget{classrocky_1_1basic__rocky__error}{}\doxysection{rocky\+::basic\+\_\+rocky\+\_\+error Class Reference}
+\label{classrocky_1_1basic__rocky__error}\index{rocky::basic\_rocky\_error@{rocky::basic\_rocky\_error}}
+
+
+Inheritance diagram for rocky\+::basic\+\_\+rocky\+\_\+error\+:
+% FIG 0
+
+
+Collaboration diagram for rocky\+::basic\+\_\+rocky\+\_\+error\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1basic__rocky__error_a93dbbf9c20a33e3fb45d0677aaa5d2f1}\label{classrocky_1_1basic__rocky__error_a93dbbf9c20a33e3fb45d0677aaa5d2f1}} 
+const char $\ast$ {\bfseries what} ()
+\end{DoxyCompactItemize}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/rocky/exceptions.\+h\end{DoxyCompactItemize}

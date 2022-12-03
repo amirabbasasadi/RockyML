@@ -1,0 +1,37 @@
+\hypertarget{classrocky_1_1layer_1_1linear}{}\doxysection{rocky\+::layer\+::linear$<$ T\+\_\+e, T\+\_\+in, T\+\_\+out, T\+\_\+bias\+\_\+option $>$ Class Template Reference}
+\label{classrocky_1_1layer_1_1linear}\index{rocky::layer::linear$<$ T\_e, T\_in, T\_out, T\_bias\_option $>$@{rocky::layer::linear$<$ T\_e, T\_in, T\_out, T\_bias\_option $>$}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1layer_1_1linear_af7d845b40c8b4e7ae5f07335b63a7905}\label{classrocky_1_1layer_1_1linear_af7d845b40c8b4e7ae5f07335b63a7905}} 
+constexpr unsigned {\bfseries num\+\_\+parameters} () const
+\item 
+void \mbox{\hyperlink{classrocky_1_1layer_1_1linear_afda6f5d3a37c0f3fafe526bd8bba9f72}{apply}} (T\+\_\+e $\ast$layer\+\_\+mem\+\_\+ptr, T\+\_\+e $\ast$in\+\_\+mem\+\_\+ptr, unsigned B\+\_\+in, T\+\_\+e $\ast$out\+\_\+mem\+\_\+ptr)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1layer_1_1linear_acafab64eb5ce6c7560bc00ede68c877e}\label{classrocky_1_1layer_1_1linear_acafab64eb5ce6c7560bc00ede68c877e}} 
+constexpr unsigned {\bfseries deduce\+\_\+num\+\_\+parameters} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1layer_1_1linear_afa2d43b7cfb243e26b288a6145c1bb52}\label{classrocky_1_1layer_1_1linear_afa2d43b7cfb243e26b288a6145c1bb52}} 
+const unsigned {\bfseries num\+\_\+parameters\+\_\+} = deduce\+\_\+num\+\_\+parameters()
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrocky_1_1layer_1_1linear_afda6f5d3a37c0f3fafe526bd8bba9f72}\label{classrocky_1_1layer_1_1linear_afda6f5d3a37c0f3fafe526bd8bba9f72}} 
+\index{rocky::layer::linear$<$ T\_e, T\_in, T\_out, T\_bias\_option $>$@{rocky::layer::linear$<$ T\_e, T\_in, T\_out, T\_bias\_option $>$}!apply@{apply}}
+\index{apply@{apply}!rocky::layer::linear$<$ T\_e, T\_in, T\_out, T\_bias\_option $>$@{rocky::layer::linear$<$ T\_e, T\_in, T\_out, T\_bias\_option $>$}}
+\doxysubsubsection{\texorpdfstring{apply()}{apply()}}
+{\footnotesize\ttfamily template$<$typename T\+\_\+e , unsigned T\+\_\+in, unsigned T\+\_\+out, opt T\+\_\+bias\+\_\+option = opt\+::bias$>$ \\
+void \mbox{\hyperlink{classrocky_1_1layer_1_1linear}{rocky\+::layer\+::linear}}$<$ T\+\_\+e, T\+\_\+in, T\+\_\+out, T\+\_\+bias\+\_\+option $>$\+::apply (\begin{DoxyParamCaption}\item[{T\+\_\+e $\ast$}]{layer\+\_\+mem\+\_\+ptr,  }\item[{T\+\_\+e $\ast$}]{in\+\_\+mem\+\_\+ptr,  }\item[{unsigned}]{B\+\_\+in,  }\item[{T\+\_\+e $\ast$}]{out\+\_\+mem\+\_\+ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+(B\+\_\+in $\ast$ T\+\_\+in) @ (T\+\_\+in x T\+\_\+out) -\/$>$ (B\+\_\+in $\ast$ T\+\_\+out) 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/rocky/linear.\+h\end{DoxyCompactItemize}

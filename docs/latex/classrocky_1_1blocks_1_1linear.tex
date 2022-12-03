@@ -1,0 +1,48 @@
+\hypertarget{classrocky_1_1blocks_1_1linear}{}\doxysection{rocky\+::blocks\+::linear$<$ T\+\_\+e, T\+\_\+in\+\_\+num, T\+\_\+in\+\_\+dim, T\+\_\+out\+\_\+dim, T\+\_\+opt\+\_\+bias $>$ Class Template Reference}
+\label{classrocky_1_1blocks_1_1linear}\index{rocky::blocks::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$@{rocky::blocks::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$}}
+
+
+base class for static layers  
+
+
+
+
+{\ttfamily \#include $<$blocks.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1blocks_1_1linear_a2730595c965c27177eecae73d138edd7}\label{classrocky_1_1blocks_1_1linear_a2730595c965c27177eecae73d138edd7}} 
+constexpr size\+\_\+t {\bfseries deduce\+\_\+num\+\_\+params\+\_\+weights} ()
+\item 
+\mbox{\Hypertarget{classrocky_1_1blocks_1_1linear_acfa99bbaaf6a3384cd45ccdc66363b64}\label{classrocky_1_1blocks_1_1linear_acfa99bbaaf6a3384cd45ccdc66363b64}} 
+constexpr size\+\_\+t {\bfseries deduce\+\_\+num\+\_\+params\+\_\+bias} ()
+\item 
+\mbox{\Hypertarget{classrocky_1_1blocks_1_1linear_ad9d2ba90318f98bedf394b403214ba61}\label{classrocky_1_1blocks_1_1linear_ad9d2ba90318f98bedf394b403214ba61}} 
+constexpr size\+\_\+t {\bfseries deduce\+\_\+num\+\_\+params} ()
+\item 
+void \mbox{\hyperlink{classrocky_1_1blocks_1_1linear_a72fd36fc9b650b73b2f887bfff147395}{feed}} (T\+\_\+e $\ast$layer\+\_\+mem\+\_\+ptr, T\+\_\+e $\ast$in\+\_\+mem\+\_\+ptr, T\+\_\+e $\ast$out\+\_\+mem\+\_\+ptr)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T\+\_\+e, size\+\_\+t T\+\_\+in\+\_\+num, size\+\_\+t T\+\_\+in\+\_\+dim, size\+\_\+t T\+\_\+out\+\_\+dim, opt T\+\_\+opt\+\_\+bias = opt\+::bias$>$\newline
+class rocky\+::blocks\+::linear$<$ T\+\_\+e, T\+\_\+in\+\_\+num, T\+\_\+in\+\_\+dim, T\+\_\+out\+\_\+dim, T\+\_\+opt\+\_\+bias $>$}
+
+base class for static layers 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrocky_1_1blocks_1_1linear_a72fd36fc9b650b73b2f887bfff147395}\label{classrocky_1_1blocks_1_1linear_a72fd36fc9b650b73b2f887bfff147395}} 
+\index{rocky::blocks::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$@{rocky::blocks::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$}!feed@{feed}}
+\index{feed@{feed}!rocky::blocks::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$@{rocky::blocks::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$}}
+\doxysubsubsection{\texorpdfstring{feed()}{feed()}}
+{\footnotesize\ttfamily template$<$typename T\+\_\+e , size\+\_\+t T\+\_\+in\+\_\+num, size\+\_\+t T\+\_\+in\+\_\+dim, size\+\_\+t T\+\_\+out\+\_\+dim, opt T\+\_\+opt\+\_\+bias = opt\+::bias$>$ \\
+void \mbox{\hyperlink{classrocky_1_1blocks_1_1linear}{rocky\+::blocks\+::linear}}$<$ T\+\_\+e, T\+\_\+in\+\_\+num, T\+\_\+in\+\_\+dim, T\+\_\+out\+\_\+dim, T\+\_\+opt\+\_\+bias $>$\+::feed (\begin{DoxyParamCaption}\item[{T\+\_\+e $\ast$}]{layer\+\_\+mem\+\_\+ptr,  }\item[{T\+\_\+e $\ast$}]{in\+\_\+mem\+\_\+ptr,  }\item[{T\+\_\+e $\ast$}]{out\+\_\+mem\+\_\+ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+(T\+\_\+in\+\_\+num $\ast$ T\+\_\+in\+\_\+dim) @ (T\+\_\+in\+\_\+dim x T\+\_\+out\+\_\+dim) -\/$>$ (T\+\_\+in\+\_\+num $\ast$ T\+\_\+out\+\_\+dim) 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/rocky/blocks.\+h\end{DoxyCompactItemize}
