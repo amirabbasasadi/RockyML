@@ -25,8 +25,14 @@ jobs:
     - uses: actions/checkout@v3
 
     - name: Install Dependencies
-      run: sudo apt install libopenblas-dev
-
+      run: sudo apt install libopenblas-dev openmpi-bin openmpi-common libopenmpi-dev libgtk2.0-dev
+    
+    - name: Install vcpkg
+      run: |
+        git clone https://github.com/Microsoft/vcpkg.git
+        ./vcpkg/bootstrap-vcpkg.sh
+        ./vcpkg/vcpkg install tbb gcem
+    
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
       # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
