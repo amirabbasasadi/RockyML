@@ -77,6 +77,10 @@ protected:
     T_e global_best_min_;
     T_e* global_best_argmin_;
 
+    // best current cluster solution
+    T_e cluster_best_min_;
+    T_e* cluster_best_argmin_;
+
     T_e hyper_w;
 
 public:
@@ -128,6 +132,8 @@ public:
         tribes_best_argmin_ = new T_e*[T_n_tribes];
         // best global solution
         global_best_argmin_ = new T_e[T_dim];
+        // best cluster solution
+        cluster_best_argmin_ = new T_e[T_dim];
     }
     /**
      * @brief initial value for best solutions
@@ -138,6 +144,7 @@ public:
         std::fill(particles_best_min_, particles_best_min_+ T_n_particles, std::numeric_limits<T_e>::max());
         std::fill(tribes_best_min_, tribes_best_min_+ T_n_tribes, std::numeric_limits<T_e>::max());
         global_best_min_ = std::numeric_limits<T_e>::max();
+        cluster_best_min_ = std::numeric_limits<T_e>::max();
     }
     // initialize positions randomly
     // Todo : the system should be able to override this
@@ -242,6 +249,33 @@ public:
                   global_best_argmin_);
     }
     /**
+     * @brief update cluster solution using message passing
+     * 
+     * @return ** void 
+     */
+    void update_cluster_best(){
+        // identify the process
+        int rank = this->mpi_rank();
+        // ask everyone in the cluster to find the min value
+        struct {
+            T_e cluster_best_min;
+            int rank;
+        } data_out, result;
+
+        data_out.cluster_best_min = global_best_min_;
+        data_out.rank = rank;
+
+        MPI_Allreduce(&data_out, &result, 1, MPI_DOUBLE_INT, MPI_MINLOC, MPI_COMM_WORLD);
+        // the owner of best solution should broadcast its solution to the others
+        if(rank == result.rank){
+            std::copy(global_best_argmin_,
+                      global_best_argmin_ + T_dim,
+                      cluster_best_argmin_);
+        }
+        MPI_Bcast(cluster_best_argmin_, T_dim, MPI_DOUBLE, result.rank, MPI_COMM_WORLD);
+        cluster_best_min_ = result.cluster_best_min;
+    }
+    /**
      * @brief find best current solution in parallel
      * Warning : This is fast though not memory efficient so should not be used for large number of particles
      * 
@@ -269,7 +303,6 @@ public:
     }
 
     virtual void iter(int iters){
-        this->log_init("result.csv");
         
         for(int it=0; it<iters; it++){
             hyper_w = random_uniform();
@@ -277,17 +310,14 @@ public:
 
             update_tribes_best();
 
-            this->log_step(it);
-
             update_particles_v_phase1();
         
             update_particles_x();
 
             update_global_best();
-            
+        
+            update_cluster_best();
         }
-
-        this->log_save();
     }
     // release the reserved memory
     virtual ~pso_tribes_mpi(){
