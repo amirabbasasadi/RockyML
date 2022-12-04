@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 project(RockyML LANGUAGES CXX VERSION 0.0.1)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ffast-math")
 
 
 Include(FetchContent)
@@ -13,9 +13,26 @@ FetchContent_Declare(
 )
 FetchContent_MakeAvailable(Catch2)
 
+FetchContent_Declare(
+    nanobench
+    GIT_REPOSITORY https://github.com/martinus/nanobench.git
+    GIT_TAG v4.1.0
+    GIT_SHALLOW TRUE)
+
+
+FetchContent_MakeAvailable(nanobench)
+
 include_directories(include/)
+
+find_package(TBB CONFIG REQUIRED)
+find_package(gcem CONFIG REQUIRED)
+
 add_executable(tests tests/zagros.cc tests/linear.cc)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain TBB::tbb TBB::tbbmalloc gcem)
+
+# tests that require MPI
+add_executable(mpi_tests tests/mpi/basic_mpi.cc)
+target_link_libraries(mpi_tests nanobench TBB::tbb TBB::tbbmalloc gcem)
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(CTest)
