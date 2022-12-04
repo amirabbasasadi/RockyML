@@ -20,7 +20,7 @@ public:
 TEST_CASE("Creating systems", "[system][zagros][double]"){
     using namespace rocky;
     
-    const size_t dim = 128;
+    const size_t dim = 64;
     auto system = sphere<double, dim>();
     double* params = new double[dim];
     std::fill(params, params+dim, 0.0);
