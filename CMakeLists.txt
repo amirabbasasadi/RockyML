@@ -4,6 +4,7 @@ project(RockyML LANGUAGES CXX VERSION 0.0.1)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ffast-math")
 
+set(ROCKY_BUILD_MPI_TESTS FALSE)
 
 Include(FetchContent)
 FetchContent_Declare(
@@ -30,9 +31,11 @@ find_package(gcem CONFIG REQUIRED)
 add_executable(tests tests/zagros.cc tests/linear.cc)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain TBB::tbb TBB::tbbmalloc gcem)
 
+if(ROCKY_BUILD_MPI_TESTS)
 # tests that require MPI
 add_executable(mpi_tests tests/mpi/basic_mpi.cc)
 target_link_libraries(mpi_tests nanobench TBB::tbb TBB::tbbmalloc gcem)
+endif()
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
 include(CTest)
