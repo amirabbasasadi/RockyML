@@ -7,7 +7,7 @@
 #include <rocky/zagros/system.h>
 
 template<typename T_e, size_t T_dims>
-class sphere: rocky::zagros::system<T_e>{
+class sphere: rocky::zagros::system<T_e,T_dims>{
 public:
     virtual T_e objective(T_e* params){
         T_e S = 0.0;
