@@ -265,14 +265,25 @@ public:
         data_out.cluster_best_min = global_best_min_;
         data_out.rank = rank;
 
-        MPI_Allreduce(&data_out, &result, 1, MPI_DOUBLE_INT, MPI_MINLOC, MPI_COMM_WORLD);
+        if constexpr(std::is_same<T_e, double>::value){
+            MPI_Allreduce(&data_out, &result, 1, MPI_DOUBLE_INT, MPI_MINLOC, MPI_COMM_WORLD);
+        }
+        if constexpr(std::is_same<T_e, float>::value){
+            MPI_Allreduce(&data_out, &result, 1, MPI_FLOAT_INT, MPI_MINLOC, MPI_COMM_WORLD);
+        }
+        
         // the owner of best solution should broadcast its solution to the others
         if(rank == result.rank){
             std::copy(global_best_argmin_,
                       global_best_argmin_ + T_dim,
                       cluster_best_argmin_);
         }
-        MPI_Bcast(cluster_best_argmin_, T_dim, MPI_DOUBLE, result.rank, MPI_COMM_WORLD);
+        if constexpr(std::is_same<T_e, double>::value){
+            MPI_Bcast(cluster_best_argmin_, T_dim, MPI_DOUBLE, result.rank, MPI_COMM_WORLD);
+        }
+        if constexpr(std::is_same<T_e, float>::value){
+            MPI_Bcast(cluster_best_argmin_, T_dim, MPI_FLOAT, result.rank, MPI_COMM_WORLD);
+        }   
         cluster_best_min_ = result.cluster_best_min;
     }
     /**
