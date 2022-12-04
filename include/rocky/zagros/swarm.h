@@ -220,9 +220,11 @@ public:
                                 + 2.0 * this->random_uniform() + (p_best_t - x);
                 }         
             }
-            // Todo : phase III
-            if constexpr(T_phase == phase::phase_III)
+            if constexpr(T_phase == phase::phase_III){
                 Fastor::TensorMap<T_e, T_dim> p_best_c(this->cluster_best_argmin_);
+                 v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
+                                + 2.0 * this->random_uniform() + (p_best_c - x);
+            }
         });
     }
     // 
@@ -332,7 +334,11 @@ public:
 
             update_global_best();
 
+            update_particles_v<phase::phase_II>();
+
             update_cluster_best();
+
+            update_particles_v<phase::phase_III>();
         }
     }
     // release the reserved memory
