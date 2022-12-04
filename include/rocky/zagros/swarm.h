@@ -13,6 +13,8 @@
 #include<rocky/zagros/distributed.h>
 #include<rocky/zagros/system.h>
 #include<rocky/exceptions.h>
+#include<rocky/zagros/benchmark.h>
+#include<rocky/zagros/logging.h>
 
 namespace rocky{
 namespace zagros{
@@ -26,7 +28,7 @@ namespace zagros{
 template<typename T_e,
          int T_dim,
          int T_n_particles>
-class swarm_mpi: public basic_mpi_optimizer{
+class swarm_mpi: public basic_mpi_optimizer, public optimization_log{
 protected:
     zagros::system<T_e, T_dim>* problem_;
 public:
@@ -96,6 +98,23 @@ public:
         static thread_local std::mt19937 generator;
         std::uniform_real_distribution<T_e> distribution(0.0,1.0);
         return distribution(generator);
+    }
+    /**
+     * @brief implementing the log interface
+     * adding a header
+     * @return ** void 
+     */
+    void log_on_open() override{
+        this->log_output << "time,tribe,value" << "\n";
+    }
+    /**
+     * @brief 
+     * tracking the best solution of tribes
+     * @return ** void 
+     */
+    void log_step(int time) override{
+        for(int t=0; t<T_n_tribes; t++)
+            this->log_output << time << "," << t << "," << tribes_best_min_[t] << "\n";
     }
     // allocate the required memory
     virtual void allocate(){
@@ -250,18 +269,25 @@ public:
     }
 
     virtual void iter(int iters){
-        hyper_w = 0.3;
+        this->log_init("result.csv");
+        
         for(int it=0; it<iters; it++){
+            hyper_w = random_uniform();
             update_particles_best();
 
             update_tribes_best();
+
+            this->log_step(it);
 
             update_particles_v_phase1();
         
             update_particles_x();
 
             update_global_best();
+            
         }
+
+        this->log_save();
     }
     // release the reserved memory
     virtual ~pso_tribes_mpi(){
