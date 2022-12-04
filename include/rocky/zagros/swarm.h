@@ -63,6 +63,8 @@ public:
 template<typename T_e, int T_dim, int T_n_particles, int T_n_tribes>
 class pso_tribes_mpi: public swarm_mpi<T_e, T_dim, T_n_particles>{
 protected:
+    // different optimization phases
+    enum phase { phase_I, phase_II, phase_III };
     // particles position
     T_e* particles_x_;
     // particles best solution
@@ -195,8 +197,8 @@ public:
      * 
      * @return ** void 
      */
-    virtual void update_particles_v_phase1(){
-        
+    template<phase T_phase>
+    void update_particles_v(){
         tbb::parallel_for(0, T_n_particles, [this](int p){
             int p_tribe = this->tribe(p);
             Fastor::TensorMap<T_e, T_dim> x(this->particles_x_ + p*T_dim);
@@ -204,20 +206,23 @@ public:
             Fastor::TensorMap<T_e, T_dim> p_best(this->particles_best_argmin_ + p*T_dim);
             Fastor::TensorMap<T_e, T_dim> p_best_t(this->tribes_best_argmin_[p_tribe]);
             // update the velocity
-            v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
-                                  + 2.0 * this->random_uniform() + (p_best_t - x);
-            
-        });
-    }
-    virtual void update_particles_v_phase2(){
-        tbb::parallel_for(0, T_n_particles, [this](int p){
-            int p_tribe = this->tribe(p);
-            Fastor::TensorMap<T_e, T_dim> x(this->particles_x_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> v(this->particles_v_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> p_best(this->particles_best_argmin_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> p_best_t(this->tribes_best_argmin_[p_tribe]);
-            v = v * this->hyper_w + 1.0 * rand()/RAND_MAX * (p_best - x) + 1.0 * rand()/RAND_MAX + (p_best_t - x);
-            
+            if constexpr(T_phase == phase::phase_I){
+                v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
+                                    + 2.0 * this->random_uniform() + (p_best_t - x);
+            }
+            if constexpr(T_phase == phase::phase_II){
+                Fastor::TensorMap<T_e, T_dim> p_best_g(this->global_best_argmin_);
+                if(this->particles_best_min_[p] == this->tribes_best_min_[p_tribe]){
+                    v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
+                                + 2.0 * this->random_uniform() + (p_best_g - x);
+                }else{
+                    v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
+                                + 2.0 * this->random_uniform() + (p_best_t - x);
+                }         
+            }
+            // Todo : phase III
+            if constexpr(T_phase == phase::phase_III)
+                Fastor::TensorMap<T_e, T_dim> p_best_c(this->cluster_best_argmin_);
         });
     }
     // 
@@ -321,12 +326,12 @@ public:
 
             update_tribes_best();
 
-            update_particles_v_phase1();
+            update_particles_v<phase::phase_I>();
         
             update_particles_x();
 
             update_global_best();
-        
+
             update_cluster_best();
         }
     }
@@ -339,6 +344,7 @@ public:
         delete[] tribes_best_min_;
         delete[] tribes_best_argmin_;  
         delete[] global_best_argmin_;
+        delete[] cluster_best_argmin_;
     }
 
 };
