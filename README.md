@@ -1,19 +1,27 @@
-# RockyML - A High-Performance Toolkit for Non-Differentiable Learning Machines
-![C++ 17](https://img.shields.io/badge/C%2B%2B-17-blueviolet?style=flat)
-![GitHub Workflow Status](https://img.shields.io/github/workflow/status/amirabbasasadi/RockyML/CTest?label=build%20%26%20test)
-![GitHub commit activity](https://img.shields.io/github/commit-activity/m/amirabbasasadi/RockyML)
-![GitHub](https://img.shields.io/github/license/amirabbasasadi/RockyML)  
+#  RockyML | A High-Performance Scientific Computing Framework  
 
-## Components  
-### Rocky (Core)
-Building blocks for designing non-differentiable deep architectures:
-- Standard Layers
+<p align="center">
+  <img src="https://img.shields.io/badge/C%2B%2B-17-blueviolet?style=flat">
+  <img src="https://img.shields.io/github/workflow/status/amirabbasasadi/RockyML/CTest?label=build%20%26%20test">
+  <img src="https://img.shields.io/github/commit-activity/m/amirabbasasadi/RockyML">
+  <img src="https://img.shields.io/github/license/amirabbasasadi/RockyML">
+</p>
+
+- **Etna** : Building blocks for designing fast non-differentiable neural networks
+- **Zagros** : A high-performance and scalable black-box optimization engine
+
+
+## Etna
+Building blocks for designing non-differentiable neural networks
+
+- Standard Deep Learning Layers
 - Discrete and Combinatorial Layers
 - Stochastic Layers
 - Dynamic Layers
 
-### Zagros
-A high-performance and scalable black-box optimizer
+## Zagros
+A high-performance and scalable black-box optimization engine
+
 - CPU-friendly: targeting multi-core sytems and many-core clusters
 - Two levels of parallelism: multi-threading, multi-processing
 - Distributed optimization
