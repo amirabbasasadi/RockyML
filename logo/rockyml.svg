@@ -10,15 +10,15 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="800"
-   height="400"
-   viewBox="0 0 211.66666 105.83333"
+   height="300"
+   viewBox="0 0 211.66666 79.374998"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="rockyml.svg"
-   inkscape:export-filename="/media/amirabbas/3F25FB4E23F92FF1/CPP/projects/RockyML/logo/rockyml-transparent-1200-600.png"
-   inkscape:export-xdpi="144"
-   inkscape:export-ydpi="144">
+   inkscape:export-filename="/media/amirabbas/3F25FB4E23F92FF1/CPP/projects/RockyML/logo/rockyml-white-2500.png"
+   inkscape:export-xdpi="300"
+   inkscape:export-ydpi="300">
   <defs
      id="defs2">
     <clipPath
@@ -92,9 +92,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="373.30049"
-     inkscape:cy="196.6624"
+     inkscape:zoom="0.49497475"
+     inkscape:cx="22.502399"
+     inkscape:cy="75.066153"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
      showgrid="false"
@@ -121,16 +121,28 @@
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-191.16665)">
+     transform="translate(0,-217.62498)">
     <g
        inkscape:groupmode="layer"
        id="layer2"
-       inkscape:label="Back" />
+       inkscape:label="Back">
+      <rect
+         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.30630898;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+         id="rect832"
+         width="227.71364"
+         height="87.12986"
+         x="-10.690782"
+         y="216.81912"
+         inkscape:export-xdpi="133.80717"
+         inkscape:export-ydpi="133.80717" />
+    </g>
     <flowRoot
        xml:space="preserve"
        id="flowRoot853"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2d1650;fill-opacity:1;stroke:none"
-       transform="matrix(0.65690626,0,0,0.65690626,-30.336535,196.95357)"><flowRegion
+       transform="matrix(0.65690626,0,0,0.65690626,-30.409954,210.18273)"
+       inkscape:export-xdpi="170.83682"
+       inkscape:export-ydpi="170.83682"><flowRegion
          id="flowRegion855"
          style="fill:#2d1650"><rect
            id="rect857"
@@ -146,7 +158,7 @@
        xml:space="preserve"
        id="flowRoot853-3"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#170b28;fill-opacity:1;stroke:none"
-       transform="matrix(0.73643334,0,0,0.73643334,-78.008808,213.61809)"><flowRegion
+       transform="matrix(0.73643334,0,0,0.73643334,-78.082227,226.84725)"><flowRegion
          id="flowRegion855-6"
          style="fill:#170b28"><rect
            id="rect857-7"
@@ -157,9 +169,10 @@
            style="fill:#170b28" /></flowRegion><flowPara
          id="flowPara859-5"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold';fill:#170b28">A High-Performance Scientific Computing Framework</flowPara></flowRoot>    <g
-       style=""
        id="g970"
-       transform="translate(0.35334112,27.084351)">
+       transform="translate(0.27992215,40.313515)"
+       inkscape:export-xdpi="170.83682"
+       inkscape:export-ydpi="170.83682">
       <path
          inkscape:transform-center-y="-5.3903049"
          inkscape:transform-center-x="4.1671893e-06"

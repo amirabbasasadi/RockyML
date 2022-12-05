@@ -1,4 +1,4 @@
-<p><img align="center" src="/logo/rockyml-white-1200-600.png"></p>
+<p><img align="center" src="/logo/rockyml-white-1200.png"></p>
 <p align="center">
   <img src="https://img.shields.io/badge/C%2B%2B-17-blueviolet?style=flat">
   <img src="https://img.shields.io/github/workflow/status/amirabbasasadi/RockyML/CTest?label=build%20%26%20test">
