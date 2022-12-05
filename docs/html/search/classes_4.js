@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['pso_5ftribes_5fmpi_26',['pso_tribes_mpi',['../classrocky_1_1zagros_1_1pso__tribes__mpi.html',1,'rocky::zagros']]]
+  ['optimization_5flog_32',['optimization_log',['../classrocky_1_1zagros_1_1optimization__log.html',1,'rocky::zagros']]]
 ];

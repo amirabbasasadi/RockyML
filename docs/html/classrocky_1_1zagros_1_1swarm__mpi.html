@@ -25,11 +25,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="rockyml-docs-200.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RockyML
    &#160;<span id="projectnumber">0.0.1</span>
    </div>
-   <div id="projectbrief">A Lightweight Non-Differentiable Deep Learning Framework for C++</div>
+   <div id="projectbrief">A High-Performance Scientific Computing Framework</div>
   </td>
  </tr>
  </tbody>
@@ -128,6 +129,22 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>mpi_num_procs</b> () c
 <tr class="memitem:a3e56f31e70aad10d652639679924091f inherit pub_methods_classrocky_1_1zagros_1_1basic__mpi__optimizer"><td class="memItemLeft" align="right" valign="top"><a id="a3e56f31e70aad10d652639679924091f"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>mpi_rank</b> () const</td></tr>
 <tr class="separator:a3e56f31e70aad10d652639679924091f inherit pub_methods_classrocky_1_1zagros_1_1basic__mpi__optimizer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classrocky_1_1zagros_1_1optimization__log"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrocky_1_1zagros_1_1optimization__log')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrocky_1_1zagros_1_1optimization__log.html">rocky::zagros::optimization_log</a></td></tr>
+<tr class="memitem:a3b1df0b82d01826562eae8aeca59d93f inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1optimization__log.html#a3b1df0b82d01826562eae8aeca59d93f">log_on_open</a> ()</td></tr>
+<tr class="memdesc:a3b1df0b82d01826562eae8aeca59d93f inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="mdescLeft">&#160;</td><td class="mdescRight">will be called just after openning the file should be used to add header or other meta-data at the beginning of the log file  <a href="classrocky_1_1zagros_1_1optimization__log.html#a3b1df0b82d01826562eae8aeca59d93f">More...</a><br /></td></tr>
+<tr class="separator:a3b1df0b82d01826562eae8aeca59d93f inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4be9314a44ba082bbba909de7cacc4a3 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1optimization__log.html#a4be9314a44ba082bbba909de7cacc4a3">log_step</a> (int time)=0</td></tr>
+<tr class="memdesc:a4be9314a44ba082bbba909de7cacc4a3 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="mdescLeft">&#160;</td><td class="mdescRight">will be called after each optimization step supposed to track the result of optimization  <a href="classrocky_1_1zagros_1_1optimization__log.html#a4be9314a44ba082bbba909de7cacc4a3">More...</a><br /></td></tr>
+<tr class="separator:a4be9314a44ba082bbba909de7cacc4a3 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85f29296e6c5960e1b906e7599894b0c inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1optimization__log.html#a85f29296e6c5960e1b906e7599894b0c">log_on_close</a> ()</td></tr>
+<tr class="memdesc:a85f29296e6c5960e1b906e7599894b0c inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="mdescLeft">&#160;</td><td class="mdescRight">will be called before closing the file  <a href="classrocky_1_1zagros_1_1optimization__log.html#a85f29296e6c5960e1b906e7599894b0c">More...</a><br /></td></tr>
+<tr class="separator:a85f29296e6c5960e1b906e7599894b0c inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92fcdfcc10faaf691de612fef13ff156 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1optimization__log.html#a92fcdfcc10faaf691de612fef13ff156">log_init</a> (std::string path)</td></tr>
+<tr class="memdesc:a92fcdfcc10faaf691de612fef13ff156 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialize logging openning the log file and adding headers and etc.  <a href="classrocky_1_1zagros_1_1optimization__log.html#a92fcdfcc10faaf691de612fef13ff156">More...</a><br /></td></tr>
+<tr class="separator:a92fcdfcc10faaf691de612fef13ff156 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e2d772d835969bb3da0da2f8d46bbd5 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1optimization__log.html#a5e2d772d835969bb3da0da2f8d46bbd5">log_save</a> ()</td></tr>
+<tr class="memdesc:a5e2d772d835969bb3da0da2f8d46bbd5 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="mdescLeft">&#160;</td><td class="mdescRight">close the output file and save the result  <a href="classrocky_1_1zagros_1_1optimization__log.html#a5e2d772d835969bb3da0da2f8d46bbd5">More...</a><br /></td></tr>
+<tr class="separator:a5e2d772d835969bb3da0da2f8d46bbd5 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -141,6 +158,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>mpi_num_procs_</b></td
 <tr class="memitem:a479a4d15801c77fa0409681af5976f6e inherit pro_attribs_classrocky_1_1zagros_1_1basic__mpi__optimizer"><td class="memItemLeft" align="right" valign="top"><a id="a479a4d15801c77fa0409681af5976f6e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>mpi_rank_</b></td></tr>
 <tr class="separator:a479a4d15801c77fa0409681af5976f6e inherit pro_attribs_classrocky_1_1zagros_1_1basic__mpi__optimizer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classrocky_1_1zagros_1_1optimization__log"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrocky_1_1zagros_1_1optimization__log')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrocky_1_1zagros_1_1optimization__log.html">rocky::zagros::optimization_log</a></td></tr>
+<tr class="memitem:aa39eabbebd764d9842567fd0a22d8072 inherit pro_attribs_classrocky_1_1zagros_1_1optimization__log"><td class="memItemLeft" align="right" valign="top"><a id="aa39eabbebd764d9842567fd0a22d8072"></a>
+std::fstream&#160;</td><td class="memItemRight" valign="bottom"><b>log_output</b></td></tr>
+<tr class="separator:aa39eabbebd764d9842567fd0a22d8072 inherit pro_attribs_classrocky_1_1zagros_1_1optimization__log"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T_e, int T_dim, int T_n_particles&gt;<br />

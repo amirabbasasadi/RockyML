@@ -13,6 +13,9 @@ var hierarchy =
     ] ],
     [ "rocky::blocks::linear< T_e, T_in_num, T_in_dim, T_out_dim, T_opt_bias >", "classrocky_1_1blocks_1_1linear.html", null ],
     [ "rocky::blocks::mlp< T_e, T_layers_num, T_in_num, T_in_dim, T_out_dim, T_hidden_dim, T_opt_bias >", "classrocky_1_1blocks_1_1mlp.html", null ],
+    [ "rocky::zagros::optimization_log", "classrocky_1_1zagros_1_1optimization__log.html", [
+      [ "rocky::zagros::swarm_mpi< T_e, T_dim, T_n_particles >", "classrocky_1_1zagros_1_1swarm__mpi.html", null ]
+    ] ],
     [ "rocky::zagros::system< T_e, T_dim >", "classrocky_1_1zagros_1_1system.html", [
       [ "rocky::zagros::benchmark::rastrigin< T_e, T_dim >", "classrocky_1_1zagros_1_1benchmark_1_1rastrigin.html", null ],
       [ "rocky::zagros::benchmark::sphere< T_e, T_dim >", "classrocky_1_1zagros_1_1benchmark_1_1sphere.html", null ]

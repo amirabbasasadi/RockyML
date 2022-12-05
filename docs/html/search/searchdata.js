@@ -1,24 +1,21 @@
 var indexSectionsWithContent =
 {
-  0: "abdfilmprsu",
-  1: "bdlmprs",
-  2: "afiu",
-  3: "r"
+  0: "abdfilmoprsu",
+  1: "bdlmoprs",
+  2: "afilu"
 };
 
 var indexSectionNames =
 {
   0: "all",
   1: "classes",
-  2: "functions",
-  3: "pages"
+  2: "functions"
 };
 
 var indexSectionLabels =
 {
   0: "All",
   1: "Classes",
-  2: "Functions",
-  3: "Pages"
+  2: "Functions"
 };
 

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['rastrigin_27',['rastrigin',['../classrocky_1_1zagros_1_1benchmark_1_1rastrigin.html',1,'rocky::zagros::benchmark']]]
+  ['pso_5ftribes_5fmpi_33',['pso_tribes_mpi',['../classrocky_1_1zagros_1_1pso__tribes__mpi.html',1,'rocky::zagros']]]
 ];

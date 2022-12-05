@@ -25,11 +25,12 @@
 <table cellspacing="0" cellpadding="0">
  <tbody>
  <tr style="height: 56px;">
+  <td id="projectlogo"><img alt="Logo" src="rockyml-docs-200.png"/></td>
   <td id="projectalign" style="padding-left: 0.5em;">
    <div id="projectname">RockyML
    &#160;<span id="projectnumber">0.0.1</span>
    </div>
-   <div id="projectbrief">A Lightweight Non-Differentiable Deep Learning Framework for C++</div>
+   <div id="projectbrief">A High-Performance Scientific Computing Framework</div>
   </td>
  </tr>
  </tbody>
@@ -86,6 +87,7 @@ $(document).ready(function(){initNavTree('classrocky_1_1zagros_1_1pso__tribes__m
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-types">Protected Types</a> &#124;
 <a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classrocky_1_1zagros_1_1pso__tribes__mpi-members.html">List of all members</a>  </div>
   <div class="headertitle">
@@ -124,6 +126,15 @@ std::pair&lt; int, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="memitem:abb6319c26f499106bd1438ca59673690"><td class="memItemLeft" align="right" valign="top"><a id="abb6319c26f499106bd1438ca59673690"></a>
 T_e&#160;</td><td class="memItemRight" valign="bottom"><b>random_uniform</b> ()</td></tr>
 <tr class="separator:abb6319c26f499106bd1438ca59673690"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b11af2d53c1592fbb071c107ce6d924"><td class="memItemLeft" align="right" valign="top"><a id="a8b11af2d53c1592fbb071c107ce6d924"></a>
+T_e&#160;</td><td class="memItemRight" valign="bottom"><b>random_initial_uniform</b> ()</td></tr>
+<tr class="separator:a8b11af2d53c1592fbb071c107ce6d924"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8a2cde701dd5450349bdb4a239f086e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#ac8a2cde701dd5450349bdb4a239f086e">log_on_open</a> () override</td></tr>
+<tr class="memdesc:ac8a2cde701dd5450349bdb4a239f086e"><td class="mdescLeft">&#160;</td><td class="mdescRight">implementing the log interface adding a header  <a href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#ac8a2cde701dd5450349bdb4a239f086e">More...</a><br /></td></tr>
+<tr class="separator:ac8a2cde701dd5450349bdb4a239f086e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff375fb50ff87301159684c7c0857901"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#aff375fb50ff87301159684c7c0857901">log_step</a> (int time) override</td></tr>
+<tr class="memdesc:aff375fb50ff87301159684c7c0857901"><td class="mdescLeft">&#160;</td><td class="mdescRight">tracking the best solution of tribes  <a href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#aff375fb50ff87301159684c7c0857901">More...</a><br /></td></tr>
+<tr class="separator:aff375fb50ff87301159684c7c0857901"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a608e5b2f1e64890946516e94ebf2d521"><td class="memItemLeft" align="right" valign="top"><a id="a608e5b2f1e64890946516e94ebf2d521"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>allocate</b> ()</td></tr>
 <tr class="separator:a608e5b2f1e64890946516e94ebf2d521"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -145,18 +156,19 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update_partic
 <tr class="memitem:afa02a90092ec25f7bcdf1e77529b82ed"><td class="memItemLeft" align="right" valign="top"><a id="afa02a90092ec25f7bcdf1e77529b82ed"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update_tribes_best</b> ()</td></tr>
 <tr class="separator:afa02a90092ec25f7bcdf1e77529b82ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a125c746697bae496b6ae1b5600d54375"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#a125c746697bae496b6ae1b5600d54375">update_particles_v_phase1</a> ()</td></tr>
-<tr class="memdesc:a125c746697bae496b6ae1b5600d54375"><td class="mdescLeft">&#160;</td><td class="mdescRight">update particles velocity in parallel  <a href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#a125c746697bae496b6ae1b5600d54375">More...</a><br /></td></tr>
-<tr class="separator:a125c746697bae496b6ae1b5600d54375"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a156a08feb201c4c933f01892f31a2ec9"><td class="memItemLeft" align="right" valign="top"><a id="a156a08feb201c4c933f01892f31a2ec9"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>update_particles_v_phase2</b> ()</td></tr>
-<tr class="separator:a156a08feb201c4c933f01892f31a2ec9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43d8efbfde546b1c7f50475906cec94e"><td class="memTemplParams" colspan="2">template&lt;phase T_phase&gt; </td></tr>
+<tr class="memitem:a43d8efbfde546b1c7f50475906cec94e"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#a43d8efbfde546b1c7f50475906cec94e">update_particles_v</a> ()</td></tr>
+<tr class="memdesc:a43d8efbfde546b1c7f50475906cec94e"><td class="mdescLeft">&#160;</td><td class="mdescRight">update particles velocity in parallel  <a href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#a43d8efbfde546b1c7f50475906cec94e">More...</a><br /></td></tr>
+<tr class="separator:a43d8efbfde546b1c7f50475906cec94e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd8063cce9360c2b505608f68c8fb78d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#abd8063cce9360c2b505608f68c8fb78d">update_particles_x</a> ()</td></tr>
 <tr class="memdesc:abd8063cce9360c2b505608f68c8fb78d"><td class="mdescLeft">&#160;</td><td class="mdescRight">update particles position in parallel  <a href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#abd8063cce9360c2b505608f68c8fb78d">More...</a><br /></td></tr>
 <tr class="separator:abd8063cce9360c2b505608f68c8fb78d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a03cf0f0dba0eb1fb7bd6d20feb609ac7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#a03cf0f0dba0eb1fb7bd6d20feb609ac7">update_global_best</a> ()</td></tr>
 <tr class="memdesc:a03cf0f0dba0eb1fb7bd6d20feb609ac7"><td class="mdescLeft">&#160;</td><td class="mdescRight">find best current solution sequentially  <a href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#a03cf0f0dba0eb1fb7bd6d20feb609ac7">More...</a><br /></td></tr>
 <tr class="separator:a03cf0f0dba0eb1fb7bd6d20feb609ac7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e67744aa96ac4f91d0b0e02cf23461b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#a9e67744aa96ac4f91d0b0e02cf23461b">update_cluster_best</a> ()</td></tr>
+<tr class="memdesc:a9e67744aa96ac4f91d0b0e02cf23461b"><td class="mdescLeft">&#160;</td><td class="mdescRight">update cluster solution using message passing  <a href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#a9e67744aa96ac4f91d0b0e02cf23461b">More...</a><br /></td></tr>
+<tr class="separator:a9e67744aa96ac4f91d0b0e02cf23461b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5686b0eb6671b99f9a888643978d2695"><td class="memItemLeft" align="right" valign="top">std::pair&lt; T_e, int &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#a5686b0eb6671b99f9a888643978d2695">find_global_best_parallel</a> ()</td></tr>
 <tr class="memdesc:a5686b0eb6671b99f9a888643978d2695"><td class="mdescLeft">&#160;</td><td class="mdescRight">find best current solution in parallel Warning : This is fast though not memory efficient so should not be used for large number of particles  <a href="classrocky_1_1zagros_1_1pso__tribes__mpi.html#a5686b0eb6671b99f9a888643978d2695">More...</a><br /></td></tr>
 <tr class="separator:a5686b0eb6671b99f9a888643978d2695"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -180,6 +192,24 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>mpi_num_procs</b> () c
 <tr class="memitem:a3e56f31e70aad10d652639679924091f inherit pub_methods_classrocky_1_1zagros_1_1basic__mpi__optimizer"><td class="memItemLeft" align="right" valign="top"><a id="a3e56f31e70aad10d652639679924091f"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>mpi_rank</b> () const</td></tr>
 <tr class="separator:a3e56f31e70aad10d652639679924091f inherit pub_methods_classrocky_1_1zagros_1_1basic__mpi__optimizer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classrocky_1_1zagros_1_1optimization__log"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classrocky_1_1zagros_1_1optimization__log')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classrocky_1_1zagros_1_1optimization__log.html">rocky::zagros::optimization_log</a></td></tr>
+<tr class="memitem:a85f29296e6c5960e1b906e7599894b0c inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1optimization__log.html#a85f29296e6c5960e1b906e7599894b0c">log_on_close</a> ()</td></tr>
+<tr class="memdesc:a85f29296e6c5960e1b906e7599894b0c inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="mdescLeft">&#160;</td><td class="mdescRight">will be called before closing the file  <a href="classrocky_1_1zagros_1_1optimization__log.html#a85f29296e6c5960e1b906e7599894b0c">More...</a><br /></td></tr>
+<tr class="separator:a85f29296e6c5960e1b906e7599894b0c inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92fcdfcc10faaf691de612fef13ff156 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1optimization__log.html#a92fcdfcc10faaf691de612fef13ff156">log_init</a> (std::string path)</td></tr>
+<tr class="memdesc:a92fcdfcc10faaf691de612fef13ff156 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="mdescLeft">&#160;</td><td class="mdescRight">initialize logging openning the log file and adding headers and etc.  <a href="classrocky_1_1zagros_1_1optimization__log.html#a92fcdfcc10faaf691de612fef13ff156">More...</a><br /></td></tr>
+<tr class="separator:a92fcdfcc10faaf691de612fef13ff156 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e2d772d835969bb3da0da2f8d46bbd5 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1optimization__log.html#a5e2d772d835969bb3da0da2f8d46bbd5">log_save</a> ()</td></tr>
+<tr class="memdesc:a5e2d772d835969bb3da0da2f8d46bbd5 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="mdescLeft">&#160;</td><td class="mdescRight">close the output file and save the result  <a href="classrocky_1_1zagros_1_1optimization__log.html#a5e2d772d835969bb3da0da2f8d46bbd5">More...</a><br /></td></tr>
+<tr class="separator:a5e2d772d835969bb3da0da2f8d46bbd5 inherit pub_methods_classrocky_1_1zagros_1_1optimization__log"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-types"></a>
+Protected Types</h2></td></tr>
+<tr class="memitem:a1d55fc96f1673231f512d386f4ba4ad2"><td class="memItemLeft" align="right" valign="top"><a id="a1d55fc96f1673231f512d386f4ba4ad2"></a>enum &#160;</td><td class="memItemRight" valign="bottom"><b>phase</b> { <b>phase_I</b>, 
+<b>phase_II</b>, 
+<b>phase_III</b>
+ }</td></tr>
+<tr class="separator:a1d55fc96f1673231f512d386f4ba4ad2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -207,6 +237,12 @@ T_e&#160;</td><td class="memItemRight" valign="bottom"><b>global_best_min_</b></
 <tr class="memitem:ab0fb141eca9975edc074d0aa6356a69d"><td class="memItemLeft" align="right" valign="top"><a id="ab0fb141eca9975edc074d0aa6356a69d"></a>
 T_e *&#160;</td><td class="memItemRight" valign="bottom"><b>global_best_argmin_</b></td></tr>
 <tr class="separator:ab0fb141eca9975edc074d0aa6356a69d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62d56edf8a7d11b9c4c4522050b829d4"><td class="memItemLeft" align="right" valign="top"><a id="a62d56edf8a7d11b9c4c4522050b829d4"></a>
+T_e&#160;</td><td class="memItemRight" valign="bottom"><b>cluster_best_min_</b></td></tr>
+<tr class="separator:a62d56edf8a7d11b9c4c4522050b829d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a560918f6e221ec5337a939684026acc4"><td class="memItemLeft" align="right" valign="top"><a id="a560918f6e221ec5337a939684026acc4"></a>
+T_e *&#160;</td><td class="memItemRight" valign="bottom"><b>cluster_best_argmin_</b></td></tr>
+<tr class="separator:a560918f6e221ec5337a939684026acc4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad5209a428d98e849263d6c2b669e044f"><td class="memItemLeft" align="right" valign="top"><a id="ad5209a428d98e849263d6c2b669e044f"></a>
 T_e&#160;</td><td class="memItemRight" valign="bottom"><b>hyper_w</b></td></tr>
 <tr class="separator:ad5209a428d98e849263d6c2b669e044f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -221,6 +257,10 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>mpi_num_procs_</b></td
 <tr class="memitem:a479a4d15801c77fa0409681af5976f6e inherit pro_attribs_classrocky_1_1zagros_1_1basic__mpi__optimizer"><td class="memItemLeft" align="right" valign="top"><a id="a479a4d15801c77fa0409681af5976f6e"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>mpi_rank_</b></td></tr>
 <tr class="separator:a479a4d15801c77fa0409681af5976f6e inherit pro_attribs_classrocky_1_1zagros_1_1basic__mpi__optimizer"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classrocky_1_1zagros_1_1optimization__log"><td colspan="2" onclick="javascript:toggleInherit('pro_attribs_classrocky_1_1zagros_1_1optimization__log')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classrocky_1_1zagros_1_1optimization__log.html">rocky::zagros::optimization_log</a></td></tr>
+<tr class="memitem:aa39eabbebd764d9842567fd0a22d8072 inherit pro_attribs_classrocky_1_1zagros_1_1optimization__log"><td class="memItemLeft" align="right" valign="top"><a id="aa39eabbebd764d9842567fd0a22d8072"></a>
+std::fstream&#160;</td><td class="memItemRight" valign="bottom"><b>log_output</b></td></tr>
+<tr class="separator:aa39eabbebd764d9842567fd0a22d8072 inherit pro_attribs_classrocky_1_1zagros_1_1optimization__log"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><h3>template&lt;typename T_e, int T_dim, int T_n_particles, int T_n_tribes&gt;<br />
@@ -291,6 +331,101 @@ template&lt;typename T_e , int T_dim, int T_n_particles, int T_n_tribes&gt; </di
 
 </div>
 </div>
+<a id="ac8a2cde701dd5450349bdb4a239f086e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8a2cde701dd5450349bdb4a239f086e">&#9670;&nbsp;</a></span>log_on_open()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T_e , int T_dim, int T_n_particles, int T_n_tribes&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html">rocky::zagros::pso_tribes_mpi</a>&lt; T_e, T_dim, T_n_particles, T_n_tribes &gt;::log_on_open </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>implementing the log interface adding a header </p>
+<dl class="section return"><dt>Returns</dt><dd>** void </dd></dl>
+
+<p>Reimplemented from <a class="el" href="classrocky_1_1zagros_1_1optimization__log.html#a3b1df0b82d01826562eae8aeca59d93f">rocky::zagros::optimization_log</a>.</p>
+
+</div>
+</div>
+<a id="aff375fb50ff87301159684c7c0857901"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aff375fb50ff87301159684c7c0857901">&#9670;&nbsp;</a></span>log_step()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T_e , int T_dim, int T_n_particles, int T_n_tribes&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html">rocky::zagros::pso_tribes_mpi</a>&lt; T_e, T_dim, T_n_particles, T_n_tribes &gt;::log_step </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>time</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>tracking the best solution of tribes </p>
+<dl class="section return"><dt>Returns</dt><dd>** void </dd></dl>
+
+<p>Implements <a class="el" href="classrocky_1_1zagros_1_1optimization__log.html#a4be9314a44ba082bbba909de7cacc4a3">rocky::zagros::optimization_log</a>.</p>
+
+</div>
+</div>
+<a id="a9e67744aa96ac4f91d0b0e02cf23461b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e67744aa96ac4f91d0b0e02cf23461b">&#9670;&nbsp;</a></span>update_cluster_best()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<div class="memtemplate">
+template&lt;typename T_e , int T_dim, int T_n_particles, int T_n_tribes&gt; </div>
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void <a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html">rocky::zagros::pso_tribes_mpi</a>&lt; T_e, T_dim, T_n_particles, T_n_tribes &gt;::update_cluster_best </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>update cluster solution using message passing </p>
+<dl class="section return"><dt>Returns</dt><dd>** void </dd></dl>
+
+</div>
+</div>
 <a id="a03cf0f0dba0eb1fb7bd6d20feb609ac7"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a03cf0f0dba0eb1fb7bd6d20feb609ac7">&#9670;&nbsp;</a></span>update_global_best()</h2>
 
@@ -321,19 +456,21 @@ template&lt;typename T_e , int T_dim, int T_n_particles, int T_n_tribes&gt; </di
 
 </div>
 </div>
-<a id="a125c746697bae496b6ae1b5600d54375"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a125c746697bae496b6ae1b5600d54375">&#9670;&nbsp;</a></span>update_particles_v_phase1()</h2>
+<a id="a43d8efbfde546b1c7f50475906cec94e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43d8efbfde546b1c7f50475906cec94e">&#9670;&nbsp;</a></span>update_particles_v()</h2>
 
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
 template&lt;typename T_e , int T_dim, int T_n_particles, int T_n_tribes&gt; </div>
+<div class="memtemplate">
+template&lt;phase T_phase&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void <a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html">rocky::zagros::pso_tribes_mpi</a>&lt; T_e, T_dim, T_n_particles, T_n_tribes &gt;::update_particles_v_phase1 </td>
+          <td class="memname">void <a class="el" href="classrocky_1_1zagros_1_1pso__tribes__mpi.html">rocky::zagros::pso_tribes_mpi</a>&lt; T_e, T_dim, T_n_particles, T_n_tribes &gt;::update_particles_v </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td></td>
@@ -341,7 +478,7 @@ template&lt;typename T_e , int T_dim, int T_n_particles, int T_n_tribes&gt; </di
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

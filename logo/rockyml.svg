@@ -93,7 +93,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.49497475"
-     inkscape:cx="22.502399"
+     inkscape:cx="42.344786"
      inkscape:cy="75.066153"
      inkscape:document-units="mm"
      inkscape:current-layer="layer2"
@@ -125,24 +125,14 @@
     <g
        inkscape:groupmode="layer"
        id="layer2"
-       inkscape:label="Back">
-      <rect
-         style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.30630898;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="rect832"
-         width="227.71364"
-         height="87.12986"
-         x="-10.690782"
-         y="216.81912"
-         inkscape:export-xdpi="133.80717"
-         inkscape:export-ydpi="133.80717" />
-    </g>
+       inkscape:label="Back" />
     <flowRoot
        xml:space="preserve"
        id="flowRoot853"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2d1650;fill-opacity:1;stroke:none"
        transform="matrix(0.65690626,0,0,0.65690626,-30.409954,210.18273)"
-       inkscape:export-xdpi="170.83682"
-       inkscape:export-ydpi="170.83682"><flowRegion
+       inkscape:export-xdpi="28.472803"
+       inkscape:export-ydpi="28.472803"><flowRegion
          id="flowRegion855"
          style="fill:#2d1650"><rect
            id="rect857"
@@ -171,8 +161,8 @@
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold';fill:#170b28">A High-Performance Scientific Computing Framework</flowPara></flowRoot>    <g
        id="g970"
        transform="translate(0.27992215,40.313515)"
-       inkscape:export-xdpi="170.83682"
-       inkscape:export-ydpi="170.83682">
+       inkscape:export-xdpi="28.472803"
+       inkscape:export-ydpi="28.472803">
       <path
          inkscape:transform-center-y="-5.3903049"
          inkscape:transform-center-x="4.1671893e-06"
