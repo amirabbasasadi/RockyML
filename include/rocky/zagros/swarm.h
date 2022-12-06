@@ -9,13 +9,13 @@
 #include<mpi.h>
 #include<tbb/tbb.h>
 #include<chrono>
+#include<stats/stats.hpp>
 #include<Fastor/Fastor.h>
 #include<rocky/zagros/distributed.h>
 #include<rocky/zagros/system.h>
 #include<rocky/exceptions.h>
 #include<rocky/zagros/benchmark.h>
 #include<rocky/zagros/logging.h>
-
 namespace rocky{
 namespace zagros{
 
@@ -105,6 +105,12 @@ public:
         std::uniform_real_distribution<T_e> distribution(0.0,1.0);
         return distribution(generator);
     }
+    T_e random_initial_uniform(int p){
+        static thread_local std::mt19937 generator;
+        std::uniform_real_distribution<T_e> distribution(this->problem_->lower_bound(p),
+                                                         this->problem_->upper_bound(p));
+        return distribution(generator);
+    }
     /**
      * @brief implementing the log interface
      * adding a header
@@ -151,8 +157,10 @@ public:
     // initialize positions randomly
     // Todo : the system should be able to override this
     virtual void initialize_particles_x(){
-        Fastor::TensorMap<T_e, T_n_particles * T_dim> X_(particles_x_);
-        X_.random();
+        tbb::parallel_for(0, T_n_particles, 1, [this](int p){
+            for(int d=0; d<T_dim; d++)
+                this->particles_x_[p*T_dim + d] = this->random_initial_uniform(d);
+        });
     }
     // initialize particles velocity to zero
     virtual void initialize_particles_v(){
@@ -221,9 +229,9 @@ public:
                 }         
             }
             if constexpr(T_phase == phase::phase_III){
-                Fastor::TensorMap<T_e, T_dim> p_best_c(this->cluster_best_argmin_);
+                Fastor::TensorMap<T_e, T_dim> p_best_g(this->global_best_argmin_);
                  v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
-                                + 2.0 * this->random_uniform() + (p_best_c - x);
+                                + 2.0 * this->random_uniform() + (p_best_g - x);
             }
         });
     }
@@ -321,25 +329,6 @@ public:
     }
 
     virtual void iter(int iters){
-        
-        for(int it=0; it<iters; it++){
-            hyper_w = random_uniform();
-            update_particles_best();
-
-            update_tribes_best();
-
-            update_particles_v<phase::phase_I>();
-        
-            update_particles_x();
-
-            update_global_best();
-
-            update_particles_v<phase::phase_II>();
-
-            update_cluster_best();
-
-            update_particles_v<phase::phase_III>();
-        }
     }
     // release the reserved memory
     virtual ~pso_tribes_mpi(){
