@@ -9,7 +9,6 @@
 #include<mpi.h>
 #include<tbb/tbb.h>
 #include<chrono>
-#include<stats/stats.hpp>
 #include<Fastor/Fastor.h>
 #include<rocky/zagros/distributed.h>
 #include<rocky/zagros/system.h>
