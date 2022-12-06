@@ -19,33 +19,10 @@ namespace rocky{
 namespace zagros{
 
 
-/**
- * @brief base class for swarm optimizers
- * Implementing required MPI communication routines
- * 
- */
-template<typename T_e,
-         int T_dim,
-         int T_n_particles>
-class swarm_mpi: public basic_mpi_optimizer, public optimization_log{
-protected:
-    zagros::system<T_e, T_dim>* problem_;
-public:
-    constexpr int n_particles() { return T_n_particles; } 
-    /**
-     * @brief initialize best solution for each particle
-     * 
-     * @return ** void 
-     */
-    void add_system(zagros::system<T_e, T_dim>* sys){
-        problem_ = sys;
-    }
-    
-};
 
 /**
- * @brief Particle Swarm MPI Implementation
- * Implementation of TribePSO
+ * @brief A Unified Class for Population-based algorithms that need MPI
+ * Generally based on TribePSO
  * Reference : Chen, K., Li, T. and Cao, T., 2006. Tribe-PSO: A novel global optimization algorithm and its application in molecular docking. Chemometrics and intelligent laboratory systems, 82(1-2), pp.248-259.
  * 
  * We devide the particles on each node into `L` Tribes
@@ -60,8 +37,10 @@ public:
  * 
  */
 template<typename T_e, int T_dim, int T_n_particles, int T_n_tribes>
-class pso_tribes_mpi: public swarm_mpi<T_e, T_dim, T_n_particles>{
+class swarm_mpi:  public basic_mpi_optimizer, public optimization_log{
 protected:
+    // target system for optimization
+    zagros::system<T_e, T_dim>* problem_;
     // different optimization phases
     enum phase { phase_I, phase_II, phase_III };
     // particles position
@@ -85,6 +64,7 @@ protected:
     T_e hyper_w;
 
 public:
+    constexpr int n_particles() { return T_n_particles; } 
     constexpr int particles_per_tribe(){
         return T_n_particles / T_n_tribes;
     }
@@ -109,6 +89,15 @@ public:
         std::uniform_real_distribution<T_e> distribution(this->problem_->lower_bound(p),
                                                          this->problem_->upper_bound(p));
         return distribution(generator);
+    }
+    /**
+     * @brief setting the target system for optimization
+     * 
+     * @param sys a zagros system to optimize
+     * @return ** void 
+     */
+    void add_system(zagros::system<T_e, T_dim>* sys){
+        problem_ = sys;
     }
     /**
      * @brief implementing the log interface
@@ -330,7 +319,7 @@ public:
     virtual void iter(int iters){
     }
     // release the reserved memory
-    virtual ~pso_tribes_mpi(){
+    virtual ~swarm_mpi(){
         delete[] particles_x_;
         delete[] particles_v_;
         delete[] particles_best_min_;
