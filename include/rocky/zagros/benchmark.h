@@ -46,6 +46,8 @@ public:
             S += x[i] * x[i] - 10.0*cos(2*M_PI * x[i]);
         return S;
     }
+    virtual T_e lower_bound(){ return -5.12; }
+    virtual T_e upper_bound(){ return 5.12; }
     virtual std::string to_string(){
         std::stringstream name;
         name << "Rastrigin(dim=" << T_dim << ")";
