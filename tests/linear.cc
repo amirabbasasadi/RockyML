@@ -3,7 +3,7 @@
 #include <random>
 #include <functional>
 #include <algorithm>
-#include <rocky/blocks.h>
+#include <rocky/etna/blocks.h>
 
 
 TEST_CASE("Linear Layer (double precision, no bias)", "[linear][double]") {
@@ -12,7 +12,7 @@ TEST_CASE("Linear Layer (double precision, no bias)", "[linear][double]") {
     const unsigned B_in = 16;
     const unsigned N_out = 8;
 
-    blocks::linear<double, B_in, N_in, N_out, blocks::opt::no_bias> l1; 
+    etna::linear<double, B_in, N_in, N_out, etna::opt::no_bias> l1; 
     REQUIRE ( l1.deduce_num_params() == N_in*N_out );
     std::random_device rd;
     std::mt19937 rnd_gen(rd());
@@ -43,7 +43,7 @@ TEST_CASE("Linear Layer (float precision, no bias)", "[linear][float]") {
     const unsigned B_in = 16;
     const unsigned N_out = 8;
 
-    blocks::linear<float, B_in, N_in, N_out, blocks::opt::no_bias> l1; 
+    etna::linear<float, B_in, N_in, N_out, etna::opt::no_bias> l1; 
     REQUIRE ( l1.deduce_num_params() == N_in*N_out );
     std::random_device rd;
     std::mt19937 rnd_gen(rd());
@@ -75,7 +75,7 @@ TEST_CASE("Linear Layer (double precision, bias)", "[linear][double]") {
     const unsigned B_in = 16;
     const unsigned N_out = 8;
 
-    blocks::linear<double, B_in, N_in, N_out, blocks::opt::bias> l1; 
+    etna::linear<double, B_in, N_in, N_out, etna::opt::bias> l1; 
     REQUIRE ( l1.deduce_num_params() == (N_in+1)*N_out );
     std::random_device rd;
     std::mt19937 rnd_gen(rd());
@@ -108,7 +108,7 @@ TEST_CASE("MLP Layer (double precision, bias)", "[mlp][double]") {
     const unsigned in_num = 16;
     const unsigned layers_num = 32;
 
-    blocks::mlp<double, layers_num, in_num, in_dim, out_dim, hidden_dim, blocks::opt::bias> net; 
+    etna::mlp<double, layers_num, in_num, in_dim, out_dim, hidden_dim, etna::opt::bias> net; 
     
     std::random_device rd;
     std::mt19937 rnd_gen(rd());
@@ -140,7 +140,7 @@ TEST_CASE("MLP Layer (single precision, bias)", "[mlp][float]") {
     const unsigned in_num = 16;
     const unsigned layers_num = 32;
 
-    blocks::mlp<float, layers_num, in_num, in_dim, out_dim, hidden_dim, blocks::opt::bias> net; 
+    etna::mlp<float, layers_num, in_num, in_dim, out_dim, hidden_dim, etna::opt::bias> net; 
     
     std::random_device rd;
     std::mt19937 rnd_gen(rd());

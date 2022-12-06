@@ -3,7 +3,7 @@
 #include <functional>
 #include <algorithm>
 #include <cmath>
-#include <rocky/blocks.h>
+#include <rocky/etna/blocks.h>
 #include <rocky/zagros/system.h>
 
 template<typename T_e, size_t T_dims>

@@ -4,7 +4,7 @@
 #include <type_traits>
 #include <algorithm>
 namespace rocky{
-namespace blocks{
+namespace etna{
 enum opt {bias, no_bias};
 
 /**
