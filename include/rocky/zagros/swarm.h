@@ -38,6 +38,8 @@ namespace zagros{
  */
 template<typename T_e, int T_dim, int T_n_particles, int T_n_tribes>
 class swarm_mpi:  public basic_mpi_optimizer, public optimization_log{
+    
+    typedef Eigen::Map<Eigen::Matrix<T_e, 1, T_dim, Eigen::RowMajor>> Particle;
 protected:
     // target system for optimization
     zagros::system<T_e, T_dim>* problem_;
@@ -197,17 +199,17 @@ public:
     void update_particles_v(){
         tbb::parallel_for(0, T_n_particles, [this](int p){
             int p_tribe = this->tribe(p);
-            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> x(this->particles_x_ + p*T_dim);
-            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> v(this->particles_v_ + p*T_dim);
-            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> p_best(this->particles_best_argmin_ + p*T_dim);
-            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> p_best_t(this->tribes_best_argmin_[p_tribe]);
+            Particle x(this->particles_x_ + p*T_dim);
+            Particle v(this->particles_v_ + p*T_dim);
+            Particle p_best(this->particles_best_argmin_ + p*T_dim);
+            Particle p_best_t(this->tribes_best_argmin_[p_tribe]);
             // update the velocity
             if constexpr(T_phase == phase::phase_I){
                 v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
                                       + (2.0 * this->random_uniform() * (p_best_t - x));
             }
             if constexpr(T_phase == phase::phase_II){
-                Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> p_best_g(this->global_best_argmin_);
+                Particle p_best_g(this->global_best_argmin_);
                 if(this->particles_best_min_[p] == this->tribes_best_min_[p_tribe]){
                     v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
                                           + (2.0 * this->random_uniform() * (p_best_g - x));
@@ -217,12 +219,12 @@ public:
                 }         
             }
             if constexpr(T_phase == phase::phase_III){
-                Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> p_best_g(this->global_best_argmin_);
+                Particle p_best_g(this->global_best_argmin_);
                  v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
                                        + (2.0 * this->random_uniform() * (p_best_g - x));
             }
             if constexpr(T_phase == phase::phase_IV){
-                Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> p_best_c(this->cluster_best_argmin_);
+                Particle p_best_c(this->cluster_best_argmin_);
                  v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
                                        + (2.0 * this->random_uniform() * (p_best_c - x));
             }
@@ -237,8 +239,8 @@ public:
     virtual void update_particles_x(){
         tbb::parallel_for(0, T_n_particles, [this](int p){
             int p_tribe = this->tribe(p);
-            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> x(this->particles_x_ + p*T_dim);
-            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> v(this->particles_v_ + p*T_dim);
+            Particle x(this->particles_x_ + p*T_dim);
+            Particle v(this->particles_v_ + p*T_dim);
             x += v;
         });
     }
