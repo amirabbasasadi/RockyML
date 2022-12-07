@@ -13,26 +13,21 @@
 ## Etna
 Building blocks for designing non-differentiable neural networks
 
-- Standard Deep Learning Layers
-- Discrete and Integer Layers
-- Combinatorial Layers
-- Stochastic Layers
-- Dynamic Layers
+- Fast, low overhead, and thread-safe 
+- Various components:
+  - Standard deep learning layers
+  - Discrete and integer layers
+  - Combinatorial layers
+  - Stochastic layers
+  - Dynamic layers
 
 ## Zagros
 A high-performance and scalable black-box optimization engine
 
 - CPU-friendly: targeting multi-core sytems and many-core clusters
-- Two levels of parallelism: multi-threading, multi-processing
-- Distributed optimization  
-
-|        **Algorithm**        | **Single Node Parallel Implementation** | **Cluster Version** | **Details** |
-|:---------------------------:|:---------------------------------------:|:-------------------:|:-----------:|
-| Particle Swarm Optimization |                    ✔️                    |          ✔️          |             |
-| Tribes-PSO                  |                    ✔️                    |          ✔️          |             |
-| Genetic Algorithm           |                    🗒️                    |          🗒️          |             |
-
-✔️ : Implemented, 🗒️ : Todo  
+- Hybrid parallelism: multi-threading for each node and message passing across nodes
+- Handling large number of variables using block coordinate descent
+- Supporting continuous, discrete, and mixed optimization problems
 
 
 ## Guide
