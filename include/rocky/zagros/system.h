@@ -27,7 +27,7 @@ public:
      * should be used when upper bound is same for all parameters
      * @return ** T_e
      */
-    virtual T_e upper_bound(){ return -1.0;}
+    virtual T_e upper_bound(){ return 1.0;}
     /**
      * @brief upper bound specification for each parameter
      *  should be used if parameters have different upper bounds
