@@ -34,7 +34,7 @@ A high-performance and scalable black-box optimization engine
 ### Dependencies
 For usage:
 - A C++ compiler supporting C++17, GCC is tested
-- Fastor
+- Eigen
 - A BLAS/LAPACK implementation, OpenBLAS is tested
 - Intel Threading Building Blocks (TBB)
 - An MPI implementation, OpenMPI is tested

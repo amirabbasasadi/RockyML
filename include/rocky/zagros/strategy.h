@@ -7,7 +7,7 @@
 #include<random>
 #include<tbb/tbb.h>
 #include<chrono>
-#include<Fastor/Fastor.h>
+#include<Eigen/Core>
 
 #include<rocky/zagros/system.h>
 #include<rocky/zagros/benchmark.h>
@@ -30,10 +30,10 @@ public:
         return dist(gen);
     }
     // gaussian noise
-    static T_e gaussian_noise(){
+    static T_e gaussian_noise(T_e mu=0.0, T_e sigma=0.2){
         static thread_local std::mt19937 gen;
         std::normal_distribution<T_e> dist;
-        return dist(gen);
+        return mu + sigma * dist(gen);
     }
     // random dimension
     static int random_dim(){

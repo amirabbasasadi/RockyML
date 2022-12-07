@@ -1,6 +1,6 @@
 #ifndef ROCKY_BLOCK_GUARD
 #define ROCKY_BLOCK_GUARD
-#include <Fastor/Fastor.h>
+#include <Eigen/Core>
 #include <type_traits>
 #include <algorithm>
 namespace rocky{
@@ -31,10 +31,10 @@ public:
      * (T_in_num * T_in_dim) @ (T_in_dim x T_out_dim) -> (T_in_num * T_out_dim)
      * **/ 
     void feed(T_e* layer_mem_ptr, T_e* in_mem_ptr, T_e* out_mem_ptr){
-        Fastor::TensorMap<T_e, T_in_dim, T_out_dim> W_(layer_mem_ptr);
-        Fastor::TensorMap<T_e, T_in_num, T_in_dim> In_(in_mem_ptr);
-        Fastor::TensorMap<T_e, T_in_num, T_out_dim> Out_(out_mem_ptr);
-        Out_ = Fastor::matmul(In_, W_);
+        Eigen::Map<Eigen::Matrix<T_e, T_in_dim, T_out_dim>> W_(layer_mem_ptr);
+        Eigen::Map<Eigen::Matrix<T_e, T_in_num, T_in_dim>> In_(in_mem_ptr);
+        Eigen::Map<Eigen::Matrix<T_e, T_in_num, T_out_dim>> Out_(out_mem_ptr);
+        Out_ = In_ * W_;
         if constexpr (T_opt_bias == opt::bias){
             for(int i=0; i<T_in_num; i++)
                 for(int j=0; j<T_out_dim; j++)

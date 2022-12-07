@@ -9,10 +9,10 @@
 #include<mpi.h>
 #include<tbb/tbb.h>
 #include<chrono>
-#include<Fastor/Fastor.h>
+#include<Eigen/Core>
 #include<rocky/zagros/distributed.h>
 #include<rocky/zagros/system.h>
-#include<rocky/exceptions.h>
+#include<rocky/zagros/strategy.h>
 #include<rocky/zagros/benchmark.h>
 #include<rocky/zagros/logging.h>
 namespace rocky{
@@ -42,7 +42,7 @@ protected:
     // target system for optimization
     zagros::system<T_e, T_dim>* problem_;
     // different optimization phases
-    enum phase { phase_I, phase_II, phase_III };
+    enum phase { phase_I, phase_II, phase_III, phase_IV };
     // particles position
     T_e* particles_x_;
     // particles best solution
@@ -197,29 +197,34 @@ public:
     void update_particles_v(){
         tbb::parallel_for(0, T_n_particles, [this](int p){
             int p_tribe = this->tribe(p);
-            Fastor::TensorMap<T_e, T_dim> x(this->particles_x_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> v(this->particles_v_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> p_best(this->particles_best_argmin_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> p_best_t(this->tribes_best_argmin_[p_tribe]);
+            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> x(this->particles_x_ + p*T_dim);
+            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> v(this->particles_v_ + p*T_dim);
+            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> p_best(this->particles_best_argmin_ + p*T_dim);
+            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> p_best_t(this->tribes_best_argmin_[p_tribe]);
             // update the velocity
             if constexpr(T_phase == phase::phase_I){
-                v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
-                                    + 2.0 * this->random_uniform() + (p_best_t - x);
+                v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
+                                      + (2.0 * this->random_uniform() * (p_best_t - x));
             }
             if constexpr(T_phase == phase::phase_II){
-                Fastor::TensorMap<T_e, T_dim> p_best_g(this->global_best_argmin_);
+                Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> p_best_g(this->global_best_argmin_);
                 if(this->particles_best_min_[p] == this->tribes_best_min_[p_tribe]){
-                    v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
-                                + 2.0 * this->random_uniform() + (p_best_g - x);
+                    v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
+                                          + (2.0 * this->random_uniform() * (p_best_g - x));
                 }else{
-                    v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
-                                + 2.0 * this->random_uniform() + (p_best_t - x);
+                    v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
+                                          + (2.0 * this->random_uniform() * (p_best_t - x));
                 }         
             }
             if constexpr(T_phase == phase::phase_III){
-                Fastor::TensorMap<T_e, T_dim> p_best_g(this->global_best_argmin_);
-                 v = v * this->hyper_w + 2.0 * this->random_uniform() * (p_best - x) 
-                                + 2.0 * this->random_uniform() + (p_best_g - x);
+                Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> p_best_g(this->global_best_argmin_);
+                 v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
+                                       + (2.0 * this->random_uniform() * (p_best_g - x));
+            }
+            if constexpr(T_phase == phase::phase_IV){
+                Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> p_best_c(this->cluster_best_argmin_);
+                 v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
+                                       + (2.0 * this->random_uniform() * (p_best_c - x));
             }
         });
     }
@@ -232,8 +237,8 @@ public:
     virtual void update_particles_x(){
         tbb::parallel_for(0, T_n_particles, [this](int p){
             int p_tribe = this->tribe(p);
-            Fastor::TensorMap<T_e, T_dim> x(this->particles_x_ + p*T_dim);
-            Fastor::TensorMap<T_e, T_dim> v(this->particles_v_ + p*T_dim);
+            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> x(this->particles_x_ + p*T_dim);
+            Eigen::Map<Eigen::Matrix<T_e, 1, T_dim>> v(this->particles_v_ + p*T_dim);
             x += v;
         });
     }
@@ -315,8 +320,8 @@ public:
                     });
         return best;
     }
-
     virtual void iter(int iters){
+
     }
     // release the reserved memory
     virtual ~swarm_mpi(){

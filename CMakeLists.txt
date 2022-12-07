@@ -26,15 +26,15 @@ FetchContent_MakeAvailable(nanobench)
 include_directories(include/)
 
 find_package(TBB CONFIG REQUIRED)
-find_package(gcem CONFIG REQUIRED)
+find_package(Eigen3 CONFIG REQUIRED)
 
 add_executable(tests tests/zagros.cc tests/linear.cc tests/strategy.cc)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain TBB::tbb TBB::tbbmalloc gcem)
+target_link_libraries(tests PRIVATE Catch2::Catch2WithMain TBB::tbb TBB::tbbmalloc Eigen3::Eigen)
 
 if(ROCKY_BUILD_MPI_TESTS)
 # tests that require MPI
 add_executable(mpi_tests tests/mpi/basic_mpi.cc)
-target_link_libraries(mpi_tests nanobench TBB::tbb TBB::tbbmalloc gcem)
+target_link_libraries(mpi_tests nanobench TBB::tbb TBB::tbbmalloc Eigen3::Eigen)
 endif()
 
 list(APPEND CMAKE_MODULE_PATH ${catch2_SOURCE_DIR}/extras)
