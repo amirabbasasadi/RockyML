@@ -35,10 +35,10 @@ public:
         Eigen::Map<Eigen::Matrix<T_e, T_in_num, T_in_dim>> In_(in_mem_ptr);
         Eigen::Map<Eigen::Matrix<T_e, T_in_num, T_out_dim>> Out_(out_mem_ptr);
         Out_ = In_ * W_;
+        // adding bias to each row
         if constexpr (T_opt_bias == opt::bias){
-            for(int i=0; i<T_in_num; i++)
-                for(int j=0; j<T_out_dim; j++)
-                    out_mem_ptr[i*T_out_dim + j] += layer_mem_ptr[T_in_dim * T_out_dim + j];
+            Eigen::Map<Eigen::Matrix<T_e, 1, T_out_dim>> Bias_(layer_mem_ptr + T_in_dim * T_out_dim);
+            Out_.rowwise() += Bias_; 
         }   
     }
 }; // end linear
