@@ -10,7 +10,6 @@
 #include<Fastor/Fastor.h>
 
 #include<rocky/zagros/system.h>
-#include<rocky/exceptions.h>
 #include<rocky/zagros/benchmark.h>
 #include<rocky/zagros/logging.h>
 
@@ -23,7 +22,7 @@ namespace zagros{
  */
 template<typename T_e, int T_dim, int T_tribe_size>
 class strategy{
-protected:
+public:
     // sampling a particle
     static int sample_particle(){
         static thread_local std::mt19937 gen;
@@ -31,7 +30,7 @@ protected:
         return dist(gen);
     }
     // gaussian noise
-    static T_e gaussian_noise(T_e mu, T_e sigma){
+    static T_e gaussian_noise(){
         static thread_local std::mt19937 gen;
         std::normal_distribution<T_e> dist;
         return dist(gen);
@@ -42,8 +41,7 @@ protected:
         std::uniform_int_distribution<> dist(0, T_dim-1);
         return dist(gen);
     }
-public:
-    virtual void apply(const system<T_e, T_dim>* sys, T_e* population, T_e* values) = 0;
+    virtual void apply(system<T_e, T_dim>* sys, T_e* population, T_e* values) = 0;
 };
 
 /**
@@ -52,9 +50,10 @@ public:
  */
 template<typename T_e, int T_dim, int T_tribe_size, int T_n_dim>
 class gaussian_mutation: public strategy<T_e, T_dim, T_tribe_size>{
+public:
     virtual void apply(system<T_e, T_dim>* sys, T_e* population, T_e* values) override{
         // pick a random particle
-        int p1 = this->random_particle();
+        int p1 = this->sample_particle();
         // selected a few dimensions randomly and make a copy of the affected dimensions
         int* dims = new int[T_n_dim];
         T_e* dims_cpy = new T_e[T_n_dim];
