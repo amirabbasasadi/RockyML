@@ -38,7 +38,7 @@ namespace zagros{
  */
 template<typename T_e, int T_dim, int T_n_particles, int T_n_tribes>
 class swarm_mpi:  public basic_mpi_optimizer, public optimization_log{
-    
+
     typedef Eigen::Map<Eigen::Matrix<T_e, 1, T_dim, Eigen::RowMajor>> Particle;
 protected:
     // target system for optimization
@@ -107,7 +107,7 @@ public:
      * @return ** void 
      */
     void log_on_open() override{
-        this->log_output << "time,tribe,value" << "\n";
+        this->log_output_ << "time,tribe,value" << "\n";
     }
     /**
      * @brief 
@@ -116,7 +116,7 @@ public:
      */
     void log_step(int time) override{
         for(int t=0; t<T_n_tribes; t++)
-            this->log_output << time << "," << t << "," << tribes_best_min_[t] << "\n";
+            this->log_output_ << time << "," << t << "," << tribes_best_min_[t] << "\n";
     }
     // allocate the required memory
     virtual void allocate(){
@@ -322,8 +322,16 @@ public:
                     });
         return best;
     }
-    virtual void iter(int iters){
-
+    void iter(){
+        hyper_w = this->random_uniform(); 
+        update_particles_best();
+        update_tribes_best();
+        update_global_best();
+        update_particles_v<phase_I>();
+        update_particles_x();
+    }
+    virtual T_e best_min() const{
+        return global_best_min_;
     }
     // release the reserved memory
     virtual ~swarm_mpi(){
