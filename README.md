@@ -24,11 +24,12 @@ Building blocks for designing non-differentiable neural networks
 ## Zagros
 A high-performance and scalable black-box optimization engine
 
-- CPU-friendly: targeting multi-core sytems and many-core clusters
-- Hybrid parallelism: multi-threading for each node and message passing across nodes
+Design Goals:
+- CPU-friendly: targeting multi-core systems and clusters
+- Hybrid parallelism: multi-threading for each node and message passing across nodes (MPI)
 - Handling large number of variables using block coordinate descent
-- Supporting continuous, discrete, and mixed optimization problems
-
+- Supporting continuous, discrete, and mixed optimization problems  
+- Design arbitrary complex optimizers by combining modular search strategies
 
 ## Guide
 ### Dependencies
