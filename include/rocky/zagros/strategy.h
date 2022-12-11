@@ -129,6 +129,8 @@ protected:
     // best current cluster solution
     T_e cluster_best_min_;
     std::vector<T_e> cluster_best_argmin_;
+
+    T_e hyper_w;
     
 
 public:
@@ -142,12 +144,17 @@ public:
         // allocate particles memory
         particles_v_.resize(main_swarm_->n_particles());
         for(int p=0; p<main_swarm_->n_particles(); ++p)
-            particles_v_.resize(T_dim);
+            particles_v_[p].resize(T_dim);
          // allocate groups memory
         groups_best_min_.resize(main_swarm_->n_groups());
         groups_best_argmin_.resize(main_swarm_->n_groups());
+        std::fill(groups_best_min_.begin(), groups_best_min_.end(), std::numeric_limits<T_e>::max());
         // best cluster solution
         cluster_best_argmin_.resize(T_dim);
+    }
+    T_e rand_uniform(){
+        static std::uniform_real_distribution<T_e> dist(0.0, 1.0);
+        return dist(rocky::utils::random::prng);
     }
     // initialize particles velocity to zero
     virtual void initialize_velocity(){
@@ -158,12 +165,14 @@ public:
     virtual void update_particles_best(int rng_start, int rng_end){
         tbb::parallel_for(rng_start, rng_end, [this](int p){
             T_e obj = this->problem_->objective(this->main_swarm_->particle(p));
+            
             if (obj < this->particles_best_->values[p]){
                 this->particles_best_->values[p] = obj;
                 // copy the particle solution
                 std::copy(this->main_swarm_->particle(p),
-                          this->main_swarm_->particle(p+1),
+                          this->main_swarm_->particle(p) + T_dim,
                           this->particles_best_->particle(p));
+               
             }
         });
     }
@@ -178,12 +187,15 @@ public:
                                            this->particles_best_->value(rng.second));
             // update min and argmin for each group 
             if (*min_el < this->groups_best_min_[t]){
-                int min_el_ind = static_cast<int>(min_el - this->particles_best_->particle(0));
+                int min_el_ind = static_cast<int>(min_el - this->particles_best_->value(0));
                 this->groups_best_min_[t] = *min_el;
                 this->groups_best_argmin_[t] = this->particles_best_->particle(min_el_ind);
             }
 
         });
+    }
+    virtual void update_groups_best(){
+        update_groups_best(0, this->main_swarm_->n_groups());
     }
     /**
      * @brief update particles velocity in parallel
@@ -193,35 +205,36 @@ public:
     template<phase T_phase>
     void update_particles_v(){
         tbb::parallel_for(0, this->main_swarm_->n_particles(), [this](int p){
-            int p_group = this->main_swarm_->group(p);
-            eigen_particle x(this->particles_x_ + p*T_dim);
+            int p_group = this->main_swarm_->particle_group(p);
+            eigen_particle x(this->main_swarm_->particle(p));
             eigen_particle v(this->particles_v_[p].data());
             eigen_particle p_best(this->particles_best_->particle(p));
             eigen_particle p_best_gr(this->groups_best_argmin_[p_group]);
+            
             // update the velocity
             if constexpr(T_phase == phase::phase_I){
-                v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
-                                      + (2.0 * this->random_uniform() * (p_best_gr - x));
+                v = v * this->hyper_w + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                      + (2.0 * this->rand_uniform() * (p_best_gr - x));
             }
             if constexpr(T_phase == phase::phase_II){
                 eigen_particle p_best_n(this->node_best_argmin_);
                 if(this->particles_best_min_[p] == this->groups_best_min_[p_group]){
-                    v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
-                                          + (2.0 * this->random_uniform() * (p_best_n - x));
+                    v = v * this->hyper_w + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                          + (2.0 * this->rand_uniform() * (p_best_n - x));
                 }else{
-                    v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
-                                          + (2.0 * this->random_uniform() * (p_best_gr - x));
+                    v = v * this->hyper_w + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                          + (2.0 * this->rand_uniform() * (p_best_gr - x));
                 }         
             }
             if constexpr(T_phase == phase::phase_III){
                 eigen_particle p_best_n(this->node_best_argmin_);
-                 v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
-                                       + (2.0 * this->random_uniform() * (p_best_n - x));
+                 v = v * this->hyper_w + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                       + (2.0 * this->rand_uniform() * (p_best_n - x));
             }
             if constexpr(T_phase == phase::phase_IV){
                 eigen_particle p_best_c(this->cluster_best_argmin_.data());
-                 v = v * this->hyper_w + (2.0 * this->random_uniform() * (p_best - x)) 
-                                       + (2.0 * this->random_uniform() * (p_best_c - x));
+                 v = v * this->hyper_w + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                       + (2.0 * this->rand_uniform() * (p_best_c - x));
             }
         });
     }
@@ -277,8 +290,13 @@ public:
     }
 
     virtual void apply(system<T_e, T_dim>* sys, basic_swarm<T_e, T_dim>* main_swarm){
+        this->hyper_w = 0.2;
         this->problem_ = sys;
         this->main_swarm_ = main_swarm;
+        this->update_particles_best();
+        this->update_groups_best();
+        this->update_particles_v<phase_I>();
+        this->update_particles_x();
     }
 };
 };

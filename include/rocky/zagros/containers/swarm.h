@@ -62,6 +62,15 @@ public:
         return particles[p].data();
     }
     /**
+     * @brief get the group of a particle
+     * 
+     * @param p particle index
+     * @return * int 
+     */
+    int particle_group(int p){
+        return p / group_size();
+    }
+    /**
      * @brief get the address to the starting point of a group
      * 
      * @param g group's index
