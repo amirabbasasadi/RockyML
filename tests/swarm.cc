@@ -14,7 +14,7 @@ TEST_CASE("Creating a swarm container", "[swarm]"){
     const int group_size = 20;
     const int dim = 16;
 
-    zagros::basic_swarm<swarm_type, dim, n_particles, group_size> swarm;
+    zagros::basic_swarm<swarm_type, dim> swarm(n_particles, group_size);
 
     auto rng = swarm.group_range(0);
 

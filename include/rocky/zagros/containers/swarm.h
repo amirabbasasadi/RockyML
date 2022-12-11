@@ -1,8 +1,6 @@
 #ifndef ROCKY_ZAGROS_SWARM_GUARD
 #define ROCKY_ZAGROS_SWARM_GUARD
 
-#include<mpi.h>
-
 #include<iostream>
 #include<cmath>
 #include<utility>
@@ -22,19 +20,35 @@ namespace zagros{
  * @brief a data container representing a swarm
  * 
  */
-template<typename T_e, int T_dim, int T_n_particles, int T_group_size>
-struct basic_swarm{
+template<typename T_e, int T_dim>
+class basic_swarm{
+protected:
+    int n_particles_;
+    int group_size_;
 public:
+    basic_swarm(int n_particles, int group_size){
+        n_particles_ = n_particles;
+        group_size_ = group_size;
+    }
+    int n_particles() const{
+        return n_particles_;
+    }
+    int group_size() const{
+        return group_size_;
+    }
+    int n_groups() const{
+        return n_particles() / group_size();
+    }
     // holding particles
     std::vector<std::vector<T_e>> particles;
     // holding the particles value
     std::vector<T_e> values;
     // allocate the requred memory
     void allocate(){
-        particles.resize(T_n_particles);
-        for(int p=0; p<T_n_particles; ++p)
+        particles.resize(n_particles());
+        for(int p=0; p<n_particles(); ++p)
             particles[p].resize(T_dim);
-        values.resize(T_n_particles);
+        values.resize(n_particles());
         // initialize particles value
         std::fill(values.begin(), values.end(), std::numeric_limits<T_e>::max());
     }
@@ -54,18 +68,19 @@ public:
      * @return * T_e* 
      */
     T_e* group(int g){
-        return particles[g * T_group_size].data();
+        return particles[g * group_size()].data();
     }
     /**
      * @brief starting and endind point of a group
      * 
-     * @param t group index
+     * @param g group index
      * @return * std::pair<int, int> 
      */
-    std::pair<int, int> group_range(int t) const{
-        int group_s = t * T_group_size;
-        int group_e = group_s + T_group_size;
-
+    std::pair<int, int> group_range(int g) const{
+        int group_s = g * group_size();
+        int group_e = group_s + group_size();
+        if (g == n_groups() - 1)
+            group_e = n_particles();
         return std::make_pair(group_s, group_e);            
     }
     /**
