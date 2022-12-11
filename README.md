@@ -22,7 +22,7 @@ Building blocks for designing non-differentiable neural networks
   - Dynamic layers
 
 ## Zagros
-A high-performance and scalable black-box optimization engine
+<p><img align="center" src="/logo/zagros-white-1200.png"></p>  
 
 Design Goals:
 - CPU-friendly: targeting multi-core systems and clusters
