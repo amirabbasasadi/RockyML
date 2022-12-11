@@ -13,6 +13,8 @@
 
 #include<rocky/zagros/system.h>
 #include<rocky/zagros/containers/swarm.h>
+#include <rocky/utils.h>
+
 
 namespace rocky{
 namespace zagros{
@@ -56,10 +58,8 @@ template<typename T_e, int T_dim>
 class uniform_init_strategy: init_strategy<T_e, T_dim>{
 protected:
     T_e rand_uniform(T_e lb, T_e ub){
-        static thread_local std::random_device rnd;
-        static thread_local std::mt19937 gen(rnd());
         std::uniform_real_distribution<T_e> dist(lb, ub);
-        return dist(gen);
+        return dist(rocky::utils::random::prng);
     }
 public:
     virtual void apply(system<T_e, T_dim>* sys, basic_swarm<T_e, T_dim>* swarm){
