@@ -51,6 +51,16 @@ public:
 };
 
 /**
+ * @brief Interface for communication strategies
+ * 
+ */
+template<typename T_e, int T_dim>
+class comm_strategy: basic_strategy<T_e, T_dim>{
+public:
+    virtual void apply(system<T_e, T_dim>* sys, basic_swarm<T_e, T_dim>* main_swarm) = 0;
+};
+
+/**
  * @brief Interface for initialization strategies
  * 
  */
@@ -76,7 +86,7 @@ public:
  * 
  */
 template<typename T_e, int T_dim>
-class mpi_strategy: public search_strategy<T_e, T_dim>{
+class mpi_strategy: public comm_strategy<T_e, T_dim>{
 public:
     protected:
      // number of MPI processes
@@ -103,6 +113,32 @@ public:
         return mpi_rank_;
     }
 
+};
+
+template<typename T_e, int T_dim>
+class broadcast_best_solution: public mpi_strategy<T_e, T_dim>{
+    void update_cluster_best(T_e* cluster_best_argmin, T_e* cluster_best_min){
+        // identify the process
+        int rank = this->mpi_rank();
+        // ask everyone in the cluster to find the min value
+        struct {
+            T_e cluster_best_min;
+            int rank;
+        } data_out, result;
+
+        data_out.cluster_best_min = *cluster_best_min;
+        data_out.rank = rank;
+
+        if constexpr(std::is_same<T_e, double>::value){
+            MPI_Allreduce(&data_out, &result, 1, MPI_DOUBLE_INT, MPI_MINLOC, MPI_COMM_WORLD);
+            MPI_Bcast(cluster_best_argmin, T_dim, MPI_DOUBLE, result.rank, MPI_COMM_WORLD);
+        }
+        if constexpr(std::is_same<T_e, float>::value){
+            MPI_Allreduce(&data_out, &result, 1, MPI_FLOAT_INT, MPI_MINLOC, MPI_COMM_WORLD);
+            MPI_Bcast(cluster_best_argmin, T_dim, MPI_FLOAT, result.rank, MPI_COMM_WORLD);
+        } 
+        *cluster_best_min = result.cluster_best_min;
+    }
 };
 
 template<typename T_e, int T_dim>
@@ -290,11 +326,12 @@ public:
     }
 
     virtual void apply(system<T_e, T_dim>* sys, basic_swarm<T_e, T_dim>* main_swarm){
-        this->hyper_w = 0.2;
+        this->hyper_w = rand_uniform();
         this->problem_ = sys;
         this->main_swarm_ = main_swarm;
         this->update_particles_best();
         this->update_groups_best();
+        std::cout << "best solution is " << *std::min_element(this->groups_best_min_.begin(), this->groups_best_min_.end()) << std::endl;
         this->update_particles_v<phase_I>();
         this->update_particles_x();
     }
