@@ -15,11 +15,14 @@ In Zagros a *system* defines an optimization problem. A system esentially provid
 - Problem constraints 
 - Hints for generating feasible soltuions or evolving the existing ones 
 
-### Population
-Most meta-huristic search algorithms such as Genetic algorithms, PSO, differential evoultion and ... are based on tweaking a set of solutions to obtain a satisfying result. Whatever we call it, It represents the set of potential solutions. Since Zagros is a large-scale optimizer, It distributes the population across multiple nodes. We call each memeber of this population a *particle*.
+### Swarm
+Most meta-huristic search algorithms such as Genetic algorithms, PSO, differential evoultion and ... are based on iteratively tweaking a set of solutions to obtain a satisfying result. In Zagros it's called *swarm* while in context of Genetic Algorithms is known as *population*. Whatever we call it, It represents the set of potential solutions. Since Zagros is a large-scale optimizer, It distributes the population across multiple nodes. We call each memeber of this population a *particle*.
 
 #### Groups
-To increase exploration, Some meta-huristic approaches divide the population into specific subsets. For instance *TribesPSO* splits the swarm in groups called *Tribe*. Note in Zagros, all particles of a *group* must reside on the same node. Although this division is often hierd to avoid being trapped in local minimums and increasing exploration, Zagros orginizes particles in groups to achieve thread-safety.
+To increase exploration, Some meta-huristic approaches divide the swarm into specific subsets. For instance *TribesPSO* splits the swarm in groups called *Tribe*. Note in Zagros, all particles of a *group* must reside on the same node. Although this division is often hierd to avoid being trapped in local minimums and increasing exploration, Zagros orginizes particles in groups to achieve thread-safety.
 
-### Search Strategies
-After initializing the population, every algorithm suggusts its own way to evolve the particles. Particle Swarm updates the particles using a set of velocity vectors, Genetic Algorithms use mutation and cross-over, Differential Evolution uses the differnece of current particles and so on. In Zagros, Any policy to change the existing particles is called a *Search Strategy*. 
+### Strategies
+A *strategy* is any procedure that changes the current swarm. In Zagros many optimization sub-routines are defined as strategies. For example:
+- Initialization strategies : responsible to generate an initial swarm
+- Search strategies: represent the logic of an specific optimization algorithm. For example a mutation strategy may add a random value to a particle.  
+- Communication strategies: particles on differenti nodes can communicate to share their solutions or other information of search space though patterns specified by communication strategies. Such patterns can be local or global across the whole cluster.
