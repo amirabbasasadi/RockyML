@@ -26,13 +26,15 @@ namespace zagros{
 template<typename T_e, int T_dim>
 class basic_flow{
 protected:
-    Eigen::Matrix<T_e, Eigen::Dynamic, Eigen::Dynamic> chain_;
-    std::vector<strategy<T_e, T_dim>*> strategies_;
+    Eigen::Matrix<T_e, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor> chain_;
+    std::vector<basic_strategy<T_e, T_dim>*> strategies_;
+    int n_states_;
     int state_;
 public:
-    void allocate(int max_strategies)[
-        chain_.resize(max_strategies, max_strategies);
-    ]
+    void allocate(int n_states){
+        this->n_states_ = n_states;
+        chain_.resize(n_states, n_states);
+    }
     int state() const{
         return state_;
     }
@@ -44,10 +46,12 @@ public:
     }
     // take one step and move to another state
     void step(){
-        // [todo]
+        auto probs = chain_.row(state_).data();
+        std::discrete_distribution<> dist(probs, probs + n_states_);
+        state_ = dist(rocky::utils::random::prng);
     }
     // add a strategy to flow
-    void add_strategy(strategy<T_e, T_dim>* st){
+    void add_strategy(basic_strategy<T_e, T_dim>* st){
         strategies_.push_back(st);
     }
     // normalize the transition matrix

@@ -28,12 +28,12 @@ include_directories(include/)
 find_package(TBB CONFIG REQUIRED)
 find_package(Eigen3 CONFIG REQUIRED)
 
-add_executable(tests  tests/swarm.cc tests/linear.cc)
+add_executable(tests  tests/flow.cc tests/swarm.cc tests/linear.cc)
 target_link_libraries(tests PRIVATE Catch2::Catch2WithMain TBB::tbb TBB::tbbmalloc Eigen3::Eigen)
 
 if(ROCKY_BUILD_MPI_TESTS)
 # tests that require MPI
-add_executable(mpi_tests tests/mpi/basic_mpi.cc)
+add_executable(mpi_tests tests/mpi/basic_strategy.cc)
 target_link_libraries(mpi_tests nanobench TBB::tbb TBB::tbbmalloc Eigen3::Eigen)
 endif()
 
