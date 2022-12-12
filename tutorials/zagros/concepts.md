@@ -26,3 +26,6 @@ A *strategy* is any procedure that changes the current swarm. In Zagros many opt
 - Initialization strategies : responsible to generate an initial swarm
 - Search strategies: represent the logic of an specific optimization algorithm. For example a mutation strategy may add a random value to a particle.  
 - Communication strategies: particles on differenti nodes can communicate to share their solutions or other information of search space though patterns specified by communication strategies. Such patterns can be local or global across the whole cluster.
+
+### Flows
+In Zagros, A *Flow* specifies a control policy to apply a set of strategies on a swarm. Under the hood a flow is a markov chain that describes the transition probabilities among a set of strategies. 
