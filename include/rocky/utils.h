@@ -7,7 +7,10 @@
 #include<random>
 #include<chrono>
 
+#ifdef ROCKY_USE_MPI
 #include<mpi.h>
+#endif
+
 #include<tbb/tbb.h>
 #include<Eigen/Core>
 
