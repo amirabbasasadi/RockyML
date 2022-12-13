@@ -7,6 +7,8 @@
 #include<random>
 #include<chrono>
 
+#include "spdlog/spdlog.h"
+
 #ifdef ROCKY_USE_MPI
 #include<mpi.h>
 #endif
@@ -180,6 +182,7 @@ public:
     }
  // allocate the required memory
     virtual void allocate(){
+        spdlog::info("allocating memory for particles history");
         particles_best_ = std::make_unique<swarm>(main_swarm_->n_particles(), main_swarm_->group_size());
         particles_best_->allocate();
         // allocate particles memory
@@ -199,6 +202,7 @@ public:
     }
     // initialize particles velocity to zero
     virtual void initialize_velocity(){
+        spdlog::info("initializing particles velocity");
         for(int p=0; p<main_swarm_->n_particles(); ++p)
             std::fill(particles_v_[p].begin(), particles_v_[p].end(), 0.0);
     }
