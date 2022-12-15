@@ -248,12 +248,14 @@ public:
             auto rng = this->main_container_->group_range(t);
             auto min_el = std::min_element(this->particles_best_->value(rng.first),
                                            this->particles_best_->value(rng.second));
-            // [todo] update min and argmin for each group 
-            // if (*min_el < this->groups_best_min_[t]){
-            //     int min_el_ind = static_cast<int>(min_el - this->particles_best_->value(0));
-            //     this->groups_best_min_[t] = *min_el;
-            //     this->groups_best_argmin_[t] = this->particles_best_->particle(min_el_ind);
-            // }
+            // [todo] we shouldn't copy the solution! 
+            if (*min_el < this->groups_best_->values[t]){
+                int min_el_ind = static_cast<int>(min_el - this->particles_best_->value(0));
+                this->groups_best_->values[t] = *min_el;
+                std::copy(this->particles_best_->particle(min_el_ind),
+                          this->particles_best_->particle(min_el_ind)+T_dim,
+                          this->groups_best_->particle(t));
+            }
 
         });
     }
@@ -279,16 +281,16 @@ public:
                 v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
                                        + (2.0 * this->rand_uniform() * (p_best_gr - x));
             }
-            // if constexpr(T_phase == phase::phase_II){
-            //     eigen_particle p_best_n(this->node_best_argmin_);
-            //     if(this->particles_best_min_[p] == this->groups_best_min_[p_group]){
-            //         v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
-            //                                + (2.0 * this->rand_uniform() * (p_best_n - x));
-            //     }else{
-            //         v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
-            //                                + (2.0 * this->rand_uniform() * (p_best_gr - x));
-            //     }         
-            // }
+            if constexpr(T_phase == phase::phase_II){
+                eigen_particle p_best_n(this->node_best_->particle(0));
+                if(this->particles_best_->values[p] == this->groups_best_->values[p_group]){
+                    v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                           + (2.0 * this->rand_uniform() * (p_best_n - x));
+                }else{
+                    v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                           + (2.0 * this->rand_uniform() * (p_best_gr - x));
+                }         
+            }
             // if constexpr(T_phase == phase::phase_III){
             //     eigen_particle p_best_n(this->node_best_argmin_);
             //      v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
