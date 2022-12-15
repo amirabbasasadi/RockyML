@@ -26,6 +26,8 @@ public:
             S += x[i] * x[i];
         return sqrt(S);
     }
+    virtual T_e lower_bound(){ return -10.0; }
+    virtual T_e upper_bound(){ return 10.0; }
     virtual std::string to_string(){
         std::stringstream name;
         name << "Sphere(dim=" << T_dim << ")";

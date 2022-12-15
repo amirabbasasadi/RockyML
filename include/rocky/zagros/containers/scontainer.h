@@ -1,5 +1,5 @@
-#ifndef ROCKY_ZAGROS_SWARM_GUARD
-#define ROCKY_ZAGROS_SWARM_GUARD
+#ifndef ROCKY_ZAGROS_SCONTAINER_GUARD
+#define ROCKY_ZAGROS_SCONTAINER_GUARD
 
 #include<iostream>
 #include<cmath>
@@ -17,16 +17,16 @@
 namespace rocky{
 namespace zagros{
 /**
- * @brief a data container representing a swarm
+ * @brief a data container representing a scontainer
  * 
  */
 template<typename T_e, int T_dim>
-class basic_swarm{
+class basic_scontainer{
 protected:
     int n_particles_;
     int group_size_;
 public:
-    basic_swarm(int n_particles, int group_size){
+    basic_scontainer(int n_particles, int group_size){
         n_particles_ = n_particles;
         group_size_ = group_size;
     }

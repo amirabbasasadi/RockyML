@@ -15,7 +15,6 @@
 #include<Eigen/Core>
 
 #include<rocky/zagros/system.h>
-#include<rocky/zagros/containers/swarm.h>
 
 namespace rocky{
 namespace utils{
