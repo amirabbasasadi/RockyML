@@ -4,7 +4,9 @@
   <img src="http://img.shields.io/github/actions/workflow/status/amirabbasasadi/RockyML/ctest.yml?branch=main">
   <img src="https://img.shields.io/github/commit-activity/m/amirabbasasadi/RockyML">
   <img src="https://img.shields.io/github/license/amirabbasasadi/RockyML">
-</p>
+</p>  
+
+**Work in Progress!! Wait until a stable release!**
 
 - **Etna** : Building blocks for designing fast non-differentiable neural networks
 - **Zagros** : A high-performance and scalable black-box optimization engine
