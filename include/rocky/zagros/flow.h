@@ -12,7 +12,7 @@
 #include<Eigen/Core>
 
 #include<rocky/zagros/system.h>
-#include<rocky/zagros/strategy.h>
+#include<rocky/zagros/strategies/strategy.h>
 #include <rocky/utils.h>
 
 
