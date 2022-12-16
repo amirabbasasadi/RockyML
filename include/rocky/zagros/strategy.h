@@ -155,11 +155,14 @@ class broadcast_best_solution: public mpi_strategy<T_e, T_dim>{
 };
 #endif
 
+/**
+ * @brief Base class for Tribes PSO
+ * 
+ */
 template<typename T_e, int T_dim>
 class basic_pso: public search_strategy<T_e, T_dim>{
+public:
     typedef Eigen::Map<Eigen::Matrix<T_e, 1, T_dim, Eigen::RowMajor>> eigen_particle;
-    
-    enum phase {phase_I, phase_II, phase_III, phase_IV};
     enum update_mode {use_particles, use_groups};
 
 protected:
@@ -265,42 +268,7 @@ public:
      * 
      * @return ** void 
      */
-    template<phase T_phase>
-    void update_particles_v(){
-        tbb::parallel_for(0, this->main_container_->n_particles(), [this](int p){
-            int p_group = this->main_container_->particle_group(p);
-            eigen_particle x(this->main_container_->particle(p));
-            eigen_particle v(this->particles_v_->particle(p));
-            eigen_particle p_best(this->particles_best_->particle(p));
-            eigen_particle p_best_gr(this->groups_best_->particle(p_group));
-            
-            // update the velocity
-            if constexpr(T_phase == phase::phase_I){
-                v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
-                                       + (2.0 * this->rand_uniform() * (p_best_gr - x));
-            }
-            if constexpr(T_phase == phase::phase_II){
-                eigen_particle p_best_n(this->node_best_->particle(0));
-                if(this->particles_best_->values[p] == this->groups_best_->values[p_group]){
-                    v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
-                                           + (2.0 * this->rand_uniform() * (p_best_n - x));
-                }else{
-                    v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
-                                           + (2.0 * this->rand_uniform() * (p_best_gr - x));
-                }         
-            }
-            if constexpr(T_phase == phase::phase_III){
-                eigen_particle p_best_n(this->node_best_->particle(0));
-                 v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
-                                        + (2.0 * this->rand_uniform() * (p_best_n - x));
-            }
-            // if constexpr(T_phase == phase::phase_IV){
-            //     eigen_particle p_best_c(this->cluster_best_argmin_.data());
-            //      v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
-            //                             + (2.0 * this->rand_uniform() * (p_best_c - x));
-            // }
-        });
-    }
+    virtual void update_particles_v() = 0;
     /**
      * @brief update particles position in parallel
      * 
@@ -313,16 +281,86 @@ public:
             x += v;
         });
     }
+};
+
+
+template<typename T_e, int T_dim>
+class pso_L1_strategy: public basic_pso<T_e, T_dim>{
+
+typedef Eigen::Map<Eigen::Matrix<T_e, 1, T_dim, Eigen::RowMajor>> eigen_particle;
+protected:
+    virtual void update_particles_v(){
+        tbb::parallel_for(0, this->main_container_->n_particles(), [this](int p){
+            int p_group = this->main_container_->particle_group(p);
+            eigen_particle x(this->main_container_->particle(p));
+            eigen_particle v(this->particles_v_->particle(p));
+            eigen_particle p_best(this->particles_best_->particle(p));
+            eigen_particle p_best_gr(this->groups_best_->particle(p_group));
+            v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                    + (2.0 * this->rand_uniform() * (p_best_gr - x));          
+        });
+    }
+public:
+    pso_L1_strategy(system<T_e, T_dim>* problem,
+              basic_scontainer<T_e, T_dim>* main_container,
+              basic_scontainer<T_e, T_dim>* particles_v,
+              basic_scontainer<T_e, T_dim>* particles_best,
+              basic_scontainer<T_e, T_dim>* groups_best,
+              basic_scontainer<T_e, T_dim>* node_best,
+              basic_scontainer<T_e, T_dim>* cluster_best):basic_pso<T_e, T_dim>(problem, main_container, particles_v, particles_best, groups_best, node_best, cluster_best){            
+    }
     virtual void apply(){
-        this->hyper_w_ = rand_uniform();
+        this->hyper_w_ = this->rand_uniform();
         this->update_particles_best();
         this->update_groups_best();
         this->update_node_best();
-        spdlog::info("best node solution is {}", this->node_best_->values[0]);
-        this->update_particles_v<phase_I>();
+        this->update_particles_v();
         this->update_particles_x();
     }
-};
+}; // End of PSO L1
+
+
+template<typename T_e, int T_dim>
+class pso_L2_strategy: public basic_pso<T_e, T_dim>{
+
+typedef Eigen::Map<Eigen::Matrix<T_e, 1, T_dim, Eigen::RowMajor>> eigen_particle;
+protected:
+    virtual void update_particles_v(){
+        tbb::parallel_for(0, this->main_container_->n_particles(), [this](int p){
+            int p_group = this->main_container_->particle_group(p);
+            eigen_particle x(this->main_container_->particle(p));
+            eigen_particle v(this->particles_v_->particle(p));
+            eigen_particle p_best(this->particles_best_->particle(p));
+            eigen_particle p_best_gr(this->groups_best_->particle(p_group));
+            eigen_particle p_best_n(this->node_best_->particle(0));
+            if(this->particles_best_->values[p] == this->groups_best_->values[p_group]){
+                v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                        + (2.0 * this->rand_uniform() * (p_best_n - x));
+            }else{
+                v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                        + (2.0 * this->rand_uniform() * (p_best_gr - x));
+            }              
+        });
+    }
+public:
+    pso_L2_strategy(system<T_e, T_dim>* problem,
+              basic_scontainer<T_e, T_dim>* main_container,
+              basic_scontainer<T_e, T_dim>* particles_v,
+              basic_scontainer<T_e, T_dim>* particles_best,
+              basic_scontainer<T_e, T_dim>* groups_best,
+              basic_scontainer<T_e, T_dim>* node_best,
+              basic_scontainer<T_e, T_dim>* cluster_best):basic_pso<T_e, T_dim>(problem, main_container, particles_v, particles_best, groups_best, node_best, cluster_best){            
+    }
+    virtual void apply(){
+        this->hyper_w_ = this->rand_uniform();
+        this->update_particles_best();
+        this->update_groups_best();
+        this->update_node_best();
+        this->update_particles_v();
+        this->update_particles_x();
+    }
+}; // End of PSO L2
+
 };
 };
 
