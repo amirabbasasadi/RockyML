@@ -27,8 +27,7 @@ public:
  */
 template<typename T_e, int T_dim>
 class mpi_strategy: public comm_strategy<T_e, T_dim>{
-public:
-    protected:
+protected:
      // number of MPI processes
     int mpi_num_procs_;
     // MPI rank
@@ -54,9 +53,21 @@ public:
     }
 
 };
+
+/**
+ * @brief A Communication strategy for broadcasting best solution
+ * 
+ */
 template<typename T_e, int T_dim>
-class broadcast_best_solution: public mpi_strategy<T_e, T_dim>{
-    void update_cluster_best(T_e* cluster_best_argmin, T_e* cluster_best_min){
+class sync_broadcast_best: public mpi_strategy<T_e, T_dim>{
+protected:
+    basic_scontainer<T_e, T_dim>* cluster_best_container_;
+public:
+    sync_broadcast_best(basic_scontainer<T_e, T_dim>* container){
+        this->cluster_best_container_ = container;
+        this->fetch_mpi_info();
+    }
+    virtual void apply(){
         // identify the process
         int rank = this->mpi_rank();
         // ask everyone in the cluster to find the min value
@@ -65,18 +76,18 @@ class broadcast_best_solution: public mpi_strategy<T_e, T_dim>{
             int rank;
         } data_out, result;
 
-        data_out.cluster_best_min = *cluster_best_min;
+        data_out.cluster_best_min = cluster_best_container_->values[0];
         data_out.rank = rank;
 
         if constexpr(std::is_same<T_e, double>::value){
             MPI_Allreduce(&data_out, &result, 1, MPI_DOUBLE_INT, MPI_MINLOC, MPI_COMM_WORLD);
-            MPI_Bcast(cluster_best_argmin, T_dim, MPI_DOUBLE, result.rank, MPI_COMM_WORLD);
+            MPI_Bcast(cluster_best_container_->particle(0), T_dim, MPI_DOUBLE, result.rank, MPI_COMM_WORLD);
         }
         if constexpr(std::is_same<T_e, float>::value){
             MPI_Allreduce(&data_out, &result, 1, MPI_FLOAT_INT, MPI_MINLOC, MPI_COMM_WORLD);
-            MPI_Bcast(cluster_best_argmin, T_dim, MPI_FLOAT, result.rank, MPI_COMM_WORLD);
+            MPI_Bcast(cluster_best_container_->particle(0), T_dim, MPI_FLOAT, result.rank, MPI_COMM_WORLD);
         } 
-        *cluster_best_min = result.cluster_best_min;
+        cluster_best_container_->values[0] = result.cluster_best_min;
     }
 };
 #endif

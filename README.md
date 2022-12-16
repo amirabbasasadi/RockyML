@@ -31,7 +31,7 @@ Design Goals:
 - Hybrid parallelism: multi-threading for each node and message passing across nodes (MPI)
 - Handling large number of variables using block coordinate descent
 - Supporting continuous, discrete, and mixed optimization problems  
-- Design arbitrary complex optimizers by combining modular search strategies
+- Design arbitrary complex optimizers by combining modular search/communication strategies
 
 ## Guide
 ### Dependencies

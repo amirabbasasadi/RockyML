@@ -28,7 +28,7 @@ protected:
     // best solution in the current node
     basic_scontainer<T_e, T_dim>* node_best_;
     // best current cluster solution
-    basic_scontainer<T_e, T_dim>* cluster_best;  
+    basic_scontainer<T_e, T_dim>* cluster_best_;  
 
     // intertial
     T_e hyper_w_;
@@ -47,7 +47,7 @@ public:
         this->particles_best_ = particles_best;
         this->groups_best_ = groups_best;
         this->node_best_ = node_best;
-        this->cluster_best = cluster_best;
+        this->cluster_best_ = cluster_best;
     }
     T_e rand_uniform(){
         static std::uniform_real_distribution<T_e> dist(0.0, 1.0);
@@ -112,6 +112,14 @@ public:
             }
         }
     }
+    void update_cluster_best(){
+            if (this->node_best_->values[0] < this->cluster_best_->values[0]){
+                std::copy(this->node_best_->particle(0),
+                          this->node_best_->particle(0)+T_dim,
+                          this->cluster_best_->particle(0));
+                this->cluster_best_->values[0] = this->node_best_->values[0];
+            }
+    }
     /**
      * @brief update particles velocity in parallel
      * 
@@ -134,7 +142,7 @@ public:
 
 
 template<typename T_e, int T_dim>
-class pso_L1_strategy: public basic_pso<T_e, T_dim>{
+class pso_l1_strategy: public basic_pso<T_e, T_dim>{
 
 typedef Eigen::Map<Eigen::Matrix<T_e, 1, T_dim, Eigen::RowMajor>> eigen_particle;
 protected:
@@ -150,7 +158,7 @@ protected:
         });
     }
 public:
-    pso_L1_strategy(system<T_e, T_dim>* problem,
+    pso_l1_strategy(system<T_e, T_dim>* problem,
               basic_scontainer<T_e, T_dim>* main_container,
               basic_scontainer<T_e, T_dim>* particles_v,
               basic_scontainer<T_e, T_dim>* particles_best,
@@ -163,6 +171,7 @@ public:
         this->update_particles_best();
         this->update_groups_best();
         this->update_node_best();
+        this->update_cluster_best();
         this->update_particles_v();
         this->update_particles_x();
     }
@@ -170,7 +179,7 @@ public:
 
 
 template<typename T_e, int T_dim>
-class pso_L2_strategy: public basic_pso<T_e, T_dim>{
+class pso_l2_strategy: public basic_pso<T_e, T_dim>{
 
 typedef Eigen::Map<Eigen::Matrix<T_e, 1, T_dim, Eigen::RowMajor>> eigen_particle;
 protected:
@@ -192,7 +201,7 @@ protected:
         });
     }
 public:
-    pso_L2_strategy(system<T_e, T_dim>* problem,
+    pso_l2_strategy(system<T_e, T_dim>* problem,
               basic_scontainer<T_e, T_dim>* main_container,
               basic_scontainer<T_e, T_dim>* particles_v,
               basic_scontainer<T_e, T_dim>* particles_best,
@@ -205,6 +214,7 @@ public:
         this->update_particles_best();
         this->update_groups_best();
         this->update_node_best();
+        this->update_cluster_best();
         this->update_particles_v();
         this->update_particles_x();
     }
