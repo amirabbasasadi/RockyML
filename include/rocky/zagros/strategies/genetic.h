@@ -1,6 +1,8 @@
 #ifndef ROCKY_ZAGROS_GENETIC_STRATEGY
 #define ROCKY_ZAGROS_GENETIC_STRATEGY
 #include <rocky/zagros/strategies/strategy.h>
+#include <set>
+#include <iterator>
 
 namespace rocky{
 namespace zagros{
@@ -98,6 +100,74 @@ public:
         this->target_container_->particles[p_ind][dim] += gaussian_noise();
     }
 };
+
+/**
+ * @brief Base class for genetic crossovers
+ * 
+ */
+template<typename T_e, int T_dim>
+class crossover_strategy: public basic_strategy<T_e, T_dim>{};
+
+/**
+ * @brief Multipoint crossover
+ * 
+ */
+template<typename T_e, int T_dim>
+class multipoint_crossover: public basic_strategy<T_e, T_dim>{
+protected:
+   // system
+    system<T_e, T_dim>* problem_;
+    // main container
+    basic_scontainer<T_e, T_dim>* container_;
+    // maximum number of affected dimensions
+    int k_;
+public:
+    T_e sample_dim(){
+        std::uniform_int_distribution<> dist(0, T_dim-1);
+        return dist(rocky::utils::random::prng);
+    }
+    std::pair<int, int> pick_particles(int group){
+        auto group_rng = this->container_->group_range(group);
+        std::uniform_int_distribution<> dist(group_rng.first, group_rng.second-1);
+        std::set<int> indices;
+        do{
+            indices.insert(dist(rocky::utils::random::prng));
+        }while(indices.size() < 2);
+        auto el = indices.begin();
+        auto result = std::make_pair(*el, *(std::next(el)));
+        return result;
+    }
+    multipoint_crossover(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* container, int k){
+        this->k_ = k;
+        this->problem_ = problem;
+        this->container_ = container;
+    }
+    virtual void apply(){
+        tbb::parallel_for(0, container_->n_groups(), [this](int group){
+            // choose parents
+            auto parents = this->pick_particles(group);
+            // affected dims
+            std::set<int> dims;
+            for(int d=0; d<k_; d++)
+                dims.insert(sample_dim());
+            // apply the crossover
+            for(auto dim: dims)
+                std::swap(this->container_->particles[parents.first][dim],
+                          this->container_->particles[parents.second][dim]);
+             // keep the new solution if there was any improvement
+            T_e new_val = this->problem_->objective(this->container_->particle(parents.first));
+            // restore the previous particle otherwise 
+            if (new_val > this->container_->values[parents.first])
+                for(auto dim: dims)
+                    std::swap(this->container_->particles[parents.first][dim],
+                            this->container_->particles[parents.second][dim]);
+            else  // replace the min value
+                this->container_->values[parents.first] = new_val;
+        });
+    }
+};
+
+
 
 };
 };
