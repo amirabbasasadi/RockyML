@@ -28,14 +28,6 @@ protected:
     // number of affected dimensions
     int k_;
 public:
-    T_e sample_dim(){
-        std::uniform_int_distribution<> dist(0, T_dim-1);
-        return dist(rocky::utils::random::prng);
-    }
-    T_e sample_particle(int start_rng, int end_rng){
-        static std::uniform_int_distribution<> dist(start_rng, end_rng);
-        return dist(rocky::utils::random::prng);
-    }    
     dimension_tweak_strategy(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* tgt_container, int k){
         this->problem_ = problem;
         this->target_container_ = tgt_container;
@@ -46,18 +38,17 @@ public:
         int n_groups = this->target_container_->n_groups();
         tbb::parallel_for(0, n_groups, 1, [this](int gr){
             int dim, p_ind;
-            auto group_rng = this->target_container_->group_range(gr);
             // sample a particle
-            p_ind = this->sample_particle(group_rng.first, group_rng.second-1);
+            p_ind = this->target_container_->sample_particle(gr);
             // save a backup from affected dims
             auto solution_backup_dims = std::make_unique<int[]>(k_);
             auto solution_backup_vals = std::make_unique<T_e[]>(k_);
             // apply mutation on k dimensions
             for(int d=0; d<k_; d++){
                 // choose a random dim
-                dim = this->sample_dim();
+                dim = this->target_container_->sample_dim();
                 solution_backup_dims[d] = dim;
-                solution_backup_vals[d] = target_container_->particles[p_ind][dim];
+                solution_backup_vals[d] = this->target_container_->particles[p_ind][dim];
                 // apply the mutation on the dimension
                 this->tweak(p_ind, dim);
             }
@@ -122,21 +113,6 @@ protected:
     // maximum number of affected dimensions
     int k_;
 public:
-    T_e sample_dim(){
-        std::uniform_int_distribution<> dist(0, T_dim-1);
-        return dist(rocky::utils::random::prng);
-    }
-    std::pair<int, int> pick_particles(int group){
-        auto group_rng = this->container_->group_range(group);
-        std::uniform_int_distribution<> dist(group_rng.first, group_rng.second-1);
-        std::set<int> indices;
-        do{
-            indices.insert(dist(rocky::utils::random::prng));
-        }while(indices.size() < 2);
-        auto el = indices.begin();
-        auto result = std::make_pair(*el, *(std::next(el)));
-        return result;
-    }
     multipoint_crossover(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* container, int k){
         this->k_ = k;
         this->problem_ = problem;
@@ -145,11 +121,11 @@ public:
     virtual void apply(){
         tbb::parallel_for(0, container_->n_groups(), [this](int group){
             // choose parents
-            auto parents = this->pick_particles(group);
+            auto parents = this->container_->sample_pair(group);
             // affected dims
             std::set<int> dims;
             for(int d=0; d<k_; d++)
-                dims.insert(sample_dim());
+                dims.insert(this->container_->sample_dim());
             // apply the crossover
             for(auto dim: dims)
                 std::swap(this->container_->particles[parents.first][dim],

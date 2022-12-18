@@ -8,11 +8,13 @@
 #include<limits>
 #include<random>
 #include<vector>
+#include<set>
 
 #include<tbb/tbb.h>
 #include<Eigen/Core>
 
 #include<rocky/zagros/benchmark.h>
+#include<rocky/utils.h>
 
 namespace rocky{
 namespace zagros{
@@ -100,6 +102,53 @@ public:
     T_e* value(int p){
         return &values[p];
     }
+    /**
+     * @brief sample n distinct particles from a group
+     * efficient when n is small
+     * @param n sample size
+     * @param group particles will be sampled from this group
+     */
+    std::set<int> sample_n_particles(int n, int group){
+        auto group_rng = group_range(group);
+        std::uniform_int_distribution<> dist(group_rng.first, group_rng.second-1);
+        std::set<int> indices;
+        do{
+            indices.insert(dist(rocky::utils::random::prng));
+        }while(indices.size() < n);
+        return indices;
+    }
+    /**
+     * @brief sample a pair of distinct particles
+     * 
+     * @param group 
+     * @return * std::pair<int, int> 
+     */
+    std::pair<int, int> sample_pair(int group){
+        auto indices = sample_n_particles(2, group);
+        auto el = indices.begin();
+        auto result = std::make_pair(*el, *(std::next(el)));
+        return result;
+    }
+    /**
+     * @brief sample a single particle from a group
+     * 
+     * @param group 
+     * @return * int index of the particle
+     */
+    int sample_particle(int group){
+        auto group_rng = group_range(group);
+        std::uniform_int_distribution<> dist(group_rng.first, group_rng.second-1);
+        return dist(rocky::utils::random::prng);
+    }
+    /**
+     * @brief choose a dimension randomly
+     * 
+     * @return * int 
+     */
+    int sample_dim(){
+        std::uniform_int_distribution<> dist(0, T_dim-1);
+        return dist(rocky::utils::random::prng);
+    }   
 };
 
 }; // end of zagros namespace

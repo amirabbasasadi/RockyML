@@ -35,33 +35,17 @@ public:
     T_e rand_uniform(){
         static std::uniform_real_distribution<T_e> dist(0.0, 1.0);
         return dist(rocky::utils::random::prng);
-    }
-    /**
-     * @brief pick 4 different particles from a group
-     * 
-     * @param group index of the group
-     * @return * std::vector<int>
-     */
-    std::vector<int> pick_particles(int group){
-        auto group_rng = this->container_->group_range(group);
-        std::uniform_int_distribution<> dist(group_rng.first, group_rng.second-1);
-        std::set<int> indices;
-        do{
-            indices.insert(dist(rocky::utils::random::prng));
-        }while(indices.size() < 4);
-        std::vector<int> result;
-        std::copy(indices.begin(), indices.end(), std::back_inserter(result));
-        return result;
-    }
+    }    
     // apply differential evolution within groups in parallel
     virtual void apply(){
         tbb::parallel_for(0, this->container_->n_groups(), [this](int group){
             std::map<int, T_e> backup;
-            std::vector<int> indices = this->pick_particles(group);
-            int x_ind = indices[0];
-            int a_ind = indices[1];
-            int b_ind = indices[2];
-            int c_ind = indices[3];
+            std::set<int> indices = this->container_->sample_n_particles(4, group);
+            auto ind_it = indices.begin();
+            int x_ind = *ind_it;
+            int a_ind = *std::next(ind_it, 1);
+            int b_ind = *std::next(ind_it, 2);
+            int c_ind = *std::next(ind_it, 3);
             eigen_particle x(this->container_->particle(x_ind));
             eigen_particle a(this->container_->particle(a_ind));
             eigen_particle b(this->container_->particle(b_ind));
