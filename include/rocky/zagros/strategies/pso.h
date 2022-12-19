@@ -231,9 +231,15 @@ protected:
             eigen_particle x(this->main_container_->particle(p));
             eigen_particle v(this->particles_v_->particle(p));
             eigen_particle p_best(this->particles_best_->particle(p));
+            eigen_particle p_best_gr(this->groups_best_->particle(p_group));
             eigen_particle p_best_c(this->cluster_best_->particle(0));
-            v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
-                                   + (2.0 * this->rand_uniform() * (p_best_c - x));         
+            if(this->particles_best_->values[p] == this->groups_best_->values[p_group]){
+                v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                       + (2.0 * this->rand_uniform() * (p_best_c - x));
+            }else{
+                v = v * this->hyper_w_ + (2.0 * this->rand_uniform() * (p_best - x)) 
+                                       + (2.0 * this->rand_uniform() * (p_best_gr - x));
+            }       
         });
     }
 public:
