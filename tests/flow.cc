@@ -16,28 +16,7 @@ TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
     int max_strategies = 2;
 
     zagros::basic_flow<swarm_type, dim> flow;
-    flow.allocate(max_strategies);
-
-    SECTION("stochastic transitions"){
-        flow.set_transition(0, 0, 0.5);
-        flow.set_transition(0, 1, 0.5);
-        flow.set_transition(1, 0, 0.5);
-        flow.set_transition(1, 1, 0.5);
-        flow.set_state(0);
-        REQUIRE(flow.state() == 0);
-    }
-
-    SECTION("deterministic transitions"){
-        flow.set_transition(0, 0, 0.0);
-        flow.set_transition(0, 1, 1.0);
-        flow.set_transition(1, 0, 0.0);
-        flow.set_transition(1, 1, 1.0);
-        flow.set_state(0);
-        REQUIRE(flow.state() == 0);
-        flow.step();
-        REQUIRE(flow.state() == 1);
-        flow.step();
-        REQUIRE(flow.state() == 1);
-    }
+    flow.set_state(nullptr);
+    REQUIRE(flow.state() == nullptr);
 
 };
