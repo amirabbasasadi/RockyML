@@ -3,6 +3,7 @@
 #include <random>
 #include <functional>
 #include <algorithm>
+#include <list>
 #include <rocky/zagros/flow.h>
 
 TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
@@ -15,8 +16,8 @@ TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
     const int dim = 16;
     int max_strategies = 2;
 
-    zagros::basic_flow<swarm_type, dim> flow;
-    flow.set_state(nullptr);
-    REQUIRE(flow.state() == nullptr);
+    using namespace zagros::flow;
+
+    auto f1 = container::create(n_particles) >> run::n_times(10, run::n_times(10, init::uniform()));
 
 };
