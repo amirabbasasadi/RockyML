@@ -18,6 +18,9 @@ TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
 
     using namespace zagros::flow;
 
-    auto f1 = container::create(n_particles) >> run::n_times(10, run::n_times(10, init::uniform()));
+    auto f2 = container::create("c1", n_particles, group_size) >> init::uniform() >> init::uniform();
 
+    
+    zagros::basic_runtime<swarm_type, dim> runtime;
+    runtime.run(f2);
 };
