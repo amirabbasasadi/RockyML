@@ -198,6 +198,9 @@ public:
      * @return * basic_scontainer<T_e, T_dim>* 
      */
     basic_scontainer<T_e, T_dim>* container(std::string id){
+        if (!container_exist(id)){
+            spdlog::warn("container {} does not exist", id);
+        }
         // find the target container
         int target_cnt_ind = cnt_map[id];
         return cnt_storage[target_cnt_ind].get();
@@ -274,6 +277,32 @@ struct assigning_visitor{
 };
 
 /**
+ * @brief Running visitor
+ * a visitor for traversing and running the flow
+ */
+template<typename T_e, int T_dim, typename T_stack_e>
+struct running_visitor{
+    // objective system
+    system<T_e, T_dim>* problem;
+    // visitor will change main storage
+    runtime_storage<T_e, T_dim>* main_storage;
+    // visitor may also change the path stack in the case of composable flows
+    std::stack<T_stack_e>* path_stack;
+
+    void operator()(flow::null_node node){}
+    void operator()(flow::init_uniform node){
+        for(auto& str: main_storage->str_storage[node.tag]){
+            str->apply();
+            spdlog::info("initialized container");
+        }
+    }
+    void operator()(flow::init_normal node){}
+    void operator()(flow::run_n_times_node node){}
+    void operator()(flow::container_create_node node){}
+    
+};
+
+/**
  * @brief base class for all runtimes
  * 
  */
@@ -291,8 +320,10 @@ public:
     void run(const flow::flow& fl){
         // allocate memory for running the flow
         this->traverse_allocate(fl);
-        // running the flow
+        // allocate and assign strategies
         this->traverse_assign(fl);
+        // running the flow
+        this->traverse_run(fl);
     }
     /**
      * @brief allocate required memory for running the flow
@@ -324,7 +355,7 @@ public:
         }  
     }
     /**
-     * @brief link strategies to allocated containers
+     * @brief allocating strategies and assigning them to nodes
      * 
      * @param fl flow
      * @return * void 
@@ -335,6 +366,34 @@ public:
         std::stack<decltype(it)> path;
         // visitor
         assigning_visitor<T_e, T_dim, decltype(it)> visitor {problem, &storage, &path};
+        // initialize the path
+        path.push(it);
+        // iterate until there is no node in the stack
+        while(!path.empty()){
+            it = path.top();
+            // remove the visited node
+            path.pop();
+            auto current = *it;
+            // visit the node
+            std::visit(visitor, current);
+            // push the next node into the stack if it's not null
+            it = std::next(it);
+            if((*it).index() != 0)
+                path.push(it);        
+        }  
+    }
+    /**
+     * @brief unnning the flow
+     * 
+     * @param fl flow
+     * @return * void 
+     */
+    void traverse_run(const flow::flow& fl){
+        auto it = fl.procedure.begin();
+        // storage for the traversed path
+        std::stack<decltype(it)> path;
+        // visitor
+        running_visitor<T_e, T_dim, decltype(it)> visitor {problem, &storage, &path};
         // initialize the path
         path.push(it);
         // iterate until there is no node in the stack
