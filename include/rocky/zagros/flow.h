@@ -3,6 +3,7 @@
 
 #include<map>
 #include<stack>
+#include<deque>
 #include<type_traits>
 #include<variant>
 
@@ -21,8 +22,10 @@ namespace flow{
  * @brief abstract flow node
  * 
  */
-
-struct flow_node{};
+struct flow_node{
+    // a unique identifier
+    int tag;
+};
 
 struct null_node: public flow_node{};
 
@@ -52,7 +55,7 @@ typedef std::variant<null_node,
 
 
 struct run_node: public flow_node{
-    std::list<flow_node_variant> sub_procedure;
+    std::deque<flow_node_variant> sub_procedure;
 };
 struct until_convergence: public run_node{};
 struct run_every_n_steps_node: public run_node{};
@@ -63,7 +66,7 @@ struct run_n_times_node: public run_node{
 
 class flow{
 public:
-    std::list<flow_node_variant> procedure;
+    std::deque<flow_node_variant> procedure;
     size_t total_memory;
 
     flow(){
@@ -142,7 +145,8 @@ public:
         flow f;
         run_n_times_node node;
         node.n_iters = iters;
-        std::copy(wrapped_flow.procedure.begin(), wrapped_flow.procedure.end(), node.sub_procedure.begin());
+        node.sub_procedure.insert(node.sub_procedure.begin(), wrapped_flow.procedure.begin(), wrapped_flow.procedure.end());
+        // std::copy(wrapped_flow.procedure.begin(), wrapped_flow.procedure.end(), node.sub_procedure.begin());
         f.procedure.push_front(node);
         return f;
     }
@@ -160,10 +164,12 @@ template<typename T_e, int T_dim>
 struct runtime_storage{
     // allocated containers
     std::vector<std::unique_ptr<basic_scontainer<T_e, T_dim>>> cnt_storage;
-    // allocated memories
-    std::vector<std::unique_ptr<basic_strategy<T_e, T_dim>>> str_storage;
+    // allocated strategies
+    std::map<int, std::vector<std::unique_ptr<basic_strategy<T_e, T_dim>>>> str_storage;
     // mapping the containers' id to their storage blocks
     std::map<std::string, int> cnt_map;
+    // number of nodes
+    int n_nodes;
 };
 
 /**
@@ -178,7 +184,7 @@ struct allocation_visitor{
     std::stack<T_stack_e>* path_stack;
 
     void operator()(flow::null_node node){
-
+        spdlog::warn("a null node was found in the stack");
     }
     void operator()(flow::init_uniform node){
         spdlog::info("visiting an init uniform node");
@@ -200,6 +206,25 @@ struct allocation_visitor{
 };
 
 /**
+ * @brief Assigning visitor
+ * a visitor for linking allocated strategies to the suitable solution container
+ */
+template<typename T_e, int T_dim, typename T_stack_e>
+struct assigning_visitor{
+    // visitor will change main storage
+    runtime_storage<T_e, T_dim>* main_storage;
+    // visitor may also change the path stack in the case of composable flows
+    std::stack<T_stack_e>* path_stack;
+
+    void operator()(flow::null_node node){}
+    void operator()(flow::init_uniform node){}
+    void operator()(flow::init_normal node){}
+    void operator()(flow::run_n_times_node node){}
+    void operator()(flow::container_create_node node){}
+    
+};
+
+/**
  * @brief base class for all runtimes
  * 
  */
@@ -208,6 +233,9 @@ class basic_runtime{
 public:
     runtime_storage<T_e, T_dim> storage;
 
+    basic_runtime(){
+        storage.n_nodes = 0;
+    }
     void run(const flow::flow& fl){
         // allocate memory for running the flow
         this->traverse_allocate(fl);
@@ -236,12 +264,39 @@ public:
             auto current = *it;
             // visit the node
             std::visit(visitor, current);
-            // if the next node is not null then push it into the stack
+            storage.n_nodes++;
+            // push the next node into the stack if it's not null
             it = std::next(it);
-            if((*it).index() != 0){
-                path.push(it);
-            }
-            
+            if((*it).index() != 0)
+                path.push(it);        
+        }  
+    }
+    /**
+     * @brief link strategies to allocated containers
+     * 
+     * @param fl flow
+     * @return * void 
+     */
+    void traverse_assign(const flow::flow& fl){
+        auto it = fl.procedure.begin();
+        // storage for the traversed path
+        std::stack<decltype(it)> path;
+        // visitor
+        assigning_visitor<T_e, T_dim, decltype(it)> visitor {&storage, &path};
+        // initialize the path
+        path.push(it);
+        // iterate until there is no node in the stack
+        while(!path.empty()){
+            it = path.top();
+            // remove the visited node
+            path.pop();
+            auto current = *it;
+            // visit the node
+            std::visit(visitor, current);
+            // push the next node into the stack if it's not null
+            it = std::next(it);
+            if((*it).index() != 0)
+                path.push(it);        
         }  
     }
 };
