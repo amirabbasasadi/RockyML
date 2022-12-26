@@ -10,14 +10,14 @@ namespace zagros{
  * 
  */
 template<typename T_e, int T_dim>
-class init_strategy: basic_strategy<T_e, T_dim>{};
+class init_strategy: public basic_strategy<T_e, T_dim>{};
 
 /**
  * @brief Uniform initializer
  * 
  */
 template<typename T_e, int T_dim>
-class uniform_init_strategy: init_strategy<T_e, T_dim>{
+class uniform_init_strategy: public init_strategy<T_e, T_dim>{
 protected:
     system<T_e, T_dim>* problem_;
     basic_scontainer<T_e, T_dim>* container_;
