@@ -9,6 +9,7 @@
 
 #include<rocky/zagros/system.h>
 #include<rocky/zagros/strategies/strategy.h>
+#include<rocky/zagros/strategies/init.h>
 #include <rocky/utils.h>
 
 
@@ -37,7 +38,9 @@ struct container_create_node: public container_node{
 };
 
 struct init_node: public flow_node{};
-struct init_uniform: public init_node{};
+struct init_uniform: public init_node{
+    std::string id;
+};
 struct init_normal: public init_node{};
 
 struct run_node;
@@ -120,9 +123,10 @@ public:
      * 
      * @return * flow 
      */
-    static flow uniform(){
+    static flow uniform(std::string id){
         flow f;
         init_uniform node;
+        node.id = id;
         f.procedure.push_front(node);
         return f;
     }
@@ -161,7 +165,8 @@ public:
  * 
  */
 template<typename T_e, int T_dim>
-struct runtime_storage{
+class runtime_storage{
+public:
     // allocated containers
     std::vector<std::unique_ptr<basic_scontainer<T_e, T_dim>>> cnt_storage;
     // allocated strategies
@@ -170,6 +175,41 @@ struct runtime_storage{
     std::map<std::string, int> cnt_map;
     // number of nodes
     int n_nodes;
+    // amount of allocated memory
+    size_t container_space(){
+        size_t allocated_mem = 0;
+        for(auto const& cnt: cnt_storage)
+            allocated_mem += cnt->space();
+        return allocated_mem;
+    }
+    /**
+     * @brief check if a container exists in the memory
+     * 
+     * @param id container id
+     */
+    bool container_exist(std::string id){
+        auto it = cnt_map.find(id);
+        return it != cnt_map.end();
+    }
+    /**
+     * @brief access to specific container
+     * 
+     * @param id 
+     * @return * basic_scontainer<T_e, T_dim>* 
+     */
+    basic_scontainer<T_e, T_dim>* container(std::string id){
+        // find the target container
+        int target_cnt_ind = cnt_map[id];
+        return cnt_storage[target_cnt_ind].get();
+    }
+    void allocate_container(std::string id, int n_particles, int group_size){
+         // allocate a continer
+        auto cnt = std::make_unique<basic_scontainer<T_e, T_dim>>(n_particles, group_size);
+        cnt->allocate();
+        cnt_storage.push_back(std::move(cnt));
+        // register the id in the storage
+        cnt_map[id] = cnt_storage.size()-1;
+    }
 };
 
 /**
@@ -178,6 +218,8 @@ struct runtime_storage{
  */
 template<typename T_e, int T_dim, typename T_stack_e>
 struct allocation_visitor{
+    // objective system
+    system<T_e, T_dim>* problem;
     // visitor will change main storage
     runtime_storage<T_e, T_dim>* main_storage;
     // visitor may also change the path stack in the case of composable flows
@@ -198,9 +240,7 @@ struct allocation_visitor{
     }
     void operator()(flow::container_create_node node){
         spdlog::info("visiting a container creator");
-        auto cnt = std::make_unique<basic_scontainer<T_e, T_dim>>(node.n_particles, node.group_size);
-        this->main_storage->cnt_storage.push_back(std::move(cnt));
-        this->main_storage->cnt_map[node.id] = this->main_storage->cnt_storage.size()-1;
+        main_storage->allocate_container(node.id, node.n_particles, node.group_size);
     }
     
 };
@@ -211,13 +251,22 @@ struct allocation_visitor{
  */
 template<typename T_e, int T_dim, typename T_stack_e>
 struct assigning_visitor{
+    // objective system
+    system<T_e, T_dim>* problem;
     // visitor will change main storage
     runtime_storage<T_e, T_dim>* main_storage;
     // visitor may also change the path stack in the case of composable flows
     std::stack<T_stack_e>* path_stack;
 
     void operator()(flow::null_node node){}
-    void operator()(flow::init_uniform node){}
+    void operator()(flow::init_uniform node){
+        // get the target container
+        auto target_cnt = main_storage->container(node.id);
+        // reserve the strategy
+        auto str = std::make_unique<uniform_init_strategy<T_e, T_dim>>(problem, target_cnt);
+        // add the strategy to the container
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
     void operator()(flow::init_normal node){}
     void operator()(flow::run_n_times_node node){}
     void operator()(flow::container_create_node node){}
@@ -231,16 +280,19 @@ struct assigning_visitor{
 template<typename T_e, int T_dim>
 class basic_runtime{
 public:
+    // objective system
+    system<T_e, T_dim>* problem;
     runtime_storage<T_e, T_dim> storage;
 
-    basic_runtime(){
+    basic_runtime(system<T_e, T_dim>* problem){
+        this->problem = problem;
         storage.n_nodes = 0;
     }
     void run(const flow::flow& fl){
         // allocate memory for running the flow
         this->traverse_allocate(fl);
         // running the flow
-        // this->traverse_run(fl);
+        this->traverse_assign(fl);
     }
     /**
      * @brief allocate required memory for running the flow
@@ -253,7 +305,7 @@ public:
         // storage for the traversed path
         std::stack<decltype(it)> path;
         // visitor
-        allocation_visitor<T_e, T_dim, decltype(it)> visitor {&storage, &path};
+        allocation_visitor<T_e, T_dim, decltype(it)> visitor {problem, &storage, &path};
         // initialize the path
         path.push(it);
         // iterate until there is no node in the stack
@@ -282,7 +334,7 @@ public:
         // storage for the traversed path
         std::stack<decltype(it)> path;
         // visitor
-        assigning_visitor<T_e, T_dim, decltype(it)> visitor {&storage, &path};
+        assigning_visitor<T_e, T_dim, decltype(it)> visitor {problem, &storage, &path};
         // initialize the path
         path.push(it);
         // iterate until there is no node in the stack

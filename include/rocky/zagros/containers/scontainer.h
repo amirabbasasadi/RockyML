@@ -148,7 +148,14 @@ public:
     int sample_dim(){
         std::uniform_int_distribution<> dist(0, T_dim-1);
         return dist(rocky::utils::random::prng);
-    }   
+    }  
+    /**
+     * @brief amount of allocated memory in bytes
+     * 
+     */
+    size_t space() const{
+        return sizeof(T_e) * (n_particles() * (T_dim + 1));
+    } 
 };
 
 }; // end of zagros namespace

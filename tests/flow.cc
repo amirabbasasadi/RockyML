@@ -14,13 +14,16 @@ TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
     const int n_particles = 100;
     const int group_size = 20;
     const int dim = 16;
-    int max_strategies = 2;
 
     using namespace zagros::flow;
+    
 
-    auto f2 = container::create("c1", n_particles, group_size) >> run::n_times(10, init::uniform() >> init::uniform());
+    zagros::benchmark::rastrigin<swarm_type, dim> problem;
+
+    auto f2 = container::create("c1", n_particles, group_size) >> init::uniform("c1");
 
     
-    zagros::basic_runtime<swarm_type, dim> runtime;
+    zagros::basic_runtime<swarm_type, dim> runtime(&problem);
     runtime.run(f2);
+    spdlog::info("runtime storage : {} MB", runtime.storage.container_space()/(1024.0*1024.0));
 };
