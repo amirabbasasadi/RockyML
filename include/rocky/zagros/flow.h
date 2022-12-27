@@ -1,15 +1,16 @@
 #ifndef ROCKY_ZAGROS_FLOW_GUARD
 #define ROCKY_ZAGROS_FLOW_GUARD
 
+#include<deque>
 #include<map>
 #include<stack>
-#include<deque>
 #include<type_traits>
 #include<variant>
 
 #include<rocky/zagros/system.h>
-#include<rocky/zagros/strategies/strategy.h>
 #include<rocky/zagros/strategies/init.h>
+#include<rocky/zagros/strategies/pso.h>
+#include<rocky/zagros/strategies/strategy.h>
 #include <rocky/utils.h>
 
 
@@ -18,7 +19,7 @@ namespace zagros{
 
 
 
-namespace flow{
+namespace dena{
 /**
  * @brief abstract flow node
  * 
@@ -48,6 +49,12 @@ struct pso_memory_create_node: public pso_node{
     std::string memory_id;
     std::string main_cnt_id;
 };
+struct pso_step_node: public pso_node{
+    std::string memory_id;
+    std::string main_cnt_id;
+};
+struct pso_group_level_step_node: public pso_step_node{};
+struct pso_node_level_step_node: public pso_step_node{};
 
 struct run_node;
 struct until_convergence;
@@ -60,6 +67,7 @@ typedef std::variant<null_node,
                     init_normal,
                     container_create_node,
                     pso_memory_create_node,
+                    pso_group_level_step_node,
                     run_n_times_node> flow_node_variant;
 
 
@@ -73,6 +81,18 @@ struct run_n_times_node: public run_node{
     int n_iters;
 };
 
+
+class node{
+public:
+    static int n_nodes;
+    template<typename T_n>
+    static T_n create(){ 
+        T_n node;
+        node.tag = n_nodes++;
+        return node;
+    } 
+};
+int node::n_nodes = 0;
 
 class flow{
 public:
@@ -110,7 +130,7 @@ public:
      */
     static flow create(std::string id, int n_particles, int group_size){
         flow f;
-        container_create_node node;
+        auto node = node::create<container_create_node>();
         node.id = id;
         node.n_particles = n_particles;
         node.group_size = group_size;
@@ -132,7 +152,7 @@ public:
      */
     static flow uniform(std::string id){
         flow f;
-        init_uniform node;
+        auto node = node::create<init_uniform>();
         node.id = id;
         f.procedure.push_front(node);
         return f;
@@ -154,10 +174,9 @@ public:
      */
     static flow n_times(int iters, const flow& wrapped_flow){
         flow f;
-        run_n_times_node node;
+        auto node = node::create<run_n_times_node>();
         node.n_iters = iters;
         node.sub_procedure.insert(node.sub_procedure.begin(), wrapped_flow.procedure.begin(), wrapped_flow.procedure.end());
-        // std::copy(wrapped_flow.procedure.begin(), wrapped_flow.procedure.end(), node.sub_procedure.begin());
         f.procedure.push_front(node);
         return f;
     }
@@ -181,7 +200,7 @@ public:
      */
     static flow create(std::string mem_id, std::string main_id){
         flow f;
-        pso_memory_create_node node;
+        auto node = node::create<pso_memory_create_node>();
         node.memory_id = mem_id;
         node.main_cnt_id = main_id;
         f.procedure.push_front(node);
@@ -234,10 +253,33 @@ public:
     } 
 }; // end of memory
 
+/**
+ * @brief group level particle convergence
+ * 
+ */
+class group_level{
+public:
+    /**
+     * @brief single step based on pso-l1
+     * 
+     * @param mem_id 
+     * @param main_id 
+     * @return * flow 
+     */
+    static flow step(std::string mem_id, std::string main_id){
+        flow f;
+        auto node = node::create<pso_group_level_step_node>();
+        node.memory_id = mem_id;
+        node.main_cnt_id = main_id;
+        f.procedure.push_front(node);
+        return f;
+    }
+}; // end of group level
+
 }; // end of pso
 
 
-}; // end of flow
+}; // end of dena
 
 
 /**
@@ -253,8 +295,6 @@ public:
     std::map<int, std::vector<std::unique_ptr<basic_strategy<T_e, T_dim>>>> str_storage;
     // mapping the containers' id to their storage blocks
     std::map<std::string, int> cnt_map;
-    // number of nodes
-    int n_nodes;
     // amount of allocated memory
     size_t container_space(){
         size_t allocated_mem = 0;
@@ -296,6 +336,10 @@ public:
     }
 };
 
+// overload pattern for simplifying visitors
+template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
+template<class... Ts> overload(Ts...) -> overload<Ts...>;
+
 /**
  * @brief Allocation visitor
  * a visitor for traversing the flow and allocating required memory
@@ -309,31 +353,31 @@ struct allocation_visitor{
     // visitor may also change the path stack in the case of composable flows
     std::stack<T_stack_e>* path_stack;
 
-    void operator()(flow::null_node node){
+    void operator()(dena::null_node node){
         spdlog::warn("a null node was found in the stack");
     }
-    void operator()(flow::init_uniform node){
+    void operator()(dena::init_uniform node){
         spdlog::info("visiting an init uniform node");
     }
-    void operator()(flow::init_normal node){
+    void operator()(dena::init_normal node){
         
     }
-    void operator()(flow::run_n_times_node node){
+    void operator()(dena::run_n_times_node node){
         spdlog::info("visiting a run {} times node", node.n_iters);
         path_stack->push(node.sub_procedure.begin());
     }
-    void operator()(flow::container_create_node node){
+    void operator()(dena::container_create_node node){
         spdlog::info("visiting a container creator");
         main_storage->allocate_container(node.id, node.n_particles, node.group_size);
     }
-    void operator()(flow::pso_memory_create_node node){
+    void operator()(dena::pso_memory_create_node node){
         // allocate required solution containers for particle swarm
         auto main_cnt = main_storage->container(node.main_cnt_id);
         int n_particles = main_cnt->n_particles();
         int n_groups = main_cnt->n_groups();
         int group_size = main_cnt->group_size();
         
-        using namespace flow;
+        using namespace dena;
         // particles velocity
         main_storage->allocate_container(pso::memory::particles_vel(node.memory_id), n_particles, group_size);
         // particles memory
@@ -345,9 +389,8 @@ struct allocation_visitor{
         // cluster memory
         main_storage->allocate_container(pso::memory::cluster_mem(node.memory_id), 1, 1);
     }
-    
+    void operator()(dena::pso_group_level_step_node node){}
 };
-
 /**
  * @brief Assigning visitor
  * a visitor for linking allocated strategies to the suitable solution container
@@ -361,8 +404,8 @@ struct assigning_visitor{
     // visitor may also change the path stack in the case of composable flows
     std::stack<T_stack_e>* path_stack;
 
-    void operator()(flow::null_node node){}
-    void operator()(flow::init_uniform node){
+    void operator()(dena::null_node node){}
+    void operator()(dena::init_uniform node){
         // get the target container
         auto target_cnt = main_storage->container(node.id);
         // reserve the strategy
@@ -370,10 +413,23 @@ struct assigning_visitor{
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
-    void operator()(flow::init_normal node){}
-    void operator()(flow::run_n_times_node node){}
-    void operator()(flow::container_create_node node){}
-    void operator()(flow::pso_memory_create_node node){}
+    void operator()(dena::init_normal node){}
+    void operator()(dena::run_n_times_node node){}
+    void operator()(dena::container_create_node node){}
+    void operator()(dena::pso_memory_create_node node){}
+    void operator()(dena::pso_group_level_step_node node){
+        // get memory containers
+        using namespace dena;
+        auto main_cnt = main_storage->container(node.main_cnt_id);
+        auto particles_v = main_storage->container(pso::memory::particles_vel(node.memory_id));
+        auto particles_mem = main_storage->container(pso::memory::particles_mem(node.memory_id));
+        auto groups_mem = main_storage->container(pso::memory::groups_mem(node.memory_id));
+        auto node_mem = main_storage->container(pso::memory::node_mem(node.memory_id));
+        auto cluster_mem = main_storage->container(pso::memory::cluster_mem(node.memory_id));
+        auto str = std::make_unique<pso_l1_strategy<T_e, T_dim>>(problem, main_cnt, particles_v, particles_mem, groups_mem, node_mem, cluster_mem);
+        // add the strategy to the container
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
     
 };
 
@@ -390,18 +446,21 @@ struct running_visitor{
     // visitor may also change the path stack in the case of composable flows
     std::stack<T_stack_e>* path_stack;
 
-    void operator()(flow::null_node node){}
-    void operator()(flow::init_uniform node){
+    void operator()(dena::null_node node){}
+    void operator()(dena::init_uniform node){
         for(auto& str: main_storage->str_storage[node.tag]){
             str->apply();
-            spdlog::info("initialized container");
         }
     }
-    void operator()(flow::init_normal node){}
-    void operator()(flow::run_n_times_node node){}
-    void operator()(flow::container_create_node node){}
-    void operator()(flow::pso_memory_create_node node){}
-    
+    void operator()(dena::init_normal node){}
+    void operator()(dena::run_n_times_node node){}
+    void operator()(dena::container_create_node node){}
+    void operator()(dena::pso_memory_create_node node){}
+    void operator()(dena::pso_group_level_step_node node){
+        for(auto& str: main_storage->str_storage[node.tag]){
+            str->apply();
+        }
+    }
 };
 
 /**
@@ -417,9 +476,8 @@ public:
 
     basic_runtime(system<T_e, T_dim>* problem){
         this->problem = problem;
-        storage.n_nodes = 0;
     }
-    void run(const flow::flow& fl){
+    void run(const dena::flow& fl){
         // allocate memory for running the flow
         this->traverse_allocate(fl);
         // allocate and assign strategies
@@ -433,12 +491,12 @@ public:
      * @param fl flow
      * @return * void 
      */
-    void traverse_allocate(const flow::flow& fl){
+    void traverse_allocate(const dena::flow& fl){
         auto it = fl.procedure.begin();
         // storage for the traversed path
         std::stack<decltype(it)> path;
         // visitor
-        allocation_visitor<T_e, T_dim, decltype(it)> visitor {problem, &storage, &path};
+        allocation_visitor<T_e, T_dim, decltype(it)> alloc_visitor {problem, &storage, &path}; 
         // initialize the path
         path.push(it);
         // iterate until there is no node in the stack
@@ -448,8 +506,7 @@ public:
             path.pop();
             auto current = *it;
             // visit the node
-            std::visit(visitor, current);
-            storage.n_nodes++;
+            std::visit(alloc_visitor, current);
             // push the next node into the stack if it's not null
             it = std::next(it);
             if((*it).index() != 0)
@@ -462,7 +519,7 @@ public:
      * @param fl flow
      * @return * void 
      */
-    void traverse_assign(const flow::flow& fl){
+    void traverse_assign(const dena::flow& fl){
         auto it = fl.procedure.begin();
         // storage for the traversed path
         std::stack<decltype(it)> path;
@@ -490,7 +547,7 @@ public:
      * @param fl flow
      * @return * void 
      */
-    void traverse_run(const flow::flow& fl){
+    void traverse_run(const dena::flow& fl){
         auto it = fl.procedure.begin();
         // storage for the traversed path
         std::stack<decltype(it)> path;
