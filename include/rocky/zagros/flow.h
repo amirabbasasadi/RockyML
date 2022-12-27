@@ -446,19 +446,12 @@ struct running_visitor{
     // visitor may also change the path stack in the case of composable flows
     std::stack<T_stack_e>* path_stack;
 
-    void operator()(dena::null_node node){}
-    void operator()(dena::init_uniform node){
-        for(auto& str: main_storage->str_storage[node.tag]){
-            str->apply();
-        }
-    }
-    void operator()(dena::init_normal node){}
-    void operator()(dena::run_n_times_node node){}
-    void operator()(dena::container_create_node node){}
-    void operator()(dena::pso_memory_create_node node){}
-    void operator()(dena::pso_group_level_step_node node){
-        for(auto& str: main_storage->str_storage[node.tag]){
-            str->apply();
+    template<typename T_n>
+    void operator()(T_n node){
+        if (main_storage->str_storage.find(node.tag) != main_storage->str_storage.end()){
+            for(auto& str: main_storage->str_storage[node.tag]){
+                str->apply();
+            }
         }
     }
 };

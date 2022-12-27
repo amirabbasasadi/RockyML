@@ -15,13 +15,15 @@ TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
     const int group_size = 20;
     const int dim = 16;
 
-    using namespace zagros::flow;
+    using namespace zagros::dena;
     
 
     zagros::benchmark::rastrigin<swarm_type, dim> problem;
 
-    auto f2 = container::create("c1", n_particles, group_size) >> init::uniform("c1");
-
+    auto f2 = container::create("S", n_particles, group_size)
+              >> pso::memory::create("mem", "S")
+              >> init::uniform("S")
+              >> pso::group_level::step("mem", "S");
     
     zagros::basic_runtime<swarm_type, dim> runtime(&problem);
     runtime.run(f2);
