@@ -43,6 +43,12 @@ struct init_uniform: public init_node{
 };
 struct init_normal: public init_node{};
 
+struct pso_node: public flow_node{};
+struct pso_memory_create_node: public pso_node{
+    std::string memory_id;
+    std::string main_cnt_id;
+};
+
 struct run_node;
 struct until_convergence;
 struct run_every_n_steps_node;
@@ -53,6 +59,7 @@ typedef std::variant<null_node,
                     init_uniform,
                     init_normal,
                     container_create_node,
+                    pso_memory_create_node,
                     run_n_times_node> flow_node_variant;
 
 
@@ -157,6 +164,79 @@ public:
 }; // end of init
 
 
+namespace pso{
+
+/**
+ * @brief utilities for manipulating pso memory
+ * 
+ */
+class memory{
+public:
+    /**
+     * @brief creating a node for pso memory allocation
+     * 
+     * @param mem_id a unique name for refering to memory
+     * @param main_id pso target solution container
+     * @return * flow 
+     */
+    static flow create(std::string mem_id, std::string main_id){
+        flow f;
+        pso_memory_create_node node;
+        node.memory_id = mem_id;
+        node.main_cnt_id = main_id;
+        f.procedure.push_front(node);
+        return f;
+    }
+    /**
+     * @brief id of particles velocity
+     * 
+     * @param base memory id
+     * @return * std::string 
+     */
+    static std::string particles_vel(std::string base){
+        return base + std::string("__pvel__");
+    }
+    /**
+     * @brief id of particles memory
+     * 
+     * @param base memory id
+     * @return * std::string 
+     */
+    static std::string particles_mem(std::string base){
+        return base + std::string("__pmem__");
+    }
+    /**
+     * @brief id of groups memory
+     * 
+     * @param base memory id
+     * @return * std::string 
+     */
+    static std::string groups_mem(std::string base){
+        return base + std::string("__gmem__");
+    }
+    /**
+     * @brief id of node memory
+     * 
+     * @param base memory id
+     * @return * std::string 
+     */
+    static std::string node_mem(std::string base){
+        return base + std::string("__nmem__");
+    }
+    /**
+     * @brief id of cluster memory
+     * 
+     * @param base memory id
+     * @return * std::string 
+     */
+    static std::string cluster_mem(std::string base){
+        return base + std::string("__cmem__");
+    } 
+}; // end of memory
+
+}; // end of pso
+
+
 }; // end of flow
 
 
@@ -212,6 +292,7 @@ public:
         cnt_storage.push_back(std::move(cnt));
         // register the id in the storage
         cnt_map[id] = cnt_storage.size()-1;
+        spdlog::info("container {} was allocated", id);
     }
 };
 
@@ -245,6 +326,25 @@ struct allocation_visitor{
         spdlog::info("visiting a container creator");
         main_storage->allocate_container(node.id, node.n_particles, node.group_size);
     }
+    void operator()(flow::pso_memory_create_node node){
+        // allocate required solution containers for particle swarm
+        auto main_cnt = main_storage->container(node.main_cnt_id);
+        int n_particles = main_cnt->n_particles();
+        int n_groups = main_cnt->n_groups();
+        int group_size = main_cnt->group_size();
+        
+        using namespace flow;
+        // particles velocity
+        main_storage->allocate_container(pso::memory::particles_vel(node.memory_id), n_particles, group_size);
+        // particles memory
+        main_storage->allocate_container(pso::memory::particles_mem(node.memory_id), n_particles, group_size);
+        // groups memory
+        main_storage->allocate_container(pso::memory::groups_mem(node.memory_id), n_groups, 1);
+        // node memory
+        main_storage->allocate_container(pso::memory::node_mem(node.memory_id), 1, 1);
+        // cluster memory
+        main_storage->allocate_container(pso::memory::cluster_mem(node.memory_id), 1, 1);
+    }
     
 };
 
@@ -273,6 +373,7 @@ struct assigning_visitor{
     void operator()(flow::init_normal node){}
     void operator()(flow::run_n_times_node node){}
     void operator()(flow::container_create_node node){}
+    void operator()(flow::pso_memory_create_node node){}
     
 };
 
@@ -299,6 +400,7 @@ struct running_visitor{
     void operator()(flow::init_normal node){}
     void operator()(flow::run_n_times_node node){}
     void operator()(flow::container_create_node node){}
+    void operator()(flow::pso_memory_create_node node){}
     
 };
 
