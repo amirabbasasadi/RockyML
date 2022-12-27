@@ -34,7 +34,7 @@ public:
  * 
  */
 template<typename T_e, int T_dim>
-class search_strategy: basic_strategy<T_e, T_dim>{
+class search_strategy: public basic_strategy<T_e, T_dim>{
 public:
     virtual void apply() = 0;
 };
