@@ -9,6 +9,7 @@
 
 #include<rocky/zagros/system.h>
 #include<rocky/zagros/strategies/init.h>
+#include<rocky/zagros/strategies/log.h>
 #include<rocky/zagros/strategies/pso.h>
 #include<rocky/zagros/strategies/strategy.h>
 #include <rocky/utils.h>
@@ -49,6 +50,11 @@ struct init_uniform: public init_node{
 };
 struct init_normal: public init_node{};
 
+struct log_node: public flow_node{};
+struct log_best_node: public log_node{
+    std::string id;
+};
+
 struct pso_node: public flow_node{};
 struct pso_memory_create_node: public pso_node{
     std::string memory_id;
@@ -61,22 +67,6 @@ struct pso_step_node: public pso_node{
 struct pso_group_level_step_node: public pso_step_node{};
 struct pso_node_level_step_node: public pso_step_node{};
 
-struct run_node;
-struct until_convergence;
-struct run_every_n_steps_node;
-struct run_n_times_node;
-
-// a variant containing all nodes
-typedef std::variant<null_node,
-                    init_uniform,
-                    init_normal,
-                    container_create_node,
-                    pso_memory_create_node,
-                    pso_group_level_step_node,
-                    run_n_times_node> flow_node_variant;
-
-
-
 struct run_node: public flow_node{
     std::vector<int> sub_procedure;
 };
@@ -86,6 +76,14 @@ struct run_n_times_node: public run_node{
     int n_iters;
 };
 
+// a variant containing all nodes
+typedef std::variant<log_best_node,
+                    init_uniform,
+                    init_normal,
+                    container_create_node,
+                    pso_memory_create_node,
+                    pso_group_level_step_node,
+                    run_n_times_node> flow_node_variant;
 
 class node{
 public:
@@ -170,6 +168,28 @@ public:
     }
 }; // end of init
 
+
+/**
+ * @brief factories for logging strategies
+ * 
+ */
+class log{
+public:
+    /**
+     * @brief initialize particles uniformly
+     * 
+     * @return * flow 
+     */
+    static flow best(std::string id){
+        flow f;
+        log_best_node node;
+        node.id = id;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+}; // end of init
+
 /**
  * @brief factories for composable flows
  * 
@@ -196,7 +216,6 @@ public:
 
 
 namespace pso{
-
 /**
  * @brief utilities for manipulating pso memory
  * 
@@ -366,9 +385,9 @@ struct allocation_visitor{
     runtime_storage<T_e, T_dim>* main_storage;
     // visitor may also change the path stack in the case of composable flows
     std::stack<int>* path_stack;
+    
+    void operator()(dena::log_best_node node){
 
-    void operator()(dena::null_node node){
-        spdlog::warn("a null node was found in the stack");
     }
     void operator()(dena::init_uniform node){
         spdlog::info("visiting an init uniform node, id : {}, tag: {}", node.id, node.tag);
@@ -420,7 +439,13 @@ struct assigning_visitor{
     // visitor may also change the path stack in the case of composable flows
     std::stack<int>* path_stack;
     
-    void operator()(dena::null_node node){}
+    void operator()(dena::log_best_node node){
+        auto target_cnt = main_storage->container(node.id);
+        // reserve the strategy
+        auto str = std::make_unique<log_best_strategy<T_e, T_dim>>(problem, target_cnt);
+        // add the strategy to the container
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
     void operator()(dena::init_uniform node){
         // get the target container
         spdlog::info("assign uniform -> id  : {}", node.id);

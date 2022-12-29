@@ -21,17 +21,10 @@ TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
     zagros::benchmark::rastrigin<swarm_type, dim> problem;
 
     auto f2 = container::create("A", n_particles, group_size)
-              >> container::create("B", n_particles, group_size)
-              >> container::create("C", n_particles, group_size)
-              >> container::create("D", n_particles, group_size)
+              >> pso::memory::create("M", "A")
               >> init::uniform("A")
-              >> run::n_times(2, 
-                    run::n_times(3,
-                        init::uniform("B") 
-                    )
-                )
-             >> init::uniform("C")
-             >> init::uniform("D");
+              >> run::n_times(25, pso::group_level::step("M", "A")
+                                 >> log::best(pso::memory::particles_mem("M")));
     
     zagros::basic_runtime<swarm_type, dim> runtime(&problem);
     runtime.run(f2);
