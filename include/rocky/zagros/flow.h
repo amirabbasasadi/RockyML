@@ -18,8 +18,13 @@ namespace rocky{
 namespace zagros{
 
 
+// overload pattern for simplifying visitors
+template<class... T_s> struct overload : T_s... { using T_s::operator()...; };
+template<class... T_s> overload(T_s...) -> overload<T_s...>;
 
 namespace dena{
+
+
 /**
  * @brief abstract flow node
  * 
@@ -73,7 +78,7 @@ typedef std::variant<null_node,
 
 
 struct run_node: public flow_node{
-    std::deque<flow_node_variant> sub_procedure;
+    std::vector<int> sub_procedure;
 };
 struct until_convergence: public run_node{};
 struct run_every_n_steps_node: public run_node{};
@@ -84,31 +89,35 @@ struct run_n_times_node: public run_node{
 
 class node{
 public:
-    static int n_nodes;
+    static std::vector<flow_node_variant> nodes;
+    static std::map<int, int> next_node;
     template<typename T_n>
-    static T_n create(){ 
-        T_n node;
-        node.tag = n_nodes++;
-        return node;
-    } 
+    static int register_node(T_n node){ 
+        node.tag = nodes.size();
+        nodes.push_back(node);
+        next_node[node.tag] = -1;
+        return node.tag;
+    }
+    static void register_link(int s, int e){
+        next_node[s] = e;
+    }
+    static int next(int tag){
+        return next_node[tag];
+    }
 };
-int node::n_nodes = 0;
+std::vector<flow_node_variant> node::nodes = std::vector<flow_node_variant>();
+std::map<int, int> node::next_node = std::map<int, int>();
 
 class flow{
 public:
-    std::deque<flow_node_variant> procedure;
+    std::vector<int> procedure;
     size_t total_memory;
 
-    flow(){
-        null_node node;
-        procedure.push_front(node);
-    }
-
     flow& operator >>(const flow& f){
-        auto node = *(f.procedure.begin());
-        auto last_it = std::prev(this->procedure.end());
-        if((*last_it).index() == 0)
-            this->procedure.erase(last_it);
+        // concat the two procedures
+        auto last_node = procedure.back();
+        auto first_node = f.procedure.front();
+        node::register_link(last_node, first_node);
         this->procedure.insert(this->procedure.end(), f.procedure.begin(), f.procedure.end());
         return *this;
     }
@@ -130,11 +139,12 @@ public:
      */
     static flow create(std::string id, int n_particles, int group_size){
         flow f;
-        auto node = node::create<container_create_node>();
+        container_create_node node;
         node.id = id;
         node.n_particles = n_particles;
         node.group_size = group_size;
-        f.procedure.push_front(node);
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
         return f;
     }
 };
@@ -152,9 +162,10 @@ public:
      */
     static flow uniform(std::string id){
         flow f;
-        auto node = node::create<init_uniform>();
+        init_uniform node;
         node.id = id;
-        f.procedure.push_front(node);
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
         return f;
     }
 }; // end of init
@@ -174,10 +185,11 @@ public:
      */
     static flow n_times(int iters, const flow& wrapped_flow){
         flow f;
-        auto node = node::create<run_n_times_node>();
+        run_n_times_node node;
         node.n_iters = iters;
-        node.sub_procedure.insert(node.sub_procedure.begin(), wrapped_flow.procedure.begin(), wrapped_flow.procedure.end());
-        f.procedure.push_front(node);
+        node.sub_procedure.insert(node.sub_procedure.end(), wrapped_flow.procedure.begin(), wrapped_flow.procedure.end());
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
         return f;
     }
 }; // end of init
@@ -200,10 +212,11 @@ public:
      */
     static flow create(std::string mem_id, std::string main_id){
         flow f;
-        auto node = node::create<pso_memory_create_node>();
+        pso_memory_create_node node;
         node.memory_id = mem_id;
         node.main_cnt_id = main_id;
-        f.procedure.push_front(node);
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
         return f;
     }
     /**
@@ -268,10 +281,11 @@ public:
      */
     static flow step(std::string mem_id, std::string main_id){
         flow f;
-        auto node = node::create<pso_group_level_step_node>();
+        pso_group_level_step_node node;
         node.memory_id = mem_id;
         node.main_cnt_id = main_id;
-        f.procedure.push_front(node);
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
         return f;
     }
 }; // end of group level
@@ -295,6 +309,8 @@ public:
     std::map<int, std::vector<std::unique_ptr<basic_strategy<T_e, T_dim>>>> str_storage;
     // mapping the containers' id to their storage blocks
     std::map<std::string, int> cnt_map;
+    // tracking number of iteration for nodes that affect the iteration
+    std::map<int, int> nodes_n_iters;
     // amount of allocated memory
     size_t container_space(){
         size_t allocated_mem = 0;
@@ -336,35 +352,35 @@ public:
     }
 };
 
-// overload pattern for simplifying visitors
-template<class... Ts> struct overload : Ts... { using Ts::operator()...; };
-template<class... Ts> overload(Ts...) -> overload<Ts...>;
+
 
 /**
  * @brief Allocation visitor
  * a visitor for traversing the flow and allocating required memory
  */
-template<typename T_e, int T_dim, typename T_stack_e>
+template<typename T_e, int T_dim>
 struct allocation_visitor{
     // objective system
     system<T_e, T_dim>* problem;
     // visitor will change main storage
     runtime_storage<T_e, T_dim>* main_storage;
     // visitor may also change the path stack in the case of composable flows
-    std::stack<T_stack_e>* path_stack;
+    std::stack<int>* path_stack;
 
     void operator()(dena::null_node node){
         spdlog::warn("a null node was found in the stack");
     }
     void operator()(dena::init_uniform node){
-        spdlog::info("visiting an init uniform node");
+        spdlog::info("visiting an init uniform node, id : {}, tag: {}", node.id, node.tag);
+
     }
     void operator()(dena::init_normal node){
         
     }
     void operator()(dena::run_n_times_node node){
         spdlog::info("visiting a run {} times node", node.n_iters);
-        path_stack->push(node.sub_procedure.begin());
+        main_storage->nodes_n_iters[node.tag] = node.n_iters;
+        path_stack->push(node.sub_procedure.front());
     }
     void operator()(dena::container_create_node node){
         spdlog::info("visiting a container creator");
@@ -395,18 +411,19 @@ struct allocation_visitor{
  * @brief Assigning visitor
  * a visitor for linking allocated strategies to the suitable solution container
  */
-template<typename T_e, int T_dim, typename T_stack_e>
+template<typename T_e, int T_dim>
 struct assigning_visitor{
     // objective system
     system<T_e, T_dim>* problem;
     // visitor will change main storage
     runtime_storage<T_e, T_dim>* main_storage;
     // visitor may also change the path stack in the case of composable flows
-    std::stack<T_stack_e>* path_stack;
-
+    std::stack<int>* path_stack;
+    
     void operator()(dena::null_node node){}
     void operator()(dena::init_uniform node){
         // get the target container
+        spdlog::info("assign uniform -> id  : {}", node.id);
         auto target_cnt = main_storage->container(node.id);
         // reserve the strategy
         auto str = std::make_unique<uniform_init_strategy<T_e, T_dim>>(problem, target_cnt);
@@ -414,7 +431,9 @@ struct assigning_visitor{
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
     void operator()(dena::init_normal node){}
-    void operator()(dena::run_n_times_node node){}
+    void operator()(dena::run_n_times_node node){
+        path_stack->push(node.sub_procedure.front());
+    }
     void operator()(dena::container_create_node node){}
     void operator()(dena::pso_memory_create_node node){}
     void operator()(dena::pso_group_level_step_node node){
@@ -437,22 +456,32 @@ struct assigning_visitor{
  * @brief Running visitor
  * a visitor for traversing and running the flow
  */
-template<typename T_e, int T_dim, typename T_stack_e>
+template<typename T_e, int T_dim, typename T_traverse_fn>
 struct running_visitor{
     // objective system
     system<T_e, T_dim>* problem;
     // visitor will change main storage
     runtime_storage<T_e, T_dim>* main_storage;
     // visitor may also change the path stack in the case of composable flows
-    std::stack<T_stack_e>* path_stack;
+    T_traverse_fn* traverse_fn;
 
     template<typename T_n>
     void operator()(T_n node){
-        if (main_storage->str_storage.find(node.tag) != main_storage->str_storage.end()){
-            for(auto& str: main_storage->str_storage[node.tag]){
-                str->apply();
+        if constexpr (std::is_base_of<dena::run_node, T_n>::value){
+            if constexpr (std::is_base_of<dena::run_n_times_node, T_n>::value){
+                for(int i=0; i<node.n_iters; i++){
+                    (*traverse_fn)(node.sub_procedure.front(), problem, main_storage);
+                }
             }
+            }else{
+                if (main_storage->str_storage.find(node.tag) != main_storage->str_storage.end()){
+                    spdlog::info("apply a strategy ...  {} tag : {}", typeid(T_n).name(), node.tag);
+                    for(auto& str: main_storage->str_storage[node.tag]){
+                        str->apply();
+                    }
+                }
         }
+       
     }
 };
 
@@ -475,7 +504,7 @@ public:
         this->traverse_allocate(fl);
         // allocate and assign strategies
         this->traverse_assign(fl);
-        // running the flow
+        // run the flow recursively
         this->traverse_run(fl);
     }
     /**
@@ -485,11 +514,11 @@ public:
      * @return * void 
      */
     void traverse_allocate(const dena::flow& fl){
-        auto it = fl.procedure.begin();
+        auto it = fl.procedure.front();
         // storage for the traversed path
-        std::stack<decltype(it)> path;
+        std::stack<int> path;
         // visitor
-        allocation_visitor<T_e, T_dim, decltype(it)> alloc_visitor {problem, &storage, &path}; 
+        allocation_visitor<T_e, T_dim> alloc_visitor {problem, &storage, &path}; 
         // initialize the path
         path.push(it);
         // iterate until there is no node in the stack
@@ -497,13 +526,13 @@ public:
             it = path.top();
             // remove the visited node
             path.pop();
-            auto current = *it;
-            // visit the node
-            std::visit(alloc_visitor, current);
+            auto current = dena::node::nodes[it];
             // push the next node into the stack if it's not null
-            it = std::next(it);
-            if((*it).index() != 0)
-                path.push(it);        
+            it = dena::node::next(it);
+            if(it > -1)
+                path.push(it);  
+            // visit the node
+            std::visit(alloc_visitor, current);      
         }  
     }
     /**
@@ -513,11 +542,11 @@ public:
      * @return * void 
      */
     void traverse_assign(const dena::flow& fl){
-        auto it = fl.procedure.begin();
+        auto it = fl.procedure.front();
         // storage for the traversed path
-        std::stack<decltype(it)> path;
+        std::stack<int> path;
         // visitor
-        assigning_visitor<T_e, T_dim, decltype(it)> visitor {problem, &storage, &path};
+        assigning_visitor<T_e, T_dim> assign_visitor {problem, &storage, &path}; 
         // initialize the path
         path.push(it);
         // iterate until there is no node in the stack
@@ -525,14 +554,24 @@ public:
             it = path.top();
             // remove the visited node
             path.pop();
-            auto current = *it;
-            // visit the node
-            std::visit(visitor, current);
+            auto current = dena::node::nodes[it];
             // push the next node into the stack if it's not null
-            it = std::next(it);
-            if((*it).index() != 0)
-                path.push(it);        
+            it = dena::node::next(it);
+            if(it > -1)
+                path.push(it);  
+            // visit the node
+            std::visit(assign_visitor, current);      
         }  
+    }
+    static void traverse_run_rec(int root, system<T_e, T_dim>* problem, runtime_storage<T_e, T_dim>* storage){
+        if(root == -1)
+            return;
+        // visitor
+        running_visitor<T_e, T_dim, decltype(traverse_run_rec)> run_visitor {problem, storage, &traverse_run_rec}; 
+        // iterate until there is no node left in the stack
+        auto node = dena::node::nodes[root];
+        std::visit(run_visitor, node);
+        traverse_run_rec(dena::node::next(root), problem, storage);
     }
     /**
      * @brief unnning the flow
@@ -541,26 +580,8 @@ public:
      * @return * void 
      */
     void traverse_run(const dena::flow& fl){
-        auto it = fl.procedure.begin();
-        // storage for the traversed path
-        std::stack<decltype(it)> path;
-        // visitor
-        running_visitor<T_e, T_dim, decltype(it)> visitor {problem, &storage, &path};
-        // initialize the path
-        path.push(it);
-        // iterate until there is no node in the stack
-        while(!path.empty()){
-            it = path.top();
-            // remove the visited node
-            path.pop();
-            auto current = *it;
-            // visit the node
-            std::visit(visitor, current);
-            // push the next node into the stack if it's not null
-            it = std::next(it);
-            if((*it).index() != 0)
-                path.push(it);        
-        }  
+        // running the flow and sub-flows recursively
+        this->traverse_run_rec(fl.procedure.front(), problem, &storage);
     }
 };
 
