@@ -7,6 +7,7 @@
 #endif
 
 #include<rocky/zagros/strategies/strategy.h>
+#include<rocky/zagros/strategies/communication.h>
 #include<nlohmann/json.hpp>
 #include<cpr/cpr.h>
 
@@ -25,33 +26,43 @@ template<typename T_e, int T_dim>
 class logging_strategy: public basic_strategy<T_e, T_dim>{};
 
 /**
- * @brief Log the best solution in the container
+ * @brief Log the best solution in the container in a csv file
  * 
  */
 template<typename T_e, int T_dim>
-class log_best_strategy: public logging_strategy<T_e, T_dim>{
+class local_log_best: public logging_strategy<T_e, T_dim>{
 protected:
     system<T_e, T_dim>* problem_;
     basic_scontainer<T_e, T_dim>* container_;
     std::fstream log_output_;
+    size_t step;
 
 public:
-    log_best_strategy(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* container){
+    local_log_best(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* container, std::string filename){
         this->problem_ = problem;
         this->container_ = container;
+        this->step = 0;
         // initialize the output file
-        // this->log_output_.open(filename, std::fstream::out);
-        
+        this->log_output_.open(filename, std::fstream::out);
+        // write the headers
+        this->write_header();
     }
-    virtual ~log_best_strategy(){
-        if(this->log_output_.is_open())
-            this->log_output_.close();
+    virtual void write_header(){
+        this->log_output_ << "step,best" << std::endl;
     }
     virtual void apply(){
         // find the best solution
-        T_e best = *std::min_element(container_->values.begin(), container_->values.end());
-        spdlog::info("best solution : {}", best);
+        T_e best = container_->best_min();
+        this->log_output_ << fmt::format("{},{}", this->step, best) << std::endl;
+        this->step++;
     };
+    virtual void save(){
+        if(this->log_output_.is_open())
+            this->log_output_.close();
+    }
+     virtual ~local_log_best(){
+        this->save();
+    }
 };
 
 /**
@@ -145,7 +156,7 @@ public:
     }
     virtual void apply(){
          // find the best solution
-        T_e best = *std::min_element(container_->values.begin(), container_->values.end());
+        T_e best = container_->best_min();
         // encode the metric data
         nlohmann::json metric_data = {{"experimentKey", this->experiment_key_},
                                       {"metricName", this->get_metric_name()},
