@@ -13,7 +13,7 @@
 #include<tbb/tbb.h>
 #include<Eigen/Core>
 
-#include<rocky/zagros/benchmark.h>
+#include<rocky/zagros/system.h>
 #include<rocky/utils.h>
 
 namespace rocky{
@@ -155,7 +155,48 @@ public:
      */
     size_t space() const{
         return sizeof(T_e) * (n_particles() * (T_dim + 1));
-    } 
+    }
+    /**
+     * @brief find the best solution in the container
+     * 
+     */
+     T_e best_min(){
+        T_e best = *std::min_element(values.begin(), values.end());
+        return best;
+     }
+     /**
+      * @brief evaluate and update the particles within a range
+      * 
+      * @param problem a zagros system
+      * @param rng_start 
+      * @param rng_end 
+      * @return * void 
+      */
+     void evaluate_and_update(system<T_e, T_dim>* problem, int rng_start, int rng_end){
+        tbb::parallel_for(rng_start, rng_end, [&](int p){
+            T_e obj = problem->objective(this->particle(p));
+            this->values[p] = obj;        
+        });
+     }
+     /**
+      * @brief evaluate and update a single particle
+      * 
+      * @param problem a zagros system
+      * @param p index of the target particle
+      * @return * void 
+      */
+     void evaluate_and_update(system<T_e, T_dim>* problem, int p){
+        evaluate_and_update(problem, p, p+1);
+     }
+     /**
+      * @brief evaluate and update all particles
+      * 
+      * @param problen a zagros system
+      * @return * void 
+      */
+     void evaluate_and_update(system<T_e, T_dim>* problem){
+        evaluate_and_update(problem, 0, n_particles());
+     }
 };
 
 }; // end of zagros namespace

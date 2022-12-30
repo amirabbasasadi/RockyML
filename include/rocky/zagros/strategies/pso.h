@@ -62,16 +62,15 @@ public:
     }
     // [todo] evaluate and update best solution of each particle in parallel
     virtual void update_particles_best(int rng_start, int rng_end){
-        tbb::parallel_for(rng_start, rng_end, [this](int p){
-            T_e obj = this->problem_->objective(this->main_container_->particle(p));
-            
-            if (obj < this->particles_best_->values[p]){
-                this->particles_best_->values[p] = obj;
+        this->main_container_->evaluate_and_update(this->problem_);
+        tbb::parallel_for(rng_start, rng_end, [this](int p){      
+            T_e val = this->main_container_->values[p]; 
+            if (val < this->particles_best_->values[p]){
+                this->particles_best_->values[p] = val;
                 // copy the particle solution
                 std::copy(this->main_container_->particle(p),
                           this->main_container_->particle(p) + T_dim,
                           this->particles_best_->particle(p));
-               
             }
         });
     }
@@ -84,7 +83,6 @@ public:
             auto rng = this->main_container_->group_range(t);
             auto min_el = std::min_element(this->particles_best_->value(rng.first),
                                            this->particles_best_->value(rng.second));
-            // [todo] we shouldn't copy the solution! 
             if (*min_el < this->groups_best_->values[t]){
                 int min_el_ind = static_cast<int>(min_el - this->particles_best_->value(0));
                 this->groups_best_->values[t] = *min_el;
