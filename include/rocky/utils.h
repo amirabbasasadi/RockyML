@@ -23,6 +23,12 @@ class random{
 public:
     thread_local inline static std::mt19937 prng;
     static void init(unsigned int seed){ random::prng.seed(seed);}
+    // generate a uniform random variable
+    template<typename T_e>
+    static T_e uniform(float a=0.0, float b=1.0){
+        static std::uniform_real_distribution<T_e> dist(a, b);
+        return dist(prng);
+    }
 };
 
 };

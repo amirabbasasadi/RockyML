@@ -53,6 +53,7 @@ struct init_normal: public init_node{};
 struct log_node: public flow_node{};
 struct log_best_node: public log_node{
     std::string id;
+    std::string filename;
 };
 
 struct pso_node: public flow_node{};
@@ -71,7 +72,9 @@ struct run_node: public flow_node{
     std::vector<int> sub_procedure;
 };
 struct until_convergence: public run_node{};
-struct run_every_n_steps_node: public run_node{};
+struct run_with_probability_node: public run_node{
+    float prob;
+};
 struct run_n_times_node: public run_node{
     int n_iters;
 };
@@ -83,6 +86,7 @@ typedef std::variant<log_best_node,
                     container_create_node,
                     pso_memory_create_node,
                     pso_group_level_step_node,
+                    run_with_probability_node,
                     run_n_times_node> flow_node_variant;
 
 class node{
@@ -168,28 +172,25 @@ public:
     }
 }; // end of init
 
-
-/**
- * @brief factories for logging strategies
- * 
- */
-class log{
+namespace log{
+class local{
 public:
     /**
-     * @brief initialize particles uniformly
+     * @brief local logging strategies
      * 
      * @return * flow 
      */
-    static flow best(std::string id){
+    static flow best(std::string id, std::string filename){
         flow f;
         log_best_node node;
         node.id = id;
+        node.filename = filename;
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
         return f;
     }
-}; // end of init
-
+}; // end of local
+}; // end of log
 /**
  * @brief factories for composable flows
  * 
@@ -207,6 +208,22 @@ public:
         flow f;
         run_n_times_node node;
         node.n_iters = iters;
+        node.sub_procedure.insert(node.sub_procedure.end(), wrapped_flow.procedure.begin(), wrapped_flow.procedure.end());
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+    /**
+     * @brief run a flow with a specified probability
+     * 
+     * @param prob the probability of running the flow
+     * @param wrapped_flow 
+     * @return * flow 
+     */
+    static flow with_probability(float prob, const flow& wrapped_flow){
+        flow f;
+        run_with_probability_node node;
+        node.prob = prob;
         node.sub_procedure.insert(node.sub_procedure.end(), wrapped_flow.procedure.begin(), wrapped_flow.procedure.end());
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
@@ -328,8 +345,6 @@ public:
     std::map<int, std::vector<std::unique_ptr<basic_strategy<T_e, T_dim>>>> str_storage;
     // mapping the containers' id to their storage blocks
     std::map<std::string, int> cnt_map;
-    // tracking number of iteration for nodes that affect the iteration
-    std::map<int, int> nodes_n_iters;
     // amount of allocated memory
     size_t container_space(){
         size_t allocated_mem = 0;
@@ -398,7 +413,9 @@ struct allocation_visitor{
     }
     void operator()(dena::run_n_times_node node){
         spdlog::info("visiting a run {} times node", node.n_iters);
-        main_storage->nodes_n_iters[node.tag] = node.n_iters;
+        path_stack->push(node.sub_procedure.front());
+    }
+    void operator()(dena::run_with_probability_node node){
         path_stack->push(node.sub_procedure.front());
     }
     void operator()(dena::container_create_node node){
@@ -442,7 +459,7 @@ struct assigning_visitor{
     void operator()(dena::log_best_node node){
         auto target_cnt = main_storage->container(node.id);
         // reserve the strategy
-        auto str = std::make_unique<log_best_strategy<T_e, T_dim>>(problem, target_cnt);
+        auto str = std::make_unique<local_log_best<T_e, T_dim>>(problem, target_cnt, node.filename);
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
@@ -457,6 +474,9 @@ struct assigning_visitor{
     }
     void operator()(dena::init_normal node){}
     void operator()(dena::run_n_times_node node){
+        path_stack->push(node.sub_procedure.front());
+    }
+    void operator()(dena::run_with_probability_node node){
         path_stack->push(node.sub_procedure.front());
     }
     void operator()(dena::container_create_node node){}
@@ -493,8 +513,16 @@ struct running_visitor{
     template<typename T_n>
     void operator()(T_n node){
         if constexpr (std::is_base_of<dena::run_node, T_n>::value){
+            // run n times
             if constexpr (std::is_base_of<dena::run_n_times_node, T_n>::value){
                 for(int i=0; i<node.n_iters; i++){
+                    (*traverse_fn)(node.sub_procedure.front(), problem, main_storage);
+                }
+            }
+            // run with a probability
+            if constexpr (std::is_base_of<dena::run_with_probability_node, T_n>::value){
+                float sample = utils::random::uniform<float>(0.0, 1.0);
+                if(sample < node.prob){
                     (*traverse_fn)(node.sub_procedure.front(), problem, main_storage);
                 }
             }
