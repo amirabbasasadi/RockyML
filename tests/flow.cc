@@ -15,17 +15,18 @@ TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
 
     const int n_particles = 100;
     const int group_size = 20;
-    const int dim = 16;
+    const int dim = 100;
 
     using namespace zagros::dena;
     
 
     zagros::benchmark::rastrigin<swarm_type, dim> problem;
+    zagros::blocked_system<swarm_type, dim, 20> bsystem(&problem);
 
     auto f2 = container::create("A", n_particles, group_size)
               >> pso::memory::create("M", "A")
               >> init::uniform("A")
-              >> run::n_times(250, pso::group_level::step("M", "A")
+              >> run::n_times(100, pso::group_level::step("M", "A")
                                    >> run::with_probability(0.1, 
                                            log::local::best(pso::memory::particles_mem("M"), "loss_track.data")
                                       ));
