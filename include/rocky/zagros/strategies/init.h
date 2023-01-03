@@ -24,7 +24,7 @@ protected:
 
     T_e rand_uniform(T_e lb, T_e ub){
         std::uniform_real_distribution<T_e> dist(lb, ub);
-        return dist(rocky::utils::random::prng);
+        return dist(rocky::utils::random::prng());
     }
 public:
     uniform_init_strategy(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* container){

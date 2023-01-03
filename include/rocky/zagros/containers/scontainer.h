@@ -113,7 +113,7 @@ public:
         std::uniform_int_distribution<> dist(group_rng.first, group_rng.second-1);
         std::set<int> indices;
         do{
-            indices.insert(dist(rocky::utils::random::prng));
+            indices.insert(dist(rocky::utils::random::prng()));
         }while(indices.size() < n);
         return indices;
     }
@@ -138,7 +138,7 @@ public:
     int sample_particle(int group){
         auto group_rng = group_range(group);
         std::uniform_int_distribution<> dist(group_rng.first, group_rng.second-1);
-        return dist(rocky::utils::random::prng);
+        return dist(rocky::utils::random::prng());
     }
     /**
      * @brief choose a dimension randomly
@@ -147,7 +147,7 @@ public:
      */
     int sample_dim(){
         std::uniform_int_distribution<> dist(0, T_dim-1);
-        return dist(rocky::utils::random::prng);
+        return dist(rocky::utils::random::prng());
     }  
     /**
      * @brief amount of allocated memory in bytes

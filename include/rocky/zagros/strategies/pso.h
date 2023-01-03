@@ -51,7 +51,7 @@ public:
     }
     T_e rand_uniform(){
         static std::uniform_real_distribution<T_e> dist(0.0, 1.0);
-        return dist(rocky::utils::random::prng);
+        return dist(rocky::utils::random::prng());
     }
     // initialize particles velocity to zero
     virtual void initialize_velocity(){

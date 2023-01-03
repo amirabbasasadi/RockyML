@@ -84,7 +84,7 @@ public:
     // generate gaussian noise
     T_e gaussian_noise(){
         static std::normal_distribution<T_e> dist(mu_, sigma_);
-        auto z = dist(rocky::utils::random::prng);
+        auto z = dist(rocky::utils::random::prng());
         return z;
     }
     virtual void tweak(int p_ind, int dim){

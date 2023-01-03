@@ -26,7 +26,7 @@ TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
     auto f2 = container::create("A", n_particles, group_size)
               >> pso::memory::create("M", "A")
               >> init::uniform("A")
-              >> run::n_times(100, pso::group_level::step("M", "A")
+              >> run::n_times(1000, pso::group_level::step("M", "A")
                                    >> run::with_probability(0.1, 
                                            log::local::best(pso::memory::particles_mem("M"), "loss_track.data")
                                       ));
