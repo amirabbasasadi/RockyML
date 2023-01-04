@@ -1,11 +1,15 @@
 #ifndef ROCKY_ZAGROS_COMM_STRATEGY
 #define ROCKY_ZAGROS_COMM_STRATEGY
 
-#include <rocky/zagros/strategies/strategy.h>
-
 #ifdef ROCKY_USE_MPI
 #include<mpi.h>
 #endif
+
+#include <rocky/zagros/strategies/strategy.h>
+#include<nlohmann/json.hpp>
+#include<cpr/cpr.h>
+
+
 
 namespace rocky{
 namespace zagros{
@@ -14,7 +18,7 @@ namespace zagros{
  * 
  */
 template<typename T_e, int T_dim>
-class comm_strategy: basic_strategy<T_e, T_dim>{
+class comm_strategy: public basic_strategy<T_e, T_dim>{
 public:
     virtual void apply() = 0;
 };

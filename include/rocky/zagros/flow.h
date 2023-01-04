@@ -56,6 +56,11 @@ struct log_best_node: public log_node{
     std::string filename;
 };
 
+struct comm_node: public flow_node{};
+struct comm_cluster_prop_best: public comm_node{
+    std::string id;
+};
+
 struct pso_node: public flow_node{};
 struct pso_memory_create_node: public pso_node{
     std::string memory_id;
@@ -81,6 +86,7 @@ struct run_n_times_node: public run_node{
 
 // a variant containing all nodes
 typedef std::variant<log_best_node,
+                    comm_cluster_prop_best,
                     init_uniform,
                     init_normal,
                     container_create_node,
@@ -191,6 +197,27 @@ public:
     }
 }; // end of local
 }; // end of log
+
+namespace comm{
+class cluster{
+public:
+/**
+ * @brief propagate the best solution across nodes
+ * 
+ * @param id target container
+ * @return * flow 
+ */
+static flow propagate_best(std::string id){
+    flow f;
+    comm_cluster_prop_best node;
+    node.id = id;
+    auto node_tag = node::register_node<>(node);
+    f.procedure.push_back(node_tag);
+    return f;
+}
+}; // end of cluster
+}; // end of comm
+
 /**
  * @brief factories for composable flows
  * 
@@ -404,6 +431,7 @@ struct allocation_visitor{
     void operator()(dena::log_best_node node){
 
     }
+    void operator()(dena::comm_cluster_prop_best node){}
     void operator()(dena::init_uniform node){
         spdlog::info("visiting an init uniform node, id : {}, tag: {}", node.id, node.tag);
 
@@ -461,6 +489,14 @@ struct assigning_visitor{
         // reserve the strategy
         auto str = std::make_unique<local_log_best<T_e, T_dim>>(problem, target_cnt, node.filename);
         // add the strategy to the container
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
+    void operator()(dena::comm_cluster_prop_best node){
+        // retrieve the target container
+        auto target_cnt = main_storage->container(node.id);
+        // create and configure the strategy
+        auto str = std::make_unique<sync_broadcast_best<T_e, T_dim>>(target_cnt);
+        // register the strategy
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
     void operator()(dena::init_uniform node){
