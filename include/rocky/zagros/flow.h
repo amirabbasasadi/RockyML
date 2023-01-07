@@ -372,6 +372,10 @@ public:
     std::map<int, std::vector<std::unique_ptr<basic_strategy<T_e, T_dim>>>> str_storage;
     // mapping the containers' id to their storage blocks
     std::map<std::string, int> cnt_map;
+    // a mask representing active variables in blocked descent
+    std::vector<int> bcd_mask;
+    // state of blocked systems
+    tbb::enumerable_thread_specific<std::vector<T_e>> blocked_state;
     // amount of allocated memory
     size_t container_space(){
         size_t allocated_mem = 0;
@@ -578,15 +582,22 @@ struct running_visitor{
  * @brief base class for all runtimes
  * 
  */
-template<typename T_e, int T_dim>
+template<typename T_e, int T_dim, int T_block_dim=T_dim>
 class basic_runtime{
 public:
     // objective system
     system<T_e, T_dim>* problem;
+    std::unique_ptr<blocked_system<T_e, T_block_dim>> blocked_problem;
     runtime_storage<T_e, T_dim> storage;
 
+    // check if the objective system is blocked 
+    constexpr bool blocked(){
+        return T_dim != T_block_dim;
+    }
     basic_runtime(system<T_e, T_dim>* problem){
         this->problem = problem;
+        this->blocked_problem = std::make_unique<blocked_system<T_e, T_block_dim>>(problem);
+        // initialize and sync the blocked systems
     }
     void run(const dena::flow& fl){
         // allocate memory for running the flow
@@ -607,7 +618,7 @@ public:
         // storage for the traversed path
         std::stack<int> path;
         // visitor
-        allocation_visitor<T_e, T_dim> alloc_visitor {problem, &storage, &path}; 
+        allocation_visitor<T_e, T_dim> alloc_visitor {blocked_problem.get(), &storage, &path}; 
         // initialize the path
         path.push(it);
         // iterate until there is no node in the stack
@@ -635,7 +646,7 @@ public:
         // storage for the traversed path
         std::stack<int> path;
         // visitor
-        assigning_visitor<T_e, T_dim> assign_visitor {problem, &storage, &path}; 
+        assigning_visitor<T_e, T_dim> assign_visitor {blocked_problem.get(), &storage, &path}; 
         // initialize the path
         path.push(it);
         // iterate until there is no node in the stack
@@ -670,7 +681,7 @@ public:
      */
     void traverse_run(const dena::flow& fl){
         // running the flow and sub-flows recursively
-        this->traverse_run_rec(fl.procedure.front(), problem, &storage);
+        this->traverse_run_rec(fl.procedure.front(), blocked_problem.get(), &storage);
     }
 };
 

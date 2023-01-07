@@ -22,7 +22,6 @@ TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
     
 
     zagros::benchmark::rastrigin<swarm_type, dim> problem;
-    zagros::blocked_system<swarm_type, dim, 20> bsystem(&problem);
 
     auto f2 = container::create("A", n_particles, group_size)
               >> pso::memory::create("M", "A")

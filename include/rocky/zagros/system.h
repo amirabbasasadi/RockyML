@@ -46,10 +46,10 @@ public:
 };
 
 /**
- * @brief a virtual system to implement blocked descent
+ * @brief a virtual system to implement blocked coordinate descent
  * 
  */
-template<typename T_e, int T_dim, int T_block_dim>
+template<typename T_e, int T_dim>
 class blocked_system: public system<T_e, T_dim>{
 public:
     // a thread-specific solution state provided by the runtime
@@ -69,7 +69,7 @@ public:
     }
     virtual T_e objective(T_e* partial){
         // copy the partial solution to the full solution
-        for(int i=0; i<T_block_dim; i++)
+        for(int i=0; i<T_dim; i++)
             solution_state_[partial_map(i)] = partial[i];
         // evaluate the full solution
         return main_system_->objective(solution_state_);
