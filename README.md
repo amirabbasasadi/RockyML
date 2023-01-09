@@ -8,8 +8,19 @@
 
 **Work in Progress!! Wait until a stable release!**
 
+- **Zagros** : A parallel and distributed optimization engine
+  - **Dena** : A language for designing search strategies
 - **Etna** : Building blocks for designing fast non-differentiable neural networks
-- **Zagros** : A high-performance and scalable black-box optimization engine
+
+
+## Zagros
+<p><img align="center" src="/logo/zagros-white-1200.png"></p>  
+
+Design Goals:
+- CPU-friendly: targeting multi-core systems and clusters
+- Hybrid parallelism: multi-threading in each node and message passing across nodes (MPI)
+- Handling large number of variables using block coordinate descent
+- Design arbitrary complex optimizers by combining modular search/communication strategies
 
 
 ## Etna
@@ -22,17 +33,7 @@ Building blocks for designing non-differentiable neural networks
   - Combinatorial layers
   - Stochastic layers
   - Dynamic layers
-
-## Zagros
-<p><img align="center" src="/logo/zagros-white-1200.png"></p>  
-
-Design Goals:
-- CPU-friendly: targeting multi-core systems and clusters
-- Hybrid parallelism: multi-threading for each node and message passing across nodes (MPI)
-- Handling large number of variables using block coordinate descent
-- Supporting continuous, discrete, and mixed optimization problems  
-- Design arbitrary complex optimizers by combining modular search/communication strategies
-
+  
 ## Guide
 ### Dependencies
 For usage:
