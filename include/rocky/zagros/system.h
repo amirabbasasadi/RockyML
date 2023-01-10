@@ -4,13 +4,15 @@
 #include<string>
 #include<memory>
 
+#include<tbb/tbb.h>
+
 #include "spdlog/spdlog.h"
 
 
 namespace rocky{
 namespace zagros{
 
-template<typename T_e, size_t T_dim>
+template<typename T_e>
 class system{
 public:
     virtual T_e objective(T_e* params) = 0;
@@ -49,18 +51,22 @@ public:
  * @brief a virtual system to implement blocked coordinate descent
  * 
  */
-template<typename T_e, int T_dim>
-class blocked_system: public system<T_e, T_dim>{
+template<typename T_e>
+class blocked_system: public system<T_e>{
 public:
-    // a thread-specific solution state provided by the runtime
-    T_e* solution_state_;
+    int block_dim_;
+    int original_dim_;
+    // thread-specific solution states provided by the runtime
+    tbb::enumerable_thread_specific<std::vector<T_e>>* solution_state_;
     // main system
-    system<T_e, T_dim>* main_system_;
-    blocked_system(system<T_e, T_dim>* main_system){
+    system<T_e>* main_system_;
+    blocked_system(system<T_e>* main_system, int original_dim, int block_dim){
         this->main_system_ = main_system;
+        this->original_dim_ = original_dim;
+        this->block_dim_ = block_dim;
     }
     // change the solution state
-    void set_solution_state(T_e* solution_state){
+    void set_solution_state(tbb::enumerable_thread_specific<std::vector<T_e>>* solution_state){
         this->solution_state_ = solution_state;
     }
     // map a partial parameter index to the original index in the full solution vector
@@ -68,11 +74,13 @@ public:
         return p_index;
     }
     virtual T_e objective(T_e* partial){
+        // get a thread specific solution
+        T_e* full_solution = this->solution_state_->local().data();
         // copy the partial solution to the full solution
-        for(int i=0; i<T_dim; i++)
-            solution_state_[partial_map(i)] = partial[i];
+        for(int i=0; i<block_dim_; i++)
+            full_solution[partial_map(i)] = partial[i];
         // evaluate the full solution
-        return main_system_->objective(solution_state_);
+        return main_system_->objective(full_solution);
     }
     /**
      * @brief lower bound specification

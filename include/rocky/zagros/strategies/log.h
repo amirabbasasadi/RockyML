@@ -32,13 +32,13 @@ class logging_strategy: public basic_strategy<T_e, T_dim>{};
 template<typename T_e, int T_dim>
 class local_log_best: public logging_strategy<T_e, T_dim>{
 protected:
-    system<T_e, T_dim>* problem_;
+    system<T_e>* problem_;
     basic_scontainer<T_e, T_dim>* container_;
     std::fstream log_output_;
     size_t step;
 
 public:
-    local_log_best(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* container, std::string filename){
+    local_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, std::string filename){
         this->problem_ = problem;
         this->container_ = container;
         this->step = 0;
@@ -79,7 +79,7 @@ class comet_strategy: public logging_strategy<T_e, T_dim>{};
 template<typename T_e, int T_dim>
 class comet_log_best: public comet_strategy<T_e, T_dim>{
 protected:
-    system<T_e, T_dim>* problem_;
+    system<T_e>* problem_;
     basic_scontainer<T_e, T_dim>* container_;
     std::string comet_api_key_;
     std::string workspace_;
@@ -90,7 +90,7 @@ protected:
     std::string experiment_key_;
 
 public:
-    comet_log_best(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* container, std::string comet_api_key, std::string workspace, std::string project, std::string metric_name){
+    comet_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, std::string comet_api_key, std::string workspace, std::string project, std::string metric_name){
         this->problem_ = problem;
         this->container_ = container;
         this->comet_api_key_ = comet_api_key;

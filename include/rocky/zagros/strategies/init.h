@@ -19,7 +19,7 @@ class init_strategy: public basic_strategy<T_e, T_dim>{};
 template<typename T_e, int T_dim>
 class uniform_init_strategy: public init_strategy<T_e, T_dim>{
 protected:
-    system<T_e, T_dim>* problem_;
+    system<T_e>* problem_;
     basic_scontainer<T_e, T_dim>* container_;
 
     T_e rand_uniform(T_e lb, T_e ub){
@@ -27,7 +27,7 @@ protected:
         return dist(rocky::utils::random::prng());
     }
 public:
-    uniform_init_strategy(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* container){
+    uniform_init_strategy(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container){
         this->problem_ = problem;
         this->container_ = container; 
     }

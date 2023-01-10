@@ -12,7 +12,7 @@ namespace zagros{
 template<typename T_e, int T_dim>
 class basic_differnetial_evolution: public search_strategy<T_e, T_dim>{
 protected:
-    system<T_e, T_dim>* problem_;
+    system<T_e>* problem_;
     basic_scontainer<T_e, T_dim>* container_;
     // DE hyper-parameters
     T_e CR_;
@@ -21,7 +21,7 @@ protected:
 public:
     typedef Eigen::Map<Eigen::Matrix<T_e, 1, T_dim, Eigen::RowMajor>> eigen_particle;
 
-    basic_differnetial_evolution(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* container){
+    basic_differnetial_evolution(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container){
         this->problem_ = problem;
         this->container_ = container;
         this->CR_ = 0.5;

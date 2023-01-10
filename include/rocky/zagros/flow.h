@@ -363,19 +363,20 @@ public:
  * @brief runtime storage
  * 
  */
-template<typename T_e, int T_dim>
+template<typename T_e, int T_dim, int T_block_dim>
 class runtime_storage{
 public:
     // allocated containers
-    std::vector<std::unique_ptr<basic_scontainer<T_e, T_dim>>> cnt_storage;
+    std::vector<std::unique_ptr<basic_scontainer<T_e, T_block_dim>>> cnt_storage;
     // allocated strategies
-    std::map<int, std::vector<std::unique_ptr<basic_strategy<T_e, T_dim>>>> str_storage;
+    std::map<int, std::vector<std::unique_ptr<basic_strategy<T_e, T_block_dim>>>> str_storage;
     // mapping the containers' id to their storage blocks
     std::map<std::string, int> cnt_map;
     // a mask representing active variables in blocked descent
     std::vector<int> bcd_mask;
     // state of blocked systems
-    tbb::enumerable_thread_specific<std::vector<T_e>> blocked_state;
+    std::vector<T_e> blocked_state;
+    tbb::enumerable_thread_specific<std::vector<T_e>> th_blocked_states;
     // amount of allocated memory
     size_t container_space(){
         size_t allocated_mem = 0;
@@ -398,7 +399,7 @@ public:
      * @param id 
      * @return * basic_scontainer<T_e, T_dim>* 
      */
-    basic_scontainer<T_e, T_dim>* container(std::string id){
+    basic_scontainer<T_e, T_block_dim>* container(std::string id){
         if (!container_exist(id)){
             spdlog::warn("container {} does not exist", id);
         }
@@ -408,7 +409,7 @@ public:
     }
     void allocate_container(std::string id, int n_particles, int group_size){
          // allocate a continer
-        auto cnt = std::make_unique<basic_scontainer<T_e, T_dim>>(n_particles, group_size);
+        auto cnt = std::make_unique<basic_scontainer<T_e, T_block_dim>>(n_particles, group_size);
         cnt->allocate();
         cnt_storage.push_back(std::move(cnt));
         // register the id in the storage
@@ -423,12 +424,12 @@ public:
  * @brief Allocation visitor
  * a visitor for traversing the flow and allocating required memory
  */
-template<typename T_e, int T_dim>
+template<typename T_e, int T_dim, int T_block_dim>
 struct allocation_visitor{
     // objective system
-    system<T_e, T_dim>* problem;
+    system<T_e>* problem;
     // visitor will change main storage
-    runtime_storage<T_e, T_dim>* main_storage;
+    runtime_storage<T_e, T_dim, T_block_dim>* main_storage;
     // visitor may also change the path stack in the case of composable flows
     std::stack<int>* path_stack;
     
@@ -479,19 +480,19 @@ struct allocation_visitor{
  * @brief Assigning visitor
  * a visitor for linking allocated strategies to the suitable solution container
  */
-template<typename T_e, int T_dim>
+template<typename T_e, int T_dim, int T_block_dim>
 struct assigning_visitor{
     // objective system
-    system<T_e, T_dim>* problem;
+    system<T_e>* problem;
     // visitor will change main storage
-    runtime_storage<T_e, T_dim>* main_storage;
+    runtime_storage<T_e, T_dim, T_block_dim>* main_storage;
     // visitor may also change the path stack in the case of composable flows
     std::stack<int>* path_stack;
     
     void operator()(dena::log_best_node node){
         auto target_cnt = main_storage->container(node.id);
         // reserve the strategy
-        auto str = std::make_unique<local_log_best<T_e, T_dim>>(problem, target_cnt, node.filename);
+        auto str = std::make_unique<local_log_best<T_e, T_block_dim>>(problem, target_cnt, node.filename);
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
@@ -499,7 +500,7 @@ struct assigning_visitor{
         // retrieve the target container
         auto target_cnt = main_storage->container(node.id);
         // create and configure the strategy
-        auto str = std::make_unique<sync_broadcast_best<T_e, T_dim>>(target_cnt);
+        auto str = std::make_unique<sync_broadcast_best<T_e, T_block_dim>>(target_cnt);
         // register the strategy
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
@@ -508,7 +509,7 @@ struct assigning_visitor{
         spdlog::info("assign uniform -> id  : {}", node.id);
         auto target_cnt = main_storage->container(node.id);
         // reserve the strategy
-        auto str = std::make_unique<uniform_init_strategy<T_e, T_dim>>(problem, target_cnt);
+        auto str = std::make_unique<uniform_init_strategy<T_e, T_block_dim>>(problem, target_cnt);
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
@@ -530,7 +531,7 @@ struct assigning_visitor{
         auto groups_mem = main_storage->container(pso::memory::groups_mem(node.memory_id));
         auto node_mem = main_storage->container(pso::memory::node_mem(node.memory_id));
         auto cluster_mem = main_storage->container(pso::memory::cluster_mem(node.memory_id));
-        auto str = std::make_unique<pso_l1_strategy<T_e, T_dim>>(problem, main_cnt, particles_v, particles_mem, groups_mem, node_mem, cluster_mem);
+        auto str = std::make_unique<pso_l1_strategy<T_e, T_block_dim>>(problem, main_cnt, particles_v, particles_mem, groups_mem, node_mem, cluster_mem);
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
@@ -541,12 +542,12 @@ struct assigning_visitor{
  * @brief Running visitor
  * a visitor for traversing and running the flow
  */
-template<typename T_e, int T_dim, typename T_traverse_fn>
+template<typename T_e, int T_dim, int T_block_dim, typename T_traverse_fn>
 struct running_visitor{
     // objective system
-    system<T_e, T_dim>* problem;
+    system<T_e>* problem;
     // visitor will change main storage
-    runtime_storage<T_e, T_dim>* main_storage;
+    runtime_storage<T_e, T_dim, T_block_dim>* main_storage;
     // visitor may also change the path stack in the case of composable flows
     T_traverse_fn* traverse_fn;
 
@@ -586,18 +587,30 @@ template<typename T_e, int T_dim, int T_block_dim=T_dim>
 class basic_runtime{
 public:
     // objective system
-    system<T_e, T_dim>* problem;
-    std::unique_ptr<blocked_system<T_e, T_block_dim>> blocked_problem;
-    runtime_storage<T_e, T_dim> storage;
+    system<T_e>* problem;
+    std::unique_ptr<blocked_system<T_e>> blocked_problem;
+    runtime_storage<T_e, T_dim, T_block_dim> storage;
 
     // check if the objective system is blocked 
     constexpr bool blocked(){
         return T_dim != T_block_dim;
     }
-    basic_runtime(system<T_e, T_dim>* problem){
+    // get problem
+    system<T_e>* get_problem(){
+        if(blocked())
+            return blocked_problem.get();
+        else
+            return problem;
+    }
+    basic_runtime(system<T_e>* problem){
         this->problem = problem;
-        this->blocked_problem = std::make_unique<blocked_system<T_e, T_block_dim>>(problem);
-        // initialize and sync the blocked systems
+        if (blocked()){
+            this->blocked_problem = std::make_unique<blocked_system<T_e>>(problem, T_dim, T_block_dim);
+            // initialize and sync the blocked systems
+            storage.blocked_state.assign(T_dim, 0.5);
+            storage.th_blocked_states = tbb::enumerable_thread_specific<std::vector<T_e>>(storage.blocked_state);
+            this->blocked_problem->set_solution_state(&(storage.th_blocked_states));
+        } 
     }
     void run(const dena::flow& fl){
         // allocate memory for running the flow
@@ -618,7 +631,7 @@ public:
         // storage for the traversed path
         std::stack<int> path;
         // visitor
-        allocation_visitor<T_e, T_dim> alloc_visitor {blocked_problem.get(), &storage, &path}; 
+        allocation_visitor<T_e, T_dim, T_block_dim> alloc_visitor {get_problem(), &storage, &path}; 
         // initialize the path
         path.push(it);
         // iterate until there is no node in the stack
@@ -646,7 +659,7 @@ public:
         // storage for the traversed path
         std::stack<int> path;
         // visitor
-        assigning_visitor<T_e, T_dim> assign_visitor {blocked_problem.get(), &storage, &path}; 
+        assigning_visitor<T_e, T_dim, T_block_dim> assign_visitor {get_problem(), &storage, &path}; 
         // initialize the path
         path.push(it);
         // iterate until there is no node in the stack
@@ -663,11 +676,11 @@ public:
             std::visit(assign_visitor, current);      
         }  
     }
-    static void traverse_run_rec(int root, system<T_e, T_dim>* problem, runtime_storage<T_e, T_dim>* storage){
+    static void traverse_run_rec(int root, system<T_e>* problem, runtime_storage<T_e, T_dim, T_block_dim>* storage){
         if(root == -1)
             return;
         // visitor
-        running_visitor<T_e, T_dim, decltype(traverse_run_rec)> run_visitor {problem, storage, &traverse_run_rec}; 
+        running_visitor<T_e, T_dim, T_block_dim, decltype(traverse_run_rec)> run_visitor {problem, storage, &traverse_run_rec}; 
         // iterate until there is no node left in the stack
         auto node = dena::node::nodes[root];
         std::visit(run_visitor, node);
@@ -681,7 +694,7 @@ public:
      */
     void traverse_run(const dena::flow& fl){
         // running the flow and sub-flows recursively
-        this->traverse_run_rec(fl.procedure.front(), blocked_problem.get(), &storage);
+        this->traverse_run_rec(fl.procedure.front(), get_problem(), &storage);
     }
 };
 

@@ -172,7 +172,7 @@ public:
       * @param rng_end 
       * @return * void 
       */
-     void evaluate_and_update(system<T_e, T_dim>* problem, int rng_start, int rng_end){
+     void evaluate_and_update(system<T_e>* problem, int rng_start, int rng_end){
         tbb::parallel_for(rng_start, rng_end, [&](int p){
             T_e obj = problem->objective(this->particle(p));
             this->values[p] = obj;        
@@ -185,7 +185,7 @@ public:
       * @param p index of the target particle
       * @return * void 
       */
-     void evaluate_and_update(system<T_e, T_dim>* problem, int p){
+     void evaluate_and_update(system<T_e>* problem, int p){
         evaluate_and_update(problem, p, p+1);
      }
      /**
@@ -194,7 +194,7 @@ public:
       * @param problen a zagros system
       * @return * void 
       */
-     void evaluate_and_update(system<T_e, T_dim>* problem){
+     void evaluate_and_update(system<T_e>* problem){
         evaluate_and_update(problem, 0, n_particles());
      }
 };

@@ -16,7 +16,7 @@ public:
 
 protected:
     // system
-    system<T_e, T_dim>* problem_;
+    system<T_e>* problem_;
     // main container
     basic_scontainer<T_e, T_dim>* main_container_;
     // particles velocity
@@ -34,7 +34,7 @@ protected:
     T_e hyper_w_;
 
 public:
-    basic_pso(system<T_e, T_dim>* problem,
+    basic_pso(system<T_e>* problem,
               basic_scontainer<T_e, T_dim>* main_container,
               basic_scontainer<T_e, T_dim>* particles_v,
               basic_scontainer<T_e, T_dim>* particles_best,
@@ -156,7 +156,7 @@ protected:
         });
     }
 public:
-    pso_l1_strategy(system<T_e, T_dim>* problem,
+    pso_l1_strategy(system<T_e>* problem,
               basic_scontainer<T_e, T_dim>* main_container,
               basic_scontainer<T_e, T_dim>* particles_v,
               basic_scontainer<T_e, T_dim>* particles_best,
@@ -199,7 +199,7 @@ protected:
         });
     }
 public:
-    pso_l2_strategy(system<T_e, T_dim>* problem,
+    pso_l2_strategy(system<T_e>* problem,
               basic_scontainer<T_e, T_dim>* main_container,
               basic_scontainer<T_e, T_dim>* particles_v,
               basic_scontainer<T_e, T_dim>* particles_best,
@@ -241,7 +241,7 @@ protected:
         });
     }
 public:
-    pso_l3_strategy(system<T_e, T_dim>* problem,
+    pso_l3_strategy(system<T_e>* problem,
               basic_scontainer<T_e, T_dim>* main_container,
               basic_scontainer<T_e, T_dim>* particles_v,
               basic_scontainer<T_e, T_dim>* particles_best,

@@ -22,13 +22,13 @@ template<typename T_e, int T_dim>
 class dimension_tweak_strategy: public mutation_strategy<T_e, T_dim>{
 protected:
     // system
-    system<T_e, T_dim>* problem_;
+    system<T_e>* problem_;
     // main container
     basic_scontainer<T_e, T_dim>* target_container_;
     // number of affected dimensions
     int k_;
 public:
-    dimension_tweak_strategy(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* tgt_container, int k){
+    dimension_tweak_strategy(system<T_e>* problem, basic_scontainer<T_e, T_dim>* tgt_container, int k){
         this->problem_ = problem;
         this->target_container_ = tgt_container;
         this->k_ = k;
@@ -76,7 +76,7 @@ protected:
     T_e mu_;
     T_e sigma_;
 public:
-    gaussian_mutation(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* tgt_container, int k=1, T_e mu=0.0, T_e sigma=0.5)
+    gaussian_mutation(system<T_e>* problem, basic_scontainer<T_e, T_dim>* tgt_container, int k=1, T_e mu=0.0, T_e sigma=0.5)
     :dimension_tweak_strategy<T_e, T_dim>(problem, tgt_container, k){
         this->mu_ = mu;
         this->sigma_ = sigma;
@@ -113,7 +113,7 @@ protected:
     // maximum number of affected dimensions
     int k_;
 public:
-    multipoint_crossover(system<T_e, T_dim>* problem, basic_scontainer<T_e, T_dim>* container, int k){
+    multipoint_crossover(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, int k){
         this->k_ = k;
         this->problem_ = problem;
         this->container_ = container;
