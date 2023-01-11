@@ -42,8 +42,12 @@ public:
         this->problem_ = problem;
         this->container_ = container;
         this->step = 0;
+        // create a specific filename for this rank
+        int mpi_rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+        std::string process_spc_filename = std::string("proc_") + std::to_string(mpi_rank) + std::string("_") + filename;
         // initialize the output file
-        this->log_output_.open(filename, std::fstream::out);
+        this->log_output_.open(process_spc_filename, std::fstream::out);
         // write the headers
         this->write_header();
     }
