@@ -9,82 +9,18 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="800"
-   height="300"
-   viewBox="0 0 211.66666 79.374998"
+   width="358.60416"
+   height="358.60416"
+   viewBox="0 0 94.88068 94.880681"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="zagros.svg"
-   inkscape:export-filename="/media/amirabbas/3F25FB4E23F92FF1/CPP/projects/RockyML/logo/zagros-white-2500.png"
-   inkscape:export-xdpi="300.16"
-   inkscape:export-ydpi="300.16">
+   inkscape:export-filename="/media/amirabbas/3F25FB4E23F92FF1/CPP/projects/RockyML/logo/zagros-white-2400.png"
+   inkscape:export-xdpi="642.49115"
+   inkscape:export-ydpi="642.49115">
   <defs
-     id="defs2">
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath896">
-      <path
-         sodipodi:type="star"
-         style="opacity:1;fill:#442178;fill-opacity:1;stroke:#2c3e50;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="path898"
-         sodipodi:sides="3"
-         sodipodi:cx="30.855656"
-         sodipodi:cy="198.46275"
-         sodipodi:r1="18.753744"
-         sodipodi:r2="9.3768711"
-         sodipodi:arg1="0.52359878"
-         sodipodi:arg2="1.5707963"
-         inkscape:flatsided="true"
-         inkscape:rounded="0"
-         inkscape:randomized="0"
-         d="m 47.096874,207.83963 -32.482437,0 16.241219,-28.13062 z"
-         inkscape:transform-center-x="2.4767093e-06"
-         inkscape:transform-center-y="-4.1284596" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath896-5">
-      <path
-         sodipodi:type="star"
-         style="opacity:1;fill:#442178;fill-opacity:1;stroke:#2c3e50;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="path898-6"
-         sodipodi:sides="3"
-         sodipodi:cx="30.855656"
-         sodipodi:cy="198.46275"
-         sodipodi:r1="18.753744"
-         sodipodi:r2="9.3768711"
-         sodipodi:arg1="0.52359878"
-         sodipodi:arg2="1.5707963"
-         inkscape:flatsided="true"
-         inkscape:rounded="0"
-         inkscape:randomized="0"
-         d="m 47.096874,207.83963 -32.482437,0 16.241219,-28.13062 z"
-         inkscape:transform-center-x="2.4767093e-06"
-         inkscape:transform-center-y="-4.1284596" />
-    </clipPath>
-    <clipPath
-       clipPathUnits="userSpaceOnUse"
-       id="clipPath896-6">
-      <path
-         sodipodi:type="star"
-         style="opacity:1;fill:#442178;fill-opacity:1;stroke:#2c3e50;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-         id="path898-4"
-         sodipodi:sides="3"
-         sodipodi:cx="30.855656"
-         sodipodi:cy="198.46275"
-         sodipodi:r1="18.753744"
-         sodipodi:r2="9.3768711"
-         sodipodi:arg1="0.52359878"
-         sodipodi:arg2="1.5707963"
-         inkscape:flatsided="true"
-         inkscape:rounded="0"
-         inkscape:randomized="0"
-         d="m 47.096874,207.83963 -32.482437,0 16.241219,-28.13062 z"
-         inkscape:transform-center-x="2.4767093e-06"
-         inkscape:transform-center-y="-4.1284596" />
-    </clipPath>
-  </defs>
+     id="defs2" />
   <sodipodi:namedview
      id="base"
      pagecolor="#ffffff"
@@ -92,11 +28,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="384.20898"
-     inkscape:cy="209.4326"
+     inkscape:zoom="0.95108696"
+     inkscape:cx="172.00634"
+     inkscape:cy="273.83584"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer2"
+     inkscape:current-layer="layer5"
      showgrid="false"
      units="px"
      inkscape:window-width="1366"
@@ -104,7 +40,11 @@
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     showguides="false" />
+     showguides="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -118,49 +58,47 @@
     </rdf:RDF>
   </metadata>
   <g
+     inkscape:groupmode="layer"
+     id="layer5"
+     inkscape:label="fake_bg" />
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="back_circle"
+     transform="translate(-57.997501,10.694832)">
+    <circle
+       style="opacity:1;fill:#0b0b28;fill-opacity:1;stroke:none;stroke-width:0.26499999;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path4764"
+       cx="105.43784"
+       cy="36.74551"
+       r="47.440342" />
+  </g>
+  <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-217.62498)">
+     transform="translate(-57.997501,-206.93015)">
     <g
        inkscape:groupmode="layer"
        id="layer2"
        inkscape:label="Back" />
     <flowRoot
        xml:space="preserve"
-       id="flowRoot853"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#006680;fill-opacity:1;stroke:none"
-       transform="matrix(0.65690626,0,0,0.65690626,-38.950369,223.0339)"
-       inkscape:export-xdpi="28.472803"
-       inkscape:export-ydpi="28.472803"><flowRegion
-         id="flowRegion855"
-         style="fill:#006680"><rect
-           id="rect857"
-           width="156.46684"
-           height="53.331181"
-           x="147.14285"
-           y="41.42857"
-           style="fill:#006680" /></flowRegion><flowPara
-         id="flowPara859"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Arkibal Serif';-inkscape-font-specification:'Arkibal Serif Bold';fill:#006680">Zagros<flowSpan
-   style="fill:#006680"
-   id="flowSpan976" /></flowPara></flowRoot>    <flowRoot
-       xml:space="preserve"
        id="flowRoot853-3"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#00222b;fill-opacity:1;stroke:none"
-       transform="matrix(0.73643334,0,0,0.73643334,-76.688907,233.802)"><flowRegion
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
+       transform="matrix(0.48573099,0,0,0.48573099,-0.20811857,243.30384)"><flowRegion
          id="flowRegion855-6"
-         style="fill:#00222b"><rect
+         style="fill:#ffffff"><rect
            id="rect857-7"
            width="582.85712"
            height="201.42857"
            x="147.14285"
            y="41.42857"
-           style="fill:#00222b" /></flowRegion><flowPara
+           style="fill:#ffffff" /></flowRegion><flowPara
          id="flowPara859-5"
-         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold';fill:#00222b">A Parallel and Distributed Gradient-Free Optimizer</flowPara></flowRoot>    <path
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold';fill:#ffffff">A Parallel and Distributed Optimizer</flowPara></flowRoot>    <path
        sodipodi:type="star"
-       style="opacity:1;fill:#004455;fill-opacity:1;stroke:none;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#161650;fill-opacity:1;stroke:none;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path829-9-3-3"
        sodipodi:sides="3"
        sodipodi:cx="30.458786"
@@ -173,12 +111,12 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 46.700005,224.29859 -32.482438,0 16.241219,-28.13061 z"
-       inkscape:transform-center-x="2.3161389e-06"
-       inkscape:transform-center-y="-3.4168368"
-       transform="matrix(0.79826897,0,0,0.72877855,95.806809,86.774564)" />
+       inkscape:transform-center-x="1.9030189e-06"
+       inkscape:transform-center-y="-3.7593633"
+       transform="matrix(0.87829274,0,0,0.80183613,93.585919,68.583931)" />
     <path
        sodipodi:type="star"
-       style="opacity:1;fill:#006680;fill-opacity:1;stroke:none;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#212178;fill-opacity:1;stroke:none;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path829-9-3-3-3"
        sodipodi:sides="3"
        sodipodi:cx="30.458786"
@@ -191,12 +129,11 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 46.700005,224.29859 -32.482438,0 16.241219,-28.13061 z"
-       inkscape:transform-center-x="2.5147189e-06"
-       inkscape:transform-center-y="-5.409119"
-       transform="matrix(1.263722,0,0,1.1537132,65.905308,-6.9501786)" />
+       inkscape:transform-center-y="-5.9513524"
+       transform="matrix(1.3904059,0,0,1.2693691,62.327442,-34.5364)" />
     <path
        sodipodi:type="star"
-       style="opacity:1;fill:#004455;fill-opacity:1;stroke:none;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#2c2ca0;fill-opacity:1;stroke:none;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path829-9-3-3-3-6"
        sodipodi:sides="3"
        sodipodi:cx="30.458786"
@@ -209,12 +146,12 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 46.700005,224.29859 -32.482438,0 16.241219,-28.13061 z"
-       inkscape:transform-center-x="2.3161389e-06"
-       inkscape:transform-center-y="-3.4168368"
-       transform="matrix(0.79826898,0,0,0.72877855,67.23125,88.362065)" />
+       inkscape:transform-center-x="2.1068877e-06"
+       inkscape:transform-center-y="-3.7593639"
+       transform="matrix(0.87829275,0,0,0.80183613,63.786305,70.330573)" />
     <path
        sodipodi:type="star"
-       style="opacity:1;fill:#0088aa;fill-opacity:1;stroke:none;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:#3737c8;fill-opacity:1;stroke:none;stroke-width:0.34062478;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path829-9-3-3-3-5"
        sodipodi:sides="3"
        sodipodi:cx="30.458786"
@@ -227,8 +164,31 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="m 46.700005,224.29859 -32.482438,0 16.241219,-28.13061 z"
-       inkscape:transform-center-x="2.3161389e-06"
-       inkscape:transform-center-y="-3.4168368"
-       transform="matrix(0.79826898,0,0,0.72877855,81.06518,90.932295)" />
+       inkscape:transform-center-x="2.744617e-06"
+       inkscape:transform-center-y="-3.7593638"
+       transform="matrix(0.87829275,0,0,0.80183613,79.007039,73.15846)" />
   </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer4"
+     inkscape:label="Text">
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot853"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
+       transform="matrix(0.46098483,0,0,0.46098483,-54.161812,25.676153)"
+       inkscape:export-xdpi="28.472803"
+       inkscape:export-ydpi="28.472803"><flowRegion
+         id="flowRegion855"
+         style="fill:#ffffff"><rect
+           id="rect857"
+           width="156.46684"
+           height="53.331181"
+           x="147.14285"
+           y="41.42857"
+           style="fill:#ffffff" /></flowRegion><flowPara
+         id="flowPara859"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:'Arkibal Serif';-inkscape-font-specification:'Arkibal Serif Bold';fill:#ffffff">Zagros<flowSpan
+   style="fill:#ffffff"
+   id="flowSpan976" /></flowPara></flowRoot>  </g>
 </svg>
