@@ -165,6 +165,17 @@ public:
         return best;
      }
      /**
+     * @brief find the best solution and the corresponding index in the container
+     * 
+     * @return a pair <T_e, int> containing best min value and index of the particle
+     */
+     std::pair<T_e, int> best_min_index(){
+        auto min_el = std::min_element(values.begin(), values.end());
+        int index = static_cast<int>(min_el - values.begin());
+        T_e best = *min_el;
+        return std::make_pair(best, index);
+     }
+     /**
       * @brief evaluate and update the particles within a range
       * 
       * @param problem a zagros system

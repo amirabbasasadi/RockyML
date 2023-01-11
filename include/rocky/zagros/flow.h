@@ -7,12 +7,10 @@
 #include<type_traits>
 #include<variant>
 
-#include<rocky/zagros/system.h>
 #include<rocky/zagros/strategies/init.h>
 #include<rocky/zagros/strategies/log.h>
 #include<rocky/zagros/strategies/pso.h>
-#include<rocky/zagros/strategies/strategy.h>
-#include <rocky/utils.h>
+#include<rocky/zagros/strategies/blocked_descent.h>
 
 
 namespace rocky{
@@ -375,13 +373,19 @@ public:
     // a mask representing active variables in blocked descent
     std::vector<int> bcd_mask;
     // state of blocked systems
-    std::vector<T_e> blocked_state;
+    std::unique_ptr<basic_scontainer<T_e, T_dim>> blocked_state;
     tbb::enumerable_thread_specific<std::vector<T_e>> th_blocked_states;
+    // a temp buffer for broadcasting best partial solution
+    std::unique_ptr<basic_scontainer<T_e, T_block_dim>> partial_best;
     // amount of allocated memory
     size_t container_space(){
         size_t allocated_mem = 0;
         for(auto const& cnt: cnt_storage)
             allocated_mem += cnt->space();
+        allocated_mem += blocked_state->space();
+        allocated_mem += partial_best->space();
+        for(auto const& th_state: th_blocked_states)
+            allocated_mem += th_state.size() * sizeof(T_e);
         return allocated_mem;
     }
     /**
@@ -416,6 +420,42 @@ public:
         cnt_map[id] = cnt_storage.size()-1;
         spdlog::info("container {} was allocated", id);
     }
+    // find the best partial solution in the storage
+    void update_partial_best(){
+        std::pair<T_e, int> best;
+        int best_ci = -1;
+        best.first = std::numeric_limits<T_e>::max();
+        for(int ci=0; ci<cnt_storage.size(); ci++){
+            auto min_and_index = cnt_storage[ci]->best_min_index();
+            if(min_and_index.first < best.first){
+                best = min_and_index;
+                best_ci = ci;
+            }        
+        }
+        // copy the best solution to the container
+        std::copy(cnt_storage[best_ci]->particle(best.second),
+                  cnt_storage[best_ci]->particle(best.second)+T_block_dim,
+                  partial_best->particle(0));
+        // copy the corresponding min value
+        partial_best->values[0] = best.first;
+    }
+    // synchronize best partial solution
+    void sync_partial_best(){
+        // Assumption : update_partial_best has been called already
+        // This function must be called before regenerating BCD mask
+        sync_broadcast_best<T_e, T_block_dim> sync_best_partial_str(partial_best.get());
+        spdlog::info("Broadcasting best partial solution...");
+        sync_best_partial_str.apply();
+        // replace the old partial solution in solution states
+        for(int i=0; i<T_block_dim; i++)
+            blocked_state->particles[0][bcd_mask[i]] = partial_best->particles[0][i];
+        // replace the old partial solution in thread-specific states
+        int i=0;
+        for(auto& th_state: th_blocked_states){
+            th_state[bcd_mask[i]] = partial_best->particles[0][i];
+            i++;
+        }
+    }
 };
 
 
@@ -437,22 +477,15 @@ struct allocation_visitor{
 
     }
     void operator()(dena::comm_cluster_prop_best node){}
-    void operator()(dena::init_uniform node){
-        spdlog::info("visiting an init uniform node, id : {}, tag: {}", node.id, node.tag);
-
-    }
-    void operator()(dena::init_normal node){
-        
-    }
+    void operator()(dena::init_uniform node){}
+    void operator()(dena::init_normal node){}
     void operator()(dena::run_n_times_node node){
-        spdlog::info("visiting a run {} times node", node.n_iters);
         path_stack->push(node.sub_procedure.front());
     }
     void operator()(dena::run_with_probability_node node){
         path_stack->push(node.sub_procedure.front());
     }
     void operator()(dena::container_create_node node){
-        spdlog::info("visiting a container creator");
         main_storage->allocate_container(node.id, node.n_particles, node.group_size);
     }
     void operator()(dena::pso_memory_create_node node){
@@ -506,7 +539,6 @@ struct assigning_visitor{
     }
     void operator()(dena::init_uniform node){
         // get the target container
-        spdlog::info("assign uniform -> id  : {}", node.id);
         auto target_cnt = main_storage->container(node.id);
         // reserve the strategy
         auto str = std::make_unique<uniform_init_strategy<T_e, T_block_dim>>(problem, target_cnt);
@@ -569,7 +601,6 @@ struct running_visitor{
             }
             }else{
                 if (main_storage->str_storage.find(node.tag) != main_storage->str_storage.end()){
-                    spdlog::info("apply a strategy ...  {} tag : {}", typeid(T_n).name(), node.tag);
                     for(auto& str: main_storage->str_storage[node.tag]){
                         str->apply();
                     }
@@ -605,11 +636,29 @@ public:
     basic_runtime(system<T_e>* problem){
         this->problem = problem;
         if (blocked()){
-            this->blocked_problem = std::make_unique<blocked_system<T_e>>(problem, T_dim, T_block_dim);
-            // initialize and sync the blocked systems
-            storage.blocked_state.assign(T_dim, 0.5);
-            storage.th_blocked_states = tbb::enumerable_thread_specific<std::vector<T_e>>(storage.blocked_state);
+            storage.bcd_mask.resize(T_block_dim);
+            std::iota(storage.bcd_mask.begin(), storage.bcd_mask.end(), 0);
+            this->blocked_problem = std::make_unique<blocked_system<T_e>>(problem, T_dim, T_block_dim, storage.bcd_mask.data());
+            sync_bcd_mask<T_e, T_block_dim> sync_mask_str(storage.bcd_mask.data());
+            spdlog::info("broadcasting bcd mask...");
+            sync_mask_str.apply();
+            // initialize and sync the bcd state
+            storage.blocked_state = std::make_unique<basic_scontainer<T_e, T_dim>>(1, 1);
+            storage.blocked_state->allocate();
+            storage.partial_best = std::make_unique<basic_scontainer<T_e, T_block_dim>>(1, 1);
+            storage.partial_best->allocate();
+            uniform_init_strategy<T_e, T_dim> init_bcd_state(problem, storage.blocked_state.get());
+            init_bcd_state.apply();
+            // briadcast the initialized solution
+            spdlog::info("broadcasting initial BCD solution state...");
+            sync_broadcast_best<T_e, T_dim> sync_bcd_state_str(storage.blocked_state.get());
+            sync_bcd_state_str.apply();
+            storage.th_blocked_states = tbb::enumerable_thread_specific<std::vector<T_e>>(storage.blocked_state->particles[0]);
             this->blocked_problem->set_solution_state(&(storage.th_blocked_states));
+
+            // storage.update_partial_best();
+            // storage.sync_partial_best();
+            
         } 
     }
     void run(const dena::flow& fl){

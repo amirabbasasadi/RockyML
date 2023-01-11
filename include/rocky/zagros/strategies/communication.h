@@ -67,8 +67,15 @@ class sync_broadcast_best: public mpi_strategy<T_e, T_dim>{
 protected:
     basic_scontainer<T_e, T_dim>* cluster_best_container_;
 public:
+    void set_target_container(basic_scontainer<T_e, T_dim>* container){
+        this->set_target_container = container;
+    }
     sync_broadcast_best(basic_scontainer<T_e, T_dim>* container){
         this->cluster_best_container_ = container;
+        this->fetch_mpi_info();
+    }
+    sync_broadcast_best(){
+        this->cluster_best_container_ = nullptr;
         this->fetch_mpi_info();
     }
     virtual void apply(){
@@ -92,6 +99,23 @@ public:
             MPI_Bcast(cluster_best_container_->particle(0), T_dim, MPI_FLOAT, result.rank, MPI_COMM_WORLD);
         } 
         cluster_best_container_->values[0] = result.cluster_best_min;
+    }
+};
+/**
+ * @brief A Communication strategy for broadcasting bcd mask
+ * 
+ */
+template<typename T_e, int T_dim>
+class sync_bcd_mask: public mpi_strategy<T_e, T_dim>{
+protected:
+    int* bcd_mask_;
+public:
+    sync_bcd_mask(int* bcd_mask){
+        this->bcd_mask_ = bcd_mask;
+        this->fetch_mpi_info();
+    }
+    virtual void apply(){
+        MPI_Bcast(this->bcd_mask_, T_dim, MPI_INT, 0, MPI_COMM_WORLD);
     }
 };
 #endif

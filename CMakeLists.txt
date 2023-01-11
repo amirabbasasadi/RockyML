@@ -4,7 +4,7 @@ project(RockyML LANGUAGES CXX VERSION 0.0.1)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ffast-math -march=native")
 
-set(ROCKY_BUILD_MPI_TESTS FALSE)
+set(ROCKY_BUILD_MPI_TESTS TRUE)
 
 Include(FetchContent)
 FetchContent_Declare(
@@ -35,7 +35,7 @@ target_link_libraries(tests PRIVATE Catch2::Catch2WithMain TBB::tbb TBB::tbbmall
 
 if(ROCKY_BUILD_MPI_TESTS)
 # tests that require MPI
-add_executable(mpi_tests tests/mpi/basic_strategy.cc)
+add_executable(mpi_tests tests/mpi/basic_mpi.cc)
 target_link_libraries(mpi_tests nanobench TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog)
 endif()
 

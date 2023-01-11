@@ -60,25 +60,33 @@ public:
     tbb::enumerable_thread_specific<std::vector<T_e>>* solution_state_;
     // main system
     system<T_e>* main_system_;
-    blocked_system(system<T_e>* main_system, int original_dim, int block_dim){
+    // block mask
+    int* bcd_mask_;
+    
+    int original_dim() const{
+        return original_dim_;
+    }
+
+    int block_dim() const{
+        return block_dim_;
+    }
+
+    blocked_system(system<T_e>* main_system, int original_dim, int block_dim, int* mask){
         this->main_system_ = main_system;
         this->original_dim_ = original_dim;
         this->block_dim_ = block_dim;
+        this->bcd_mask_ = mask;
     }
     // change the solution state
     void set_solution_state(tbb::enumerable_thread_specific<std::vector<T_e>>* solution_state){
         this->solution_state_ = solution_state;
-    }
-    // map a partial parameter index to the original index in the full solution vector
-    virtual int partial_map(int p_index){
-        return p_index;
     }
     virtual T_e objective(T_e* partial){
         // get a thread specific solution
         T_e* full_solution = this->solution_state_->local().data();
         // copy the partial solution to the full solution
         for(int i=0; i<block_dim_; i++)
-            full_solution[partial_map(i)] = partial[i];
+            full_solution[bcd_mask_[i]] = partial[i];
         // evaluate the full solution
         return main_system_->objective(full_solution);
     }
@@ -94,7 +102,7 @@ public:
      * @param p_index 
      * @return ** T_e 
      */
-    virtual T_e lower_bound(int p_index){ return this->main_system_->lower_bound(partial_map(p_index));}
+    virtual T_e lower_bound(int p_index){ return this->main_system_->lower_bound(bcd_mask_[p_index]);}
     /**
      * @brief upper bound specification
      * should be used when upper bound is same for all parameters
@@ -107,7 +115,7 @@ public:
      * @param p_index 
      * @return ** T_e 
      */
-    virtual T_e upper_bound(int p_index){ return this->main_system_->upper_bound(partial_map(p_index));}
+    virtual T_e upper_bound(int p_index){ return this->main_system_->upper_bound(bcd_mask_[p_index]);}
 };
 
 }; // end of zagros namespace

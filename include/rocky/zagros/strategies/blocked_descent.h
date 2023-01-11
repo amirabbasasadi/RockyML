@@ -2,6 +2,8 @@
 #define ROCKY_ZAGROS_BCD_STRATEGY
 #include <rocky/zagros/strategies/strategy.h>
 
+#include<set>
+
 namespace rocky{
 namespace zagros{
 
@@ -13,20 +15,45 @@ template<typename T_e, int T_dim>
 class bcd_strategy: public basic_strategy<T_e, T_dim>{};
 
 /**
- * @brief Uniform initializer
+ * @brief Interface for bcd mask generation strategies
  * 
  */
 template<typename T_e, int T_dim>
-class uniform_random_bcd: public bcd_strategy<T_e, T_dim>{
-protected:
-    blocked_system<T_e, T_dim>* problem_;
+class bcd_mask_gen_strategy: public bcd_strategy<T_e, T_dim>{};
 
+/**
+ * @brief Interface for bcd synchronization strategies
+ * 
+ */
+template<typename T_e, int T_dim>
+class bcd_sync_strategy: public bcd_strategy<T_e, T_dim>{};
+
+/**
+ * @brief Uniform mask generator
+ * 
+ */
+template<typename T_e, int T_dim>
+class bcd_mask_uniform_random: public bcd_mask_gen_strategy<T_e, T_dim>{
+protected:
+    blocked_system<T_e>* problem_;
+    std::vector<int>* bcd_mask_;
+
+T_e rand_dim(T_e lb, T_e ub){
+        static std::uniform_int_distribution<int> dist(0, problem_->original_dim()-1);
+        return dist(rocky::utils::random::prng());
+    }
 public:
-    uniform_random_bcd(blocked_system<T_e, T_dim>* problem){
+    bcd_mask_uniform_random(blocked_system<T_e>* problem, std::vector<int>* bcd_mask){
         this->problem_ = problem;
+        this->bcd_mask_ = bcd_mask;
     }
     virtual void apply(){
-       
+       std::set<int> dims;
+       while(dims.size() < this->problem_->block_dim())
+            dims.insert(this->rand_dim());
+       int i = 0;
+       for(auto dim: dims)
+           bcd_mask_->at(i++) = dim;
     };
 };
 
