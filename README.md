@@ -14,7 +14,7 @@
 
 
 ## Zagros
-<p><img align="center" src="/logo/zagros-white-1200.png"></p>  
+<p align="center"><img src="/logo/zagros-transparent-600.png"></p>  
 
 Design Goals:
 - CPU-friendly: targeting multi-core systems and clusters
@@ -41,7 +41,7 @@ For usage:
 - Eigen
 - A BLAS/LAPACK implementation, OpenBLAS is tested
 - Intel Threading Building Blocks (TBB)
-- An MPI implementation, OpenMPI is tested
+- An MPI implementation, OpenMPI is recommended
 
 Development only:  
 - Catch2
