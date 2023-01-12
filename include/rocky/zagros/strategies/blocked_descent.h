@@ -38,10 +38,10 @@ protected:
     blocked_system<T_e>* problem_;
     std::vector<int>* bcd_mask_;
 
-T_e rand_dim(T_e lb, T_e ub){
+int rand_dim(){
         static std::uniform_int_distribution<int> dist(0, problem_->original_dim()-1);
         return dist(rocky::utils::random::prng());
-    }
+}
 public:
     bcd_mask_uniform_random(blocked_system<T_e>* problem, std::vector<int>* bcd_mask){
         this->problem_ = problem;

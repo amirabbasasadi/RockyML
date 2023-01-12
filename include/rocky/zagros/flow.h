@@ -71,6 +71,12 @@ struct pso_step_node: public pso_node{
 struct pso_group_level_step_node: public pso_step_node{};
 struct pso_node_level_step_node: public pso_step_node{};
 
+struct bcd_node: public flow_node{};
+enum bcd_mask_generator { uniform };
+struct bcd_mask_node: public bcd_node{
+    bcd_mask_generator generator;
+};
+
 struct run_node: public flow_node{
     std::vector<int> sub_procedure;
 };
@@ -84,6 +90,7 @@ struct run_n_times_node: public run_node{
 
 // a variant containing all nodes
 typedef std::variant<log_best_node,
+                    bcd_mask_node,
                     comm_cluster_prop_best,
                     init_uniform,
                     init_normal,
@@ -195,6 +202,24 @@ public:
     }
 }; // end of local
 }; // end of log
+
+namespace blocked_descent{
+/**
+ * @brief factories for uniform BCD strategy * 
+ */
+class uniform{
+public:
+    static flow step(){
+        flow f;
+        bcd_mask_node node;
+        node.generator = bcd_mask_generator::uniform;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+}; // end of uniform
+}; // end of blocked descent
+
 
 namespace comm{
 class cluster{
@@ -456,6 +481,11 @@ public:
             i++;
         }
     }
+    // reset all solution containers
+    void reset(){
+         for(auto& cnt: cnt_storage)
+            cnt->reset_values();
+    }
 };
 
 
@@ -472,10 +502,9 @@ struct allocation_visitor{
     runtime_storage<T_e, T_dim, T_block_dim>* main_storage;
     // visitor may also change the path stack in the case of composable flows
     std::stack<int>* path_stack;
-    
-    void operator()(dena::log_best_node node){
 
-    }
+    void operator()(dena::bcd_mask_node node){}
+    void operator()(dena::log_best_node node){}
     void operator()(dena::comm_cluster_prop_best node){}
     void operator()(dena::init_uniform node){}
     void operator()(dena::init_normal node){}
@@ -522,6 +551,13 @@ struct assigning_visitor{
     // visitor may also change the path stack in the case of composable flows
     std::stack<int>* path_stack;
     
+    void operator()(dena::bcd_mask_node node){
+        // reserve the mask generation strategy
+        auto gen_str = std::make_unique<bcd_mask_uniform_random<T_e, T_block_dim>>(dynamic_cast<blocked_system<T_e>*>(problem), &(main_storage->bcd_mask));
+        // add the strategy to the container
+        main_storage->str_storage[node.tag].push_back(std::move(gen_str));
+    }
+
     void operator()(dena::log_best_node node){
         auto target_cnt = main_storage->container(node.id);
         // reserve the strategy
@@ -599,13 +635,28 @@ struct running_visitor{
                     (*traverse_fn)(node.sub_procedure.front(), problem, main_storage);
                 }
             }
-            }else{
-                if (main_storage->str_storage.find(node.tag) != main_storage->str_storage.end()){
-                    for(auto& str: main_storage->str_storage[node.tag]){
-                        str->apply();
-                    }
-                }
+            return;
         }
+        if constexpr (std::is_base_of<dena::bcd_mask_node, T_n>::value){
+            spdlog::info("running a bcd mask gen node...");
+            // synchronize best values for the current state over the cluster
+            main_storage->update_partial_best();
+            main_storage->sync_partial_best();
+            spdlog::info("bcd mask has been generated and synchronized.");
+            // generate a new mask
+            main_storage->str_storage[node.tag][0]->apply();
+            // synchronize the generated mask
+            // main_storage->str_storage[node.tag][1]->apply();
+            // reset all solution containers
+            main_storage->reset();
+            return;
+        }
+        if (main_storage->str_storage.find(node.tag) != main_storage->str_storage.end()){
+            for(auto& str: main_storage->str_storage[node.tag]){
+                str->apply();
+            }
+        }
+        
        
     }
 };

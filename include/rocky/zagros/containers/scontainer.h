@@ -45,14 +45,17 @@ public:
     std::vector<std::vector<T_e>> particles;
     // holding the particles value
     std::vector<T_e> values;
+    void reset_values(){
+        // initialize particles value
+        std::fill(values.begin(), values.end(), std::numeric_limits<T_e>::max());
+    }
     // allocate the requred memory
     void allocate(){
         particles.resize(n_particles());
         for(int p=0; p<n_particles(); ++p)
             particles[p].resize(T_dim);
         values.resize(n_particles());
-        // initialize particles value
-        std::fill(values.begin(), values.end(), std::numeric_limits<T_e>::max());
+        reset_values();
     }
     /**
      * @brief get the starting address of a specific particle
