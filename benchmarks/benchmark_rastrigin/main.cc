@@ -1,16 +1,6 @@
-#include <iostream>
-#include <fstream>
-#include <random>
-#include <functional>
-#include <algorithm>
-#include <tbb/tbb.h>
-#include <rocky/etna/blocks.h>
-#include <rocky/zagros/system.h>
-#include <rocky/zagros/distributed.h>
-#include <rocky/zagros/swarm.h>
+#define ROCKY_USE_MPI
 #include <rocky/zagros/benchmark.h>
-#include <chrono>
-#include <thread>
+#include <rocky/zagros/flow.h>
 
 
 int main(int argc, char* argv[]){
@@ -19,33 +9,33 @@ int main(int argc, char* argv[]){
     int rank;
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     
-    srand(rank);
+    using namespace rocky;
 
-    const unsigned n_particles = 200;
-    const unsigned dim = 1000;
-    const unsigned n_tribes = 10;
+    typedef float swarm_type;
 
-    zagros::swarm_mpi<float, dim, n_particles, n_tribes> optimizer;
-    auto system = new rocky::zagros::benchmark::rastrigin<float, dim>();
+    const int n_particles = 300;
+    const int group_size = 10;
+    const int dim = 2000;
+    const int block_dim = 100;
 
-    optimizer.fetch_mpi_info();
-    optimizer.add_system(system);
-    optimizer.allocate();
-    optimizer.initialize();
+    using namespace zagros::dena;
+    
 
-    int iters = 100;
-    if(rank == 0)
-        optimizer.log_init("objective.csv");
+    zagros::benchmark::rastrigin<swarm_type> problem(dim);
 
-    for(int i=0; i<iters; i++){
-        optimizer.iter();
-        if(rank == 0)
-            optimizer.log_step(i);
-    }
-    if(rank == 0)
-        optimizer.log_save();
+    auto f2 = container::create("A", n_particles, group_size)
+              >> pso::memory::create("M", "A")
+              >> init::uniform("A")
+              >> run::n_times(60,
+                    blocked_descent::uniform::step()
+                    >> run::n_times(50, 
+                            pso::group::step("M", "A"))
+                    >> run::n_times(120, 
+                            pso::cluster::step("M", "A")
+                            >> log::local::best("loss.csv")));
 
-    delete system;
+    zagros::basic_runtime<swarm_type, dim, block_dim> runtime(&problem);
+    runtime.run(f2);
     MPI_Finalize();
     return 0;
 }

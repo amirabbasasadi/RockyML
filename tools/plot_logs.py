@@ -19,16 +19,19 @@ try:
 except:
     raise ValueError("log data does not exist")
 
-split_content = content.split('---')
-csv_content = split_content[0]
-meta_data = split_content[1]
-del content
-del split_content
+if content.find('---') != -1:
+    split_content = content.split('---')
+    csv_content = split_content[0]
+    meta_data = split_content[1]
+    del content
+    del split_content
+else:
+    csv_content = content
 
 csv_data = StringIO(csv_content)
 data = pd.read_csv(csv_data)
 
-global_best = data.groupby(['time']).min()['value'].values
+global_best = data['best'].values
 
 plt.title("Best Global Solution")
 plt.plot(global_best)
@@ -37,15 +40,15 @@ plt.ylabel("value")
 plt.savefig("global.png")
 plt.close()
 
-n_tribes = data['tribe'].max() + 1
-plt.title("Best Tribes Solution")
-for t in range(n_tribes):
-    tribe = data[data['tribe'] == t]['value'].values
-    plt.plot(tribe)
+# n_tribes = data['tribe'].max() + 1
+# plt.title("Best Tribes Solution")
+# for t in range(n_tribes):
+#     tribe = data[data['tribe'] == t]['value'].values
+#     plt.plot(tribe)
 
-plt.xlabel("iters")
-plt.ylabel("value")
-plt.savefig("tribes.png")
-plt.close()
+# plt.xlabel("iters")
+# plt.ylabel("value")
+# plt.savefig("tribes.png")
+# plt.close()
 
 

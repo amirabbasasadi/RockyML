@@ -8,6 +8,8 @@ include_directories(../../include/)
 
 find_package(TBB CONFIG REQUIRED)
 find_package(Eigen3 CONFIG REQUIRED)
+find_package(spdlog CONFIG REQUIRED)
+find_package(cpr CONFIG REQUIRED)
 
 add_executable(app main.cc)
-target_link_libraries(app TBB::tbb TBB::tbbmalloc Eigen3::Eigen)
+target_link_libraries(app TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog)
