@@ -60,6 +60,10 @@ public:
         }
         spdlog::info("velocity has been initialized");        
     }
+    // reset the memory containers
+    virtual void reset(){
+        this->initialize_velocity();
+    }
     // [todo] evaluate and update best solution of each particle in parallel
     virtual void update_particles_best(int rng_start, int rng_end){
         this->main_container_->evaluate_and_update(this->problem_);

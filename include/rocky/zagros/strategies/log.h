@@ -35,30 +35,35 @@ protected:
     system<T_e>* problem_;
     basic_scontainer<T_e, T_dim>* container_;
     std::fstream log_output_;
-    size_t step;
+    bool log_groups_;
+    size_t step_;
 
 public:
-    local_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, std::string filename){
+    local_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, std::string filename, bool log_groups=false){
         this->problem_ = problem;
         this->container_ = container;
-        this->step = 0;
+        this->step_ = 0;
+        this->log_groups_ = log_groups;
         // create a specific filename for this rank
         int mpi_rank;
         MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-        std::string process_spc_filename = std::string("proc_") + std::to_string(mpi_rank) + std::string("_") + filename;
+        std::string process_spc_filename = fmt::format("proc_{}_{}", mpi_rank, filename);
         // initialize the output file
         this->log_output_.open(process_spc_filename, std::fstream::out);
         // write the headers
         this->write_header();
     }
     virtual void write_header(){
-        this->log_output_ << "step,best" << std::endl;
+        if (this->log_groups_)
+            this->log_output_ << "step,group,best" << std::endl;
+        else
+            this->log_output_ << "step,best" << std::endl;
     }
     virtual void apply(){
         // find the best solution
         T_e best = container_->best_min();
-        this->log_output_ << fmt::format("{},{}", this->step, best) << std::endl;
-        this->step++;
+        this->log_output_ << fmt::format("{},{}", this->step_, best) << std::endl;
+        this->step_++;
     };
     virtual void save(){
         if(this->log_output_.is_open())

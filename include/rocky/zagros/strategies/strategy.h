@@ -27,6 +27,7 @@ template<typename T_e, int T_dim>
 class basic_strategy{
 public:
     virtual void apply() = 0;
+    virtual void reset() {}
 };
 
 /**

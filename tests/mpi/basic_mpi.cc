@@ -13,10 +13,10 @@ int main(int argc, char* argv[]){
 
     typedef float swarm_type;
 
-    const int n_particles = 100;
-    const int group_size = 5;
-    const int dim = 1000000;
-    const int block_dim = 1000;
+    const int n_particles = 200;
+    const int group_size = 20;
+    const int dim = 10000;
+    const int block_dim = 300;
 
     using namespace zagros::dena;
     
@@ -26,13 +26,13 @@ int main(int argc, char* argv[]){
     auto f2 = container::create("A", n_particles, group_size)
               >> pso::memory::create("M", "A")
               >> init::uniform("A")
-              >> run::n_times(5,
-                    run::n_times(10, pso::group_level::step("M", "A")
-                            >> run::with_probability(1.0, 
-                                log::local::best(pso::memory::particles_mem("M"), "loss_track_1.data")
-                            ))
-                    >> blocked_descent::uniform::step());
-
+              >> run::n_times(40,
+                    blocked_descent::uniform::step()
+                    >> run::n_times(75, 
+                            pso::group::step("M", "A"))
+                    >> run::n_times(150, 
+                            pso::cluster::step("M", "A")
+                            >> log::local::best("loss_track_1.data")));
     zagros::basic_runtime<swarm_type, dim, block_dim> runtime(&problem);
     runtime.run(f2);
     spdlog::info("runtime storage : {} MB", runtime.storage.container_space()/(1024.0*1024.0));
