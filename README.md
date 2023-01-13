@@ -1,4 +1,4 @@
-<p><img align="center" src="/logo/rockyml-white-1200.png"></p>
+<p><img align="center" src="/logo/rockyml-poster-white-2500.png"></p>
 <p align="center">
   <img src="https://img.shields.io/badge/C%2B%2B-17-blueviolet?style=flat">
   <img src="http://img.shields.io/github/actions/workflow/status/amirabbasasadi/RockyML/ctest.yml?branch=main">
@@ -14,7 +14,7 @@
 
 
 ## Zagros
-<p align="center"><img src="/logo/zagros-transparent-600.png"></p>  
+<p align="center"><img src="/logo/zagros-transparent-300.png"></p>  
 
 Design Goals:
 - CPU-friendly: targeting multi-core systems and clusters
