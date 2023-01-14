@@ -22,17 +22,19 @@ int main(int argc, char* argv[]){
     
 
     zagros::benchmark::rastrigin<swarm_type> problem(dim);
+    std::fstream f;
+    zagros::local_optimization_log log_handler(f, "loss.csv");
 
     auto f2 = container::create("A", n_particles, group_size)
               >> pso::memory::create("M", "A")
               >> init::uniform("A")
               >> run::n_times(60,
                     blocked_descent::uniform::step()
-                    >> run::n_times(50, 
+                    >> run::n_times(20, 
                             pso::group::step("M", "A"))
-                    >> run::n_times(120, 
+                    >> run::n_times(60, 
                             pso::cluster::step("M", "A")
-                            >> log::local::best("loss.csv")));
+                            >> run::with_probability(0.2, log::local::best(log_handler))));
 
     zagros::basic_runtime<swarm_type, dim, block_dim> runtime(&problem);
     runtime.run(f2);
