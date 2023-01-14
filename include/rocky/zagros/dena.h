@@ -44,7 +44,7 @@ struct init_normal: public init_node{};
 struct log_node: public flow_node{};
 struct log_best_node: public log_node{
     std::string id;
-    std::string filename;
+    local_optimization_log* handler;
 };
 
 struct comm_node: public flow_node{};
@@ -185,21 +185,21 @@ public:
      * 
      * @return * flow 
      */
-    static flow best(std::string id, std::string filename){
+    static flow best(std::string id, local_optimization_log& handler){
         flow f;
         log_best_node node;
         node.id = id;
-        node.filename = filename;
+        node.handler = &handler;
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
         return f;
     }
     // an overload of the best function which selects the best continer automatically
-    static flow best(std::string filename){
+    static flow best(local_optimization_log& handler){
         flow f;
         log_best_node node;
         node.id = std::string("");
-        node.filename = filename;
+        node.handler = &handler;
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
         return f;

@@ -58,7 +58,6 @@ public:
         for(int p=0; p<main_container_->n_particles(); ++p){
             std::fill(particles_v_->particles[p].begin(), particles_v_->particles[p].end(), 0.0);
         }
-        spdlog::info("velocity has been initialized");        
     }
     // reset the memory containers
     virtual void reset(){

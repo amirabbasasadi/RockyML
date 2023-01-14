@@ -73,10 +73,10 @@ public:
          // allocate a continer
         auto cnt = std::make_unique<basic_scontainer<T_e, T_block_dim>>(n_particles, group_size);
         cnt->allocate();
+        spdlog::info("container {} was allocated. size : {:.2f} MB", id, cnt->space()/(1024.0*1024.0));
         cnt_storage.push_back(std::move(cnt));
         // register the id in the storage
         cnt_map[id] = cnt_storage.size()-1;
-        spdlog::info("container {} was allocated", id);
     }
     // find the best partial solution in the storage
     void update_partial_best(){
@@ -105,7 +105,6 @@ public:
         // Assumption : update_partial_best has been called already
         // This function must be called before regenerating BCD mask
         sync_broadcast_best<T_e, T_block_dim> sync_best_partial_str(partial_best.get());
-        spdlog::info("Broadcasting best partial solution...");
         sync_best_partial_str.apply();
         // replace the old partial solution in solution states
         for(int i=0; i<T_block_dim; i++)
@@ -210,7 +209,7 @@ struct assigning_visitor{
             target_cnt = main_storage->container(node.id);
         // reserve the strategy
         
-        auto str = std::make_unique<local_log_best<T_e, T_block_dim>>(problem, target_cnt, node.filename);
+        auto str = std::make_unique<local_log_best<T_e, T_block_dim>>(problem, target_cnt, node.handler);
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
@@ -299,11 +298,10 @@ struct running_visitor{
             return;
         }
         if constexpr (std::is_base_of<dena::bcd_mask_node, T_n>::value){
-            spdlog::info("running a bcd mask gen node...");
             // synchronize best values for the current state over the cluster
             main_storage->update_partial_best();
             main_storage->sync_partial_best();
-            spdlog::info("bcd mask has been generated and synchronized.");
+            spdlog::info("BCD mask has been generated and synchronized.");
             // generate a new mask
             main_storage->str_storage[node.tag][0]->apply();
             // synchronize the generated mask
@@ -353,7 +351,7 @@ public:
             std::iota(storage.bcd_mask.begin(), storage.bcd_mask.end(), 0);
             this->blocked_problem = std::make_unique<blocked_system<T_e>>(problem, T_dim, T_block_dim, storage.bcd_mask.data());
             sync_bcd_mask<T_e, T_block_dim> sync_mask_str(storage.bcd_mask.data());
-            spdlog::info("broadcasting bcd mask...");
+            spdlog::info("broadcasting BCD mask...");
             sync_mask_str.apply();
             // initialize and sync the bcd state
             storage.blocked_state = std::make_unique<basic_scontainer<T_e, T_dim>>(1, 1);
@@ -368,9 +366,6 @@ public:
             sync_bcd_state_str.apply();
             storage.th_blocked_states = tbb::enumerable_thread_specific<std::vector<T_e>>(storage.blocked_state->particles[0]);
             this->blocked_problem->set_solution_state(&(storage.th_blocked_states));
-
-            // storage.update_partial_best();
-            // storage.sync_partial_best();
             
         } 
     }
@@ -378,6 +373,7 @@ public:
         // allocate memory for running the flow
         this->traverse_allocate(fl);
         spdlog::info("allocation finished");
+        spdlog::info("total runtime storage : {:.2f} MB", this->storage.container_space()/(1024.0*1024.0));
         // allocate and assign strategies
         this->traverse_assign(fl);
         spdlog::info("assignment finished");
