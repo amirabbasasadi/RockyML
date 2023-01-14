@@ -13,29 +13,31 @@ int main(int argc, char* argv[]){
 
     typedef float swarm_type;
 
-    const int n_particles = 200;
-    const int group_size = 20;
-    const int dim = 10000;
-    const int block_dim = 300;
+    const int n_particles = 300;
+    const int group_size = 10;
+    const int dim = 2000;
+    const int block_dim = 100;
 
     using namespace zagros::dena;
     
 
     zagros::benchmark::rastrigin<swarm_type> problem(dim);
+    std::fstream f;
+    zagros::local_optimization_log log_handler(f, "loss.csv");
 
     auto f2 = container::create("A", n_particles, group_size)
               >> pso::memory::create("M", "A")
               >> init::uniform("A")
-              >> run::n_times(40,
+              >> run::n_times(60,
                     blocked_descent::uniform::step()
-                    >> run::n_times(75, 
+                    >> run::n_times(20, 
                             pso::group::step("M", "A"))
-                    >> run::n_times(150, 
+                    >> run::n_times(60, 
                             pso::cluster::step("M", "A")
-                            >> log::local::best("loss_track_1.data")));
+                            >> run::with_probability(0.2, log::local::best(log_handler))));
+
     zagros::basic_runtime<swarm_type, dim, block_dim> runtime(&problem);
     runtime.run(f2);
-    spdlog::info("runtime storage : {} MB", runtime.storage.container_space()/(1024.0*1024.0));
     MPI_Finalize();
     return 0;
 }

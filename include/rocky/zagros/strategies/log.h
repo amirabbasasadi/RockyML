@@ -25,6 +25,47 @@ namespace zagros{
 template<typename T_e, int T_dim>
 class logging_strategy: public basic_strategy<T_e, T_dim>{};
 
+struct local_optimization_log{
+    std::string filename;
+    bool log_groups;
+    std::fstream* log_output;
+    size_t step;
+    local_optimization_log(std::fstream& log_output, std::string filename,  bool log_groups=false){
+        this->filename = filename;
+        this->log_output = &log_output;
+        this->step = 0;
+        this->log_groups = log_groups;
+        // openning the log file
+        this->open();
+        // write the headers
+        this->write_header();
+    }
+    void open(){
+        // create a specific filename for this rank
+        int mpi_rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+        std::string process_spc_filename = fmt::format("proc_{}_{}", mpi_rank, filename);
+        // initialize the output file
+        log_output->open(process_spc_filename, std::fstream::out);
+    }
+    std::fstream& stream(){
+        return *log_output;
+    }
+    void write_header(){
+        if (this->log_groups)
+            this->stream() << "step,group,best" << std::endl;
+        else
+            this->stream() << "step,best" << std::endl;
+    }
+    virtual void save(){
+        this->stream() << "---" << std::endl;
+        if(this->log_output->is_open())
+            this->log_output->close();
+    }
+    virtual ~local_optimization_log(){
+        this->save();
+    }
+};
 /**
  * @brief Log the best solution in the container in a csv file
  * 
@@ -34,44 +75,27 @@ class local_log_best: public logging_strategy<T_e, T_dim>{
 protected:
     system<T_e>* problem_;
     basic_scontainer<T_e, T_dim>* container_;
-    std::fstream log_output_;
-    bool log_groups_;
-    size_t step_;
+    local_optimization_log* handler_;
 
 public:
-    local_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, std::string filename, bool log_groups=false){
+    local_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, local_optimization_log* handler){
         this->problem_ = problem;
         this->container_ = container;
-        this->step_ = 0;
-        this->log_groups_ = log_groups;
-        // create a specific filename for this rank
-        int mpi_rank;
-        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-        std::string process_spc_filename = fmt::format("proc_{}_{}", mpi_rank, filename);
-        // initialize the output file
-        this->log_output_.open(process_spc_filename, std::fstream::out);
-        // write the headers
-        this->write_header();
+        this->handler_ = handler;
+        
     }
     virtual void write_header(){
-        if (this->log_groups_)
-            this->log_output_ << "step,group,best" << std::endl;
+        if (this->handler_->log_groups)
+            this->handler_->stream() << "step,group,best" << std::endl;
         else
-            this->log_output_ << "step,best" << std::endl;
+            this->handler_->stream() << "step,best" << std::endl;
     }
     virtual void apply(){
         // find the best solution
         T_e best = container_->best_min();
-        this->log_output_ << fmt::format("{},{}", this->step_, best) << std::endl;
-        this->step_++;
+        this->handler_->stream() << fmt::format("{},{}", this->handler_->step, best) << std::endl;
+        this->handler_->step++;
     };
-    virtual void save(){
-        if(this->log_output_.is_open())
-            this->log_output_.close();
-    }
-     virtual ~local_log_best(){
-        this->save();
-    }
 };
 
 /**
