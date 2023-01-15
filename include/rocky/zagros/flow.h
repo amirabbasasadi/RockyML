@@ -26,6 +26,8 @@ public:
     std::map<int, std::vector<std::unique_ptr<basic_strategy<T_e, T_block_dim>>>> str_storage;
     // mapping the containers' id to their storage blocks
     std::map<std::string, int> cnt_map;
+    // iteration counter for nodes who runs periodically
+    std::map<int, int> iter_counter;
     // a mask representing active variables in blocked descent
     std::vector<int> bcd_mask;
     // state of blocked systems
@@ -149,6 +151,10 @@ struct allocation_visitor{
     void operator()(dena::run_n_times_node node){
         path_stack->push(node.sub_procedure.front());
     }
+    void operator()(dena::run_every_n_steps_node node){
+        main_storage->iter_counter[node.tag] = 0;
+        path_stack->push(node.sub_procedure.front());
+    }
     void operator()(dena::run_with_probability_node node){
         path_stack->push(node.sub_procedure.front());
     }
@@ -236,6 +242,9 @@ struct assigning_visitor{
     void operator()(dena::run_with_probability_node node){
         path_stack->push(node.sub_procedure.front());
     }
+    void operator()(dena::run_every_n_steps_node node){
+        path_stack->push(node.sub_procedure.front());
+    }
     void operator()(dena::container_create_node node){}
     void operator()(dena::pso_memory_create_node node){}
     void operator()(dena::pso_group_level_step_node node){
@@ -295,13 +304,19 @@ struct running_visitor{
                     (*traverse_fn)(node.sub_procedure.front(), problem, main_storage);
                 }
             }
+            if constexpr (std::is_base_of<dena::run_every_n_steps_node, T_n>::value){
+                int p = main_storage->iter_counter[node.tag];
+                main_storage->iter_counter[node.tag] = (p+1) % node.period;
+                if(p == 0)
+                    (*traverse_fn)(node.sub_procedure.front(), problem, main_storage);
+            }
             return;
         }
         if constexpr (std::is_base_of<dena::bcd_mask_node, T_n>::value){
             // synchronize best values for the current state over the cluster
             main_storage->update_partial_best();
             main_storage->sync_partial_best();
-            spdlog::info("BCD mask has been generated and synchronized.");
+            spdlog::info("a new BCD mask has been generated. best solution: {}", main_storage->partial_best->values[0]);
             // generate a new mask
             main_storage->str_storage[node.tag][0]->apply();
             // synchronize the generated mask

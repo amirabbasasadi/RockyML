@@ -80,6 +80,10 @@ struct run_with_probability_node: public run_node{
 struct run_n_times_node: public run_node{
     int n_iters;
 };
+struct run_every_n_steps_node: public run_node{
+    int period;
+};
+
 
 // a variant containing all nodes
 typedef std::variant<log_best_node,
@@ -92,7 +96,8 @@ typedef std::variant<log_best_node,
                     pso_group_level_step_node,
                     pso_cluster_level_step_node,
                     run_with_probability_node,
-                    run_n_times_node> flow_node_variant;
+                    run_n_times_node,
+                    run_every_n_steps_node> flow_node_variant;
 
 class node{
 public:
@@ -278,6 +283,22 @@ public:
         flow f;
         run_with_probability_node node;
         node.prob = prob;
+        node.sub_procedure.insert(node.sub_procedure.end(), wrapped_flow.procedure.begin(), wrapped_flow.procedure.end());
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+    /**
+     * @brief run a flow with given period
+     * 
+     * @param n the period of running the flow
+     * @param wrapped_flow 
+     * @return * flow 
+     */
+    static flow every_n_steps(int n, const flow& wrapped_flow){
+        flow f;
+        run_every_n_steps_node node;
+        node.period = n;
         node.sub_procedure.insert(node.sub_procedure.end(), wrapped_flow.procedure.begin(), wrapped_flow.procedure.end());
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
