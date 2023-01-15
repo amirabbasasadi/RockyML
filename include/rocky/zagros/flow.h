@@ -28,6 +28,8 @@ public:
     std::map<std::string, int> cnt_map;
     // iteration counter for nodes who runs periodically
     std::map<int, int> iter_counter;
+    // tracking the convergence of containers
+    std::map<int, std::deque<T_e>> conv_tracker;
     // a mask representing active variables in blocked descent
     std::vector<int> bcd_mask;
     // state of blocked systems
@@ -64,6 +66,9 @@ public:
      * @return * basic_scontainer<T_e, T_dim>* 
      */
     basic_scontainer<T_e, T_block_dim>* container(std::string id){
+        if (id == std::string("__best__"))
+            return partial_best.get();
+
         if (!container_exist(id)){
             spdlog::warn("container {} does not exist", id);
         }
@@ -149,6 +154,10 @@ struct allocation_visitor{
     void operator()(dena::init_uniform node){}
     void operator()(dena::init_normal node){}
     void operator()(dena::run_n_times_node node){
+        path_stack->push(node.sub_procedure.front());
+    }
+    void operator()(dena::run_until_no_improve_node node){
+        main_storage->conv_tracker[node.tag] = std::deque<T_e>();
         path_stack->push(node.sub_procedure.front());
     }
     void operator()(dena::run_every_n_steps_node node){
@@ -242,6 +251,9 @@ struct assigning_visitor{
     void operator()(dena::run_with_probability_node node){
         path_stack->push(node.sub_procedure.front());
     }
+    void operator()(dena::run_until_no_improve_node node){
+        path_stack->push(node.sub_procedure.front());
+    }
     void operator()(dena::run_every_n_steps_node node){
         path_stack->push(node.sub_procedure.front());
     }
@@ -310,6 +322,20 @@ struct running_visitor{
                 if(p == 0)
                     (*traverse_fn)(node.sub_procedure.front(), problem, main_storage);
             }
+            if constexpr (std::is_base_of<dena::run_until_no_improve_node, T_n>::value){
+                int checks = 0;
+                T_e value = main_storage->container(node.id)->best_min();
+                while(checks < node.max_check){
+                    T_e last_value = main_storage->container(node.id)->best_min();
+                    checks++;
+                    if(last_value < value)
+                        checks = 0;
+                    value = last_value;
+                    // run the sub-procedure
+                    (*traverse_fn)(node.sub_procedure.front(), problem, main_storage);
+                }
+                    
+            }
             return;
         }
         if constexpr (std::is_base_of<dena::bcd_mask_node, T_n>::value){
@@ -361,6 +387,8 @@ public:
     }
     basic_runtime(system<T_e>* problem){
         this->problem = problem;
+        storage.partial_best = std::make_unique<basic_scontainer<T_e, T_block_dim>>(1, 1);
+        storage.partial_best->allocate();
         if (blocked()){
             storage.bcd_mask.resize(T_block_dim);
             std::iota(storage.bcd_mask.begin(), storage.bcd_mask.end(), 0);
@@ -371,8 +399,6 @@ public:
             // initialize and sync the bcd state
             storage.blocked_state = std::make_unique<basic_scontainer<T_e, T_dim>>(1, 1);
             storage.blocked_state->allocate();
-            storage.partial_best = std::make_unique<basic_scontainer<T_e, T_block_dim>>(1, 1);
-            storage.partial_best->allocate();
             uniform_init_strategy<T_e, T_dim> init_bcd_state(problem, storage.blocked_state.get());
             init_bcd_state.apply();
             // briadcast the initialized solution

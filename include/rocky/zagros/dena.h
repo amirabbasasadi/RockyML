@@ -1,6 +1,7 @@
 #ifndef ROCKY_ZAGROS_DENA_GUARD
 #define ROCKY_ZAGROS_DENA_GUARD
 
+#include<deque>
 #include<map>
 #include<stack>
 #include<type_traits>
@@ -73,7 +74,10 @@ struct bcd_mask_node: public bcd_node{
 struct run_node: public flow_node{
     std::vector<int> sub_procedure;
 };
-struct until_convergence: public run_node{};
+struct run_until_no_improve_node: public run_node{
+    std::string id;
+    int max_check;
+};
 struct run_with_probability_node: public run_node{
     float prob;
 };
@@ -97,7 +101,8 @@ typedef std::variant<log_best_node,
                     pso_cluster_level_step_node,
                     run_with_probability_node,
                     run_n_times_node,
-                    run_every_n_steps_node> flow_node_variant;
+                    run_every_n_steps_node,
+                    run_until_no_improve_node> flow_node_variant;
 
 class node{
 public:
@@ -304,6 +309,44 @@ public:
         f.procedure.push_back(node_tag);
         return f;
     }
+    /**
+     * @brief run a flow until the best solution of a container does not improve
+     * 
+     * @param id the id of the target container
+     * @param n maximum number of waiting before termination
+     * @param wrapped_flow 
+     * @return * flow 
+     */
+    static flow while_improve(std::string id, int n, const flow& wrapped_flow){
+        flow f;
+        run_until_no_improve_node node;
+        node.id = id;
+        node.max_check = n;
+        node.sub_procedure.insert(node.sub_procedure.end(), wrapped_flow.procedure.begin(), wrapped_flow.procedure.end());
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+    /**
+     * @brief run a flow until the best solution does not improve
+     * 
+     * @param n maximum number of waiting before termination
+     * @param wrapped_flow 
+     * @return * flow 
+     */
+    static flow while_improve(int n, const flow& wrapped_flow){
+        return while_improve(std::string("__best__"), n, wrapped_flow);
+    }
+    /**
+     * @brief run a flow until the best solution does not improve
+     * 
+     * @param wrapped_flow 
+     * @return * flow 
+     */
+    static flow while_improve(const flow& wrapped_flow){
+        return while_improve(std::string("__best__"), 20, wrapped_flow);
+    }
+
 }; // end of init
 
 

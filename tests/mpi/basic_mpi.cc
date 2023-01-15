@@ -28,11 +28,11 @@ int main(int argc, char* argv[]){
     auto f2 = container::create("A", n_particles, group_size)
               >> pso::memory::create("M", "A")
               >> init::uniform("A")
-              >> run::n_times(10,
+              >> run::while_improve(
                     blocked_descent::uniform::step()
                     >> run::n_times(20, 
                             pso::group::step("M", "A"))
-                    >> run::every_n_steps(5, 
+                    >> run::while_improve(5, 
                             pso::cluster::step("M", "A")
                             >> run::with_probability(1.0, log::local::best(log_handler))));
 
