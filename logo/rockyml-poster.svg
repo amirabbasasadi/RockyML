@@ -10,13 +10,13 @@
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    width="800"
-   height="550"
-   viewBox="0 0 211.66666 145.52084"
+   height="700"
+   viewBox="0 0 211.66666 185.20834"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="rockyml-poster.svg"
-   inkscape:export-filename="/media/amirabbas/3F25FB4E23F92FF1/CPP/projects/RockyML/logo/rockyml-white-2500.png"
+   inkscape:export-filename="/media/amirabbas/3F25FB4E23F92FF1/CPP/projects/RockyML/logo/rockyml-poster-white-2500.png"
    inkscape:export-xdpi="300"
    inkscape:export-ydpi="300">
   <defs
@@ -92,11 +92,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.7"
-     inkscape:cx="305.98422"
-     inkscape:cy="229.77556"
+     inkscape:zoom="0.24748738"
+     inkscape:cx="250.18357"
+     inkscape:cy="520.2146"
      inkscape:document-units="mm"
-     inkscape:current-layer="g5287"
+     inkscape:current-layer="layer6"
      showgrid="false"
      units="px"
      inkscape:window-width="1366"
@@ -104,7 +104,7 @@
      inkscape:window-x="0"
      inkscape:window-y="27"
      inkscape:window-maximized="1"
-     showguides="false" />
+     showguides="true" />
   <metadata
      id="metadata5">
     <rdf:RDF>
@@ -118,10 +118,24 @@
     </rdf:RDF>
   </metadata>
   <g
+     inkscape:groupmode="layer"
+     id="layer6"
+     inkscape:label="Layer 2"
+     transform="translate(0,39.6875)">
+    <rect
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.36183229;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="rect5290"
+       width="293.65222"
+       height="242.26779"
+       x="-30.986586"
+       y="-76.69883"
+       ry="2.1112084" />
+  </g>
+  <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-151.47914)">
+     transform="translate(0,-111.79164)">
     <g
        inkscape:groupmode="layer"
        id="layer2"
@@ -130,7 +144,7 @@
        xml:space="preserve"
        id="flowRoot853"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2d1650;fill-opacity:1;stroke:none"
-       transform="matrix(0.65690626,0,0,0.65690626,-30.93912,141.76904)"
+       transform="matrix(0.65690626,0,0,0.65690626,-30.939119,104.35131)"
        inkscape:export-xdpi="28.472803"
        inkscape:export-ydpi="28.472803"><flowRegion
          id="flowRegion855"
@@ -148,7 +162,7 @@
        xml:space="preserve"
        id="flowRoot853-3"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#170b28;fill-opacity:1;stroke:none"
-       transform="matrix(0.73643334,0,0,0.73643334,-79.949646,158.43356)"><flowRegion
+       transform="matrix(0.73643334,0,0,0.73643334,-79.949645,121.01583)"><flowRegion
          id="flowRegion855-6"
          style="fill:#170b28"><rect
            id="rect857-7"
@@ -160,7 +174,7 @@
          id="flowPara859-5"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold';fill:#170b28">A High-Performance Scientific Computing Framework</flowPara></flowRoot>    <g
        id="g970"
-       transform="translate(0.80908866,-28.100175)"
+       transform="translate(0.80908978,-65.517909)"
        inkscape:export-xdpi="28.472803"
        inkscape:export-ydpi="28.472803">
       <path
@@ -218,31 +232,31 @@
     </g>
     <g
        id="g5287"
-       transform="translate(-0.08871285,69.547619)">
+       transform="translate(2.5839828,77.565705)">
       <rect
-         ry="1.4031677"
-         y="159.83607"
-         x="9.727108"
-         height="59.720242"
+         ry="2.3185222"
+         y="114.40026"
+         x="7.0544119"
+         height="98.67865"
          width="192.38988"
          id="rect4930"
-         style="opacity:1;fill:#f2f2f2;fill-opacity:1;stroke:none;stroke-width:0.32925719;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="opacity:1;fill:#f2f2f2;fill-opacity:1;stroke:none;stroke-width:0.42323941;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <rect
          ry="1.403165"
-         y="159.83607"
-         x="9.727107"
+         y="114.40026"
+         x="7.0544119"
          height="13.977813"
          width="192.38988"
          id="rect4930-1"
-         style="opacity:1;fill:#170b28;fill-opacity:1;stroke:none;stroke-width:0.15929206;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="opacity:1;fill:#0b0b28;fill-opacity:1;stroke:none;stroke-width:0.15929206;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <circle
          r="2.9399648"
-         cy="191.36786"
-         cx="56.877766"
+         cy="186.37549"
+         cx="15.636297"
          id="path4991"
-         style="opacity:1;fill:#170b28;fill-opacity:1;stroke:none;stroke-width:0.20821427;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="opacity:1;fill:#0b0b28;fill-opacity:1;stroke:none;stroke-width:0.20821427;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <g
-         transform="matrix(0.76287265,0,0,0.76287265,33.309275,158.85555)"
+         transform="matrix(0.76287265,0,0,0.76287265,34.340749,114.40246)"
          id="g4892">
         <g
            id="layer5"
@@ -367,7 +381,7 @@
         </g>
       </g>
       <flowRoot
-         transform="matrix(0.60238038,0,0,0.60238038,-75.203699,122.27253)"
+         transform="matrix(0.60238038,0,0,0.60238038,-77.876394,76.83671)"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#ffffff;fill-opacity:1;stroke:none"
          id="flowRoot853-3-0"
          xml:space="preserve"><flowRegion
@@ -382,83 +396,101 @@
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold';fill:#ffffff"
            id="flowPara859-5-6"><flowSpan
    id="flowSpan4974"
-   style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:'Cantarell Ultra-Bold';fill:#ffffff">Zagros</flowSpan> | A Parallel and Distributed Optimizer for HPC Clusters</flowPara></flowRoot>      <flowRoot
-         transform="matrix(0.50611872,0,0,0.50611872,-12.413195,153.75704)"
-         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+   style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:'Cantarell Ultra-Bold';fill:#ffffff">Zagros</flowSpan> | A Parallel and Distributed Optimization Framework for HPC Clusters</flowPara></flowRoot>      <flowRoot
+         transform="matrix(0.50611872,0,0,0.50611872,-53.639461,148.76468)"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0b0b28;fill-opacity:1;stroke:none"
          id="flowRoot853-3-0-8"
          xml:space="preserve"><flowRegion
-           style="fill:#000000"
+           style="fill:#0b0b28;fill-opacity:1"
            id="flowRegion855-6-6-7"><rect
-             style="fill:#000000"
+             style="fill:#0b0b28;fill-opacity:1"
              y="41.42857"
              x="147.14285"
              height="134.49536"
              width="251.66689"
              id="rect857-7-2-9" /></flowRegion><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#000000"
-           id="flowPara859-5-6-2">Parallel optimization with multi-threading </flowPara></flowRoot>      <circle
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#0b0b28;fill-opacity:1"
+           id="flowPara859-5-6-2">Execute the designed search algorithm on multiple nodes</flowPara></flowRoot>      <circle
          r="2.9399648"
-         cy="199.85228"
-         cx="56.81477"
+         cy="194.85991"
+         cx="15.573301"
          id="path4991-2"
-         style="opacity:1;fill:#170b28;fill-opacity:1;stroke:none;stroke-width:0.20821428;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="opacity:1;fill:#0b0b28;fill-opacity:1;stroke:none;stroke-width:0.20821428;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <flowRoot
-         transform="matrix(0.50611873,0,0,0.50611873,-12.43812,162.24146)"
-         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         transform="matrix(0.50611873,0,0,0.50611873,-53.664386,157.2491)"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0b0b28;fill-opacity:1;stroke:none"
          id="flowRoot853-3-0-8-3"
          xml:space="preserve"><flowRegion
-           style="fill:#000000"
+           style="fill:#0b0b28;fill-opacity:1"
            id="flowRegion855-6-6-7-7"><rect
-             style="fill:#000000"
+             style="fill:#0b0b28;fill-opacity:1"
              y="41.42857"
              x="147.14285"
              height="134.49536"
              width="251.66689"
              id="rect857-7-2-9-5" /></flowRegion><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#000000"
-           id="flowPara859-5-6-2-9">Distributed optimization on multiple nodes using MPI</flowPara></flowRoot>      <circle
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#0b0b28;fill-opacity:1"
+           id="flowPara859-5-6-2-9">Enjoy hybrid parallelism : Threading + Message Passing</flowPara></flowRoot>      <circle
          r="2.9399648"
-         cy="182.88341"
-         cx="57.003757"
+         cy="177.89105"
+         cx="15.777487"
          id="path4991-22"
-         style="opacity:1;fill:#170b28;fill-opacity:1;stroke:none;stroke-width:0.20821428;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="opacity:1;fill:#0b0b28;fill-opacity:1;stroke:none;stroke-width:0.20821428;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <flowRoot
-         transform="matrix(0.50611873,0,0,0.50611873,-12.249132,145.29441)"
-         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         transform="matrix(0.50611873,0,0,0.50611873,-53.475398,140.30204)"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0b0b28;fill-opacity:1;stroke:none"
          id="flowRoot853-3-0-8-8"
          xml:space="preserve"><flowRegion
-           style="fill:#000000"
+           style="fill:#0b0b28;fill-opacity:1"
            id="flowRegion855-6-6-7-9"><rect
-             style="fill:#000000"
+             style="fill:#0b0b28;fill-opacity:1"
              y="41.42857"
              x="147.14285"
-             height="134.49536"
-             width="251.66689"
+             height="133.96729"
+             width="273.84613"
              id="rect857-7-2-9-7" /></flowRegion><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#000000"
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#0b0b28;fill-opacity:1"
            id="flowPara859-5-6-2-3"><flowSpan
-   id="flowSpan5061"
-   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold'">Dena</flowSpan> a language for designing arbitrary complex optimizers</flowPara></flowRoot>      <circle
+             id="flowSpan5061"
+             style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold';fill:#0b0b28;fill-opacity:1"><flowSpan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell"
+   id="flowSpan4816">Express your arbitrary complex search algorithm</flowSpan> <flowSpan
+   style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:Cantarell"
+   id="flowSpan4818">in Dena</flowSpan> </flowSpan></flowPara></flowRoot>      <circle
          r="2.9399648"
-         cy="208.33672"
-         cx="56.940762"
+         cy="203.34435"
+         cx="15.699293"
          id="path4991-2-6"
-         style="opacity:1;fill:#170b28;fill-opacity:1;stroke:none;stroke-width:0.20821428;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="opacity:1;fill:#0b0b28;fill-opacity:1;stroke:none;stroke-width:0.20821428;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <flowRoot
-         transform="matrix(0.50611873,0,0,0.50611873,-12.366751,171.02035)"
-         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none"
+         transform="matrix(0.50611873,0,0,0.50611873,-53.593017,166.02799)"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0b0b28;fill-opacity:1;stroke:none"
          id="flowRoot853-3-0-8-3-1"
          xml:space="preserve"><flowRegion
-           style="fill:#000000"
+           style="fill:#0b0b28;fill-opacity:1"
            id="flowRegion855-6-6-7-7-2"><rect
-             style="fill:#000000"
+             style="fill:#0b0b28;fill-opacity:1"
              y="41.42857"
              x="147.14285"
              height="135.24217"
              width="279.29898"
              id="rect857-7-2-9-5-9" /></flowRegion><flowPara
-           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#000000"
-           id="flowPara859-5-6-2-9-3">Blocked Coordinate Descent for optimizing large number of variables</flowPara></flowRoot>    </g>
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#0b0b28;fill-opacity:1"
+           id="flowPara859-5-6-2-9-3">Run memory-intensive optimizers using Blocked Coordinate Descent</flowPara></flowRoot>      <flowRoot
+         transform="matrix(0.50611873,0,0,0.50611873,-19.820342,108.13268)"
+         style="font-style:normal;font-weight:normal;font-size:40px;line-height:0.2;font-family:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#0b0b28;fill-opacity:1;stroke:none"
+         id="flowRoot853-3-0-8-8-5"
+         xml:space="preserve"><flowRegion
+           style="text-align:start;text-anchor:start;fill:#0b0b28;fill-opacity:1"
+           id="flowRegion855-6-6-7-9-6"><rect
+             style="text-align:start;text-anchor:start;fill:#0b0b28;fill-opacity:1"
+             y="41.42857"
+             x="147.14285"
+             height="138.97624"
+             width="264.87793"
+             id="rect857-7-2-9-7-2" /></flowRegion><flowPara
+           style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:start;text-anchor:start;fill:#0b0b28;fill-opacity:1"
+           id="flowPara859-5-6-2-3-9">Zagros is a black-box optimization framework designed for HPC clusters. Unlike common optimization tools, Instead of providing a limited number of optimization algorithms, Zagros lets users express their own search algorithm in terms of a language called Dena. After designing the algorithm you can run it on HPC clusters while leveraging hybrid parallelism.</flowPara></flowRoot>    </g>
     <g
        id="g4892-8"
        transform="matrix(0.76287265,0,0,0.76287265,32.553326,224.32099)">
