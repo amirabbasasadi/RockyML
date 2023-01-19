@@ -211,6 +211,70 @@ public:
      void evaluate_and_update(system<T_e>* problem){
         evaluate_and_update(problem, 0, n_particles());
      }
+     /**
+      * @brief find top-k solutions and fill the indices
+      * 
+      * @param k number of picks
+      * @param indices an integer array to access the result
+      */
+     void best_k(int k, int* indices){
+        auto comp_values = [this](int x, int y){
+            return this->values[x] < this->values[y];
+        };
+        std::vector<int> all_ind(n_particles());
+        std::iota(all_ind.begin(), all_ind.end(), 0);
+        std::make_heap(all_ind.begin(), all_ind.end(), comp_values);
+        for(int i=0; i<k; i++){
+            indices[i] = all_ind.front();
+            std::pop_heap(all_ind.begin(), all_ind.end());
+        }
+     }
+     /**
+      * @brief find worst-k solutions and fill the indices
+      * 
+      * @param k number of picks
+      * @param indices an integer array to access the result
+      */
+     void worst_k(int k, int* indices){
+        auto comp_values = [this](int x, int y){
+            return this->values[x] > this->values[y];
+        };
+        std::vector<int> all_ind(n_particles());
+        std::iota(all_ind.begin(), all_ind.end(), 0);
+        std::make_heap(all_ind.begin(), all_ind.end(), comp_values);
+        for(int i=0; i<k; i++){
+            indices[i] = all_ind.front();
+            std::pop_heap(all_ind.begin(), all_ind.end());
+        }
+    }
+    /**
+     * @brief replace the best values from another container
+     * 
+     * @param cnt source container
+     * @return ** void 
+     */
+    void replace_with(basic_scontainer<T_e, T_dim>* cnt){
+        // sort the solutions in both containers
+        std::vector<int> src_ind(cnt->n_particles());
+        std::vector<int> des_ind(n_particles());
+        cnt->best_k(cnt->n_particles(), src_ind.data());
+        worst_k(n_particles(), des_ind.data());
+        int src_i=0, des_i=0;
+        T_e src_b, des_w;
+        while((src_i < cnt->n_particles()) && (des_i < n_particles())){
+            // repeat while the best solution in source is better than the worst in destination
+            src_b = cnt->values[src_ind[src_i]];
+            des_w = values[des_ind[des_i]];
+            if(des_w >= src_b)
+                break;
+            // replace a solution in destination with a better from source
+            std::copy(cnt->particles[src_ind[src_i]].begin(),
+                      cnt->particles[src_ind[src_i]].end(),
+                      particles[des_ind[des_i]].begin());
+            src_i++;
+            des_i++;
+        }
+    }
 };
 
 }; // end of zagros namespace
