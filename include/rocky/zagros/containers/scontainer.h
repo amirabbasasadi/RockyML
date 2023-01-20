@@ -223,11 +223,8 @@ public:
         };
         std::vector<int> all_ind(n_particles());
         std::iota(all_ind.begin(), all_ind.end(), 0);
-        std::make_heap(all_ind.begin(), all_ind.end(), comp_values);
-        for(int i=0; i<k; i++){
-            indices[i] = all_ind.front();
-            std::pop_heap(all_ind.begin(), all_ind.end());
-        }
+        std::sort(all_ind.begin(), all_ind.end(), comp_values);
+        std::copy(all_ind.data(), all_ind.data()+k, indices);   
      }
      /**
       * @brief find worst-k solutions and fill the indices
@@ -241,11 +238,8 @@ public:
         };
         std::vector<int> all_ind(n_particles());
         std::iota(all_ind.begin(), all_ind.end(), 0);
-        std::make_heap(all_ind.begin(), all_ind.end(), comp_values);
-        for(int i=0; i<k; i++){
-            indices[i] = all_ind.front();
-            std::pop_heap(all_ind.begin(), all_ind.end());
-        }
+        std::sort(all_ind.begin(), all_ind.end(), comp_values);
+        std::copy(all_ind.data(), all_ind.data()+k, indices);   
     }
     /**
      * @brief replace the best values from another container
@@ -265,12 +259,14 @@ public:
             // repeat while the best solution in source is better than the worst in destination
             src_b = cnt->values[src_ind[src_i]];
             des_w = values[des_ind[des_i]];
-            if(des_w >= src_b)
+            if(des_w <= src_b)
                 break;
-            // replace a solution in destination with a better from source
+
             std::copy(cnt->particles[src_ind[src_i]].begin(),
                       cnt->particles[src_ind[src_i]].end(),
                       particles[des_ind[des_i]].begin());
+            
+            values[des_ind[des_i]] = cnt->values[src_ind[src_i]];
             src_i++;
             des_i++;
         }
