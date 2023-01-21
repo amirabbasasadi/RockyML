@@ -104,10 +104,10 @@ class crossover_strategy: public basic_strategy<T_e, T_dim>{};
  * 
  */
 template<typename T_e, int T_dim>
-class multipoint_crossover: public basic_strategy<T_e, T_dim>{
+class multipoint_crossover: public crossover_strategy<T_e, T_dim>{
 protected:
-   // system
-    system<T_e, T_dim>* problem_;
+    // system
+    system<T_e>* problem_;
     // main container
     basic_scontainer<T_e, T_dim>* container_;
     // maximum number of affected dimensions
@@ -144,6 +144,57 @@ public:
 };
 
 
+template<typename T_e, int T_dim>
+class static_segment_crossover: public crossover_strategy<T_e, T_dim>{
+protected:
+    // system
+    system<T_e>* problem_;
+    // main container
+    basic_scontainer<T_e, T_dim>* container_;
+    // main container
+    basic_scontainer<T_e, T_dim>* candidates_;
+    // length of the segment for crossover
+    int segment_length_;
+    // number of crossovers
+    int n_crossovers_;
+public:
+    static_segment_crossover(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, basic_scontainer<T_e, T_dim>* cnd_container, int n_crossovers, int segment_length){
+        this->n_crossovers_ = n_crossovers;
+        this->segment_length_ = segment_length;
+        this->problem_ = problem;
+        this->container_ = container;
+        this->candidates_ = cnd_container;
+    }
+    virtual void apply(){
+        // get a sampler
+        auto dist = container_->weighted_sampler();
+        tbb::parallel_for(0, n_crossovers_, [&](auto ci){
+            // select two distinct parents
+            int parents[2];
+            parents[0] = dist(rocky::utils::random::prng());
+            parents[1] = parents[0];
+            while(parents[1] == parents[0])
+                parents[1] = dist(rocky::utils::random::prng());
+            // select a random point for cross over
+            std::uniform_int_distribution<> point_dist(0, T_dim - segment_length_ - 1);
+            int point = point_dist(rocky::utils::random::prng());
+            // produce two cantidates
+            for(int i=0; i<2; i++){
+                // copy the solution
+                std::copy(container_->particle(parents[i]),
+                          container_->particle(parents[i])+T_dim,
+                          candidates_->particle(2*ci+i));
+                // replace the segment
+                std::copy(container_->particle(parents[1-i])+point,
+                          container_->particle(parents[1-i])+point+segment_length_,
+                          candidates_->particle(2*ci+i)+point); 
+            }
+        });
+        // evaluate the candidates
+        candidates_->evaluate_and_update(problem_);
+        container_->replace_with(candidates_);
+    }
+};
 
 };
 };
