@@ -1,10 +1,6 @@
 #ifndef ROCKY_ZAGROS_COMM_STRATEGY
 #define ROCKY_ZAGROS_COMM_STRATEGY
 
-#ifdef ROCKY_USE_MPI
-#include<mpi.h>
-#endif
-
 #include <rocky/zagros/strategies/strategy.h>
 #include<nlohmann/json.hpp>
 #include<cpr/cpr.h>

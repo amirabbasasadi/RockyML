@@ -1,6 +1,7 @@
 #ifndef ROCKY_ZAGROS_SCONTAINER_GUARD
 #define ROCKY_ZAGROS_SCONTAINER_GUARD
 
+
 #include<iostream>
 #include<cmath>
 #include<utility>
@@ -270,6 +271,23 @@ public:
             src_i++;
             des_i++;
         }
+    }
+    /**
+     * @brief weighted particle sampling
+     * 
+     * @return a discrete distribution for weighted sampling
+     */
+    std::discrete_distribution<int> weighted_sampler(){
+        std::vector<T_e> weights(n_particles());
+        for(int p=0; p<n_particles(); p++){
+            if (values[p] == std::numeric_limits<T_e>::max())
+                weights[p] = 0.0;
+            else
+                weights[p] = 1.0/(1.0 + values[p] * values[p]);
+        }
+        // construct a distribution for weighted sampling
+        std::discrete_distribution<int> sampling_dist(weights.begin(), weights.end());
+        return sampling_dist;
     }
 };
 

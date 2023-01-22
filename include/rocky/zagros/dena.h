@@ -1,11 +1,14 @@
 #ifndef ROCKY_ZAGROS_DENA_GUARD
 #define ROCKY_ZAGROS_DENA_GUARD
 
+#include<vector>
 #include<deque>
 #include<map>
 #include<stack>
 #include<type_traits>
 #include<variant>
+
+#include<rocky/zagros/strategies/log.h>
 
 
 namespace rocky{
@@ -122,8 +125,7 @@ public:
         return next_node[tag];
     }
 };
-std::vector<flow_node_variant> node::nodes = std::vector<flow_node_variant>();
-std::map<int, int> node::next_node = std::map<int, int>();
+
 
 class flow{
 public:

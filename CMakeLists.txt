@@ -30,12 +30,14 @@ find_package(Eigen3 CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(cpr CONFIG REQUIRED)
 
-add_executable(tests tests/flow.cc)
-target_link_libraries(tests PRIVATE Catch2::Catch2WithMain TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog)
+set(ROCKY_SRC src/rocky/utils.cc src/rocky/zagros/dena.cc)
+
+add_executable(tests ${ROCKY_SRC} tests/catch_main.cc tests/scontainer.cc tests/flow.cc)
+target_link_libraries(tests PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog)
 
 if(ROCKY_BUILD_MPI_TESTS)
 # tests that require MPI
-add_executable(mpi_tests tests/mpi/basic_mpi.cc)
+add_executable(mpi_tests ${ROCKY_SRC} tests/mpi/basic_mpi.cc)
 target_link_libraries(mpi_tests nanobench TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog)
 endif()
 

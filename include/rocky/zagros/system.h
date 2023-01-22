@@ -1,5 +1,6 @@
 #ifndef ROCKY_ZAGROS_SYSTEM_GUARD
 #define ROCKY_ZAGROS_SYSTEM_GUARD
+
 #include<iostream>
 #include<string>
 #include<memory>

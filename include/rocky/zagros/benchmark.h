@@ -48,14 +48,16 @@ template<typename T_e>
 class rastrigin: public rocky::zagros::system<T_e>{
 protected:
     int dim_;
+    T_e shift_;
 public:
-    rastrigin(int dim=2){
+    rastrigin(int dim=2, T_e shift=0.0){
         dim_ = dim;
+        shift_ = shift;
     }
     virtual T_e objective(T_e* x){
         T_e S = 10.0 * dim_;
         for(size_t i=0; i<dim_; i++)
-            S += x[i] * x[i] - 10.0*cos(2*M_PI * x[i]);
+            S += (x[i]-shift_) * (x[i]-shift_) - 10.0*cos(2*M_PI * (x[i]-shift_));
         return S;
     }
     virtual T_e lower_bound(){ return -5.12; }

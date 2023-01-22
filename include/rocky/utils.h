@@ -1,5 +1,5 @@
-#ifndef ROCKY_STRATEGY
-#define ROCKY_STRATEGY
+#ifndef ROCKY_UTILS
+#define ROCKY_UTILS
 #include<cmath>
 #include<utility>
 #include<memory>
@@ -15,8 +15,6 @@
 
 #include<tbb/tbb.h>
 #include<Eigen/Core>
-
-#include<rocky/zagros/system.h>
 
 namespace rocky{
 namespace utils{
@@ -45,8 +43,6 @@ public:
         return dist(prng());
     }
 };
-
-tbb::enumerable_thread_specific<thread_safe_prng> random::thread_prng{};
 
 };
 };

@@ -1,11 +1,6 @@
 #ifndef ROCKY_ZAGROS_LOG_STRATEGY
 #define ROCKY_ZAGROS_LOG_STRATEGY
 
-#ifdef ROCKY_USE_MPI
-#include<mpi.h>
-#include<stdio.h>
-#endif
-
 #include<rocky/zagros/strategies/strategy.h>
 #include<rocky/zagros/strategies/communication.h>
 #include<nlohmann/json.hpp>
