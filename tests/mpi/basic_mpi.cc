@@ -1,6 +1,7 @@
 #define ROCKY_USE_MPI
 #include <rocky/zagros/benchmark.h>
 #include <rocky/zagros/flow.h>
+#include <rocky/zagros/strategies/eda.h>
 
 
 int main(int argc, char* argv[]){
@@ -15,7 +16,7 @@ int main(int argc, char* argv[]){
 
     const int n_particles = 300;
     const int group_size = 10;
-    const int dim = 2000;
+    const int dim = 200;
     const int block_dim = 100;
 
     using namespace zagros::dena;
@@ -30,13 +31,14 @@ int main(int argc, char* argv[]){
               >> init::uniform("A")
               >> run::while_improve(
                     blocked_descent::uniform::step()
-                    >> run::n_times(20, 
+                    >> run::n_times(1, 
                             pso::group::step("M", "A"))
-                    >> run::while_improve(5, 
+                    >> run::while_improve(2, 
                             pso::cluster::step("M", "A")
                             >> run::with_probability(1.0, log::local::best(log_handler))));
 
     zagros::basic_runtime<swarm_type, dim, block_dim> runtime(&problem);
+    
     runtime.run(f2);
     MPI_Finalize();
     return 0;
