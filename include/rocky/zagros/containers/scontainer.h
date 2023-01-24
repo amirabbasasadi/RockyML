@@ -109,18 +109,19 @@ public:
     /**
      * @brief sample n distinct particles from a group
      * efficient when n is small
+     * @param indices an array to store the result
      * @param n sample size
-     * @param group particles will be sampled from this group
      */
-    std::set<int> sample_n_particles(int n, int group){
-        auto group_rng = group_range(group);
-        std::uniform_int_distribution<> dist(group_rng.first, group_rng.second-1);
-        std::set<int> indices;
+    void sample_n_particles(int* indices, int n=1){
+        auto dist = weighted_sampler();
+        std::set<int> indices_set;
         do{
-            indices.insert(dist(rocky::utils::random::prng()));
-        }while(indices.size() < n);
-        return indices;
-    }
+            indices_set.insert(dist(rocky::utils::random::prng()));
+        }while(indices_set.size() < n);
+        int i = 0;
+        for(auto index: indices_set)
+            indices[i++] = index;
+    }    
     /**
      * @brief sample a pair of distinct particles
      * 
@@ -281,7 +282,7 @@ public:
         std::vector<T_e> weights(n_particles());
         for(int p=0; p<n_particles(); p++){
             if (values[p] == std::numeric_limits<T_e>::max())
-                weights[p] = 0.0;
+                weights[p] = 1.0;
             else
                 weights[p] = 1.0/(1.0 + values[p] * values[p]);
         }

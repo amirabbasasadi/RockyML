@@ -25,7 +25,7 @@ target_link_libraries(tests PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen
 
 if(ROCKY_BUILD_MPI_TESTS)
 # tests that require MPI
-add_executable(mpi_tests tests/mpi/basic_mpi.cc)
+add_executable(mpi_tests tests/mpi/basic_strategy.cc)
 target_link_libraries(mpi_tests TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog rockyml)
 endif()
 

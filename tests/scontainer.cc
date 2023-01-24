@@ -63,5 +63,13 @@ TEST_CASE("solution container operations", "[container][zagros][rocky]"){
         REQUIRE(container.values[top[1]] == c2.values[0]);
         REQUIRE(container.values[top[2]] == c2.values[1]);  
     }
+    SECTION("sampling particles"){
+        const int n = 2;
+        int samples[n];
+        container.sample_n_particles(samples, n);
+        for(int i=0; i<n; i++)
+            REQUIRE(samples[i] > 0);
+        REQUIRE(samples[0] != samples[1]);
+    }
 
 };
