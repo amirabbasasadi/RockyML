@@ -40,20 +40,20 @@ Before buiding RockyML make sure you have installed the required dependencies:
 #### Dependencies
 - A C++ compiler supporting C++17, GCC is tested
 - CMake
-- Eigen
+- [Eigen](https://eigen.tuxfamily.org), latest stable version
 - A BLAS/LAPACK implementation, OpenBLAS is tested
-- Intel Threading Building Blocks (TBB)
+- Intel Threading Building Blocks ([oneTBB](https://github.com/oneapi-src/oneTBB))
 - An MPI implementation, OpenMPI is recommended  
-- cpr
-- Spdlog
+- [Cpr](https://github.com/libcpr/cpr)
+- [Spdlog](https://github.com/gabime/spdlog)
 
 First install Open MPI and OpenBLAS:
 ```
 apt install libopenblas-dev openmpi-bin openmpi-common libopenmpi-dev
 ```
-You can install the other dependencies as you like. For example using vcpkg:
+You can install the other dependencies as you like. For example using [vcpkg](https://vcpkg.io/):
 ```
-vcpkg install tbb eigen3 cpr spdlog
+vcpkg install tbb eigen3 cpr spdlog catch2
 ```
 #### Bulding on Linux
 Build the source code using CMake. To do so, create a build directory inside the source code and run cmake. you should add MPI flags for compiling, or you can simply use `mpic++` for compiling the source.  
@@ -72,27 +72,24 @@ Here is a minimal CMakeLists.txt example for using RockyML:
 cmake_minimum_required(VERSION 3.2)
 project(Example LANGUAGES CXX)
 
+# make sure your compiler supports c++17
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ffast-math -march=native")
 
-Include(FetchContent)
-FetchContent_Declare(
-  Catch2
-  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
-  GIT_TAG        v3.0.1 
-)
-FetchContent_MakeAvailable(Catch2)
+include_directories(<rockyml-headers-directory>)
 
-include_directories(<rockyml-include-directory>)
-
+# find requirements
 find_package(TBB CONFIG REQUIRED)
 find_package(Eigen3 CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
 find_package(cpr CONFIG REQUIRED)
+find_package(Catch2 CONFIG REQUIRED)
 
+# find the library which you've built in the previous step 
 find_library(RockyML NAMES rockyml librockyml HINTS "<path-to-rockyml-static-library>")
 
+# linking the requirements
 add_executable(app <path-to-source-of-your-program>)
-target_link_libraries(app PRIVATE TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog RockyML)
+target_link_libraries(app PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog RockyML)
 
 ```
