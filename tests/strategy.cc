@@ -1,37 +1,80 @@
+#define ROCKY_USE_MPI
 #include <catch2/catch_test_macros.hpp>
 #include <catch2/benchmark/catch_benchmark.hpp>
 #include <random>
 #include <functional>
 #include <algorithm>
-#include <rocky/zagros/strategy.h>
+#include <list>
+#include <rocky/zagros/containers/scontainer.h>
+#include <rocky/zagros/strategies/init.h>
+#include <rocky/zagros/strategies/genetic.h>
+#include <rocky/zagros/strategies/eda.h>
+#include <rocky/zagros/strategies/differential_evolution.h>
 #include <rocky/zagros/benchmark.h>
 
 
-TEST_CASE("Gaussian mutation strategy", "[strategy][double][benchmark]"){
+TEST_CASE("strategy", "[strategy][zagros][rocky]"){
+
     using namespace rocky;
 
-    const int dim = 15;
-    const int n_pop = 100;
-    const int n_tribes = 5;
-    const int tribe_size = n_pop / n_tribes;
-    const int max_affected_dim = 3;
+    typedef double container_type;
 
-    // create a random population
-    auto system = new zagros::benchmark::sphere<double, dim>();
-    double* population = new double[n_pop * dim];
-    double* values = new double[n_pop * dim];
-    // evalutae each particle
-    tbb::parallel_for(0, n_pop, 1, [&](int p){
-        values[p] = system->objective(population + p*dim);
-    });
+    const int n_particles = 100;
+    const int group_size = 10;
+    const int dim = 1000;
 
-    auto strategy = zagros::gaussian_mutation<double, dim, tribe_size, max_affected_dim>();
+    
+    zagros::benchmark::rastrigin<container_type> problem(dim, 1.0);
 
-    BENCHMARK("apply gaussian mutation"){
-        strategy.apply(system, population, values);
+
+    zagros::basic_scontainer<container_type, dim> container(n_particles, group_size);
+    container.allocate();
+
+    zagros::basic_scontainer<container_type, dim> candidates(n_particles, group_size);
+    candidates.allocate();
+    
+    
+    zagros::uniform_init_strategy<container_type, dim> init_str(&problem, &container);
+
+    init_str.apply();
+
+    SECTION("gaussian mutation"){
+        int affected_dims = 8;
+        zagros::gaussian_mutation<container_type, dim> str(&problem, &container, &candidates, affected_dims, 1.0, 0.5);
+        BENCHMARK("gaussian mutation"){
+            str.apply();
+        };
+    };
+
+    SECTION("multipoint crossover"){
+        int affected_dims = 8;
+        zagros::multipoint_crossover<container_type, dim> str(&problem, &container, &candidates, affected_dims);
+        BENCHMARK("multipoint crossover"){
+            str.apply();
+        };
     };
     
-    delete system;
-    delete[] values;
-    delete[] population;
-}
+    SECTION("segment crossover"){
+        int segment_len = 8;
+        zagros::static_segment_crossover<container_type, dim> str(&problem, &container, &candidates, segment_len);
+        BENCHMARK("segment crossover"){
+            str.apply();
+        };
+    };
+
+    SECTION("differential evolution"){
+        zagros::basic_differential_evolution<container_type, dim> str(&problem, &container, &candidates);
+        BENCHMARK("differential evolution"){
+            str.apply();
+        };
+    };
+
+    SECTION("estimation of distribution (MVN)"){
+        int samples = 100;
+        zagros::eda_mutivariate_normal<container_type, dim> str(&problem, &container, &candidates, samples);
+        BENCHMARK("estimation of distribution (MVN)"){
+            str.apply();
+        };
+    };
+
+};

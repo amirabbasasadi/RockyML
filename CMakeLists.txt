@@ -20,7 +20,7 @@ add_library(rockyml STATIC ${ROCKY_SRC})
 target_link_libraries(rockyml PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog)
 
 
-add_executable(tests tests/catch_main.cc tests/scontainer.cc tests/flow.cc)
+add_executable(tests tests/catch_main.cc tests/scontainer.cc tests/flow.cc tests/strategy.cc)
 target_link_libraries(tests PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog rockyml)
 
 if(ROCKY_BUILD_MPI_TESTS)

@@ -82,8 +82,8 @@ int main(int argc, char* argv[]){
 
     zagros::multipoint_crossover<container_type, dim> crossover_str(problem.get(), particles_best.get(), gen_container.get(), 4);
 
-    zagros::eda_mutivariate_normal<container_type, dim> eda_str(problem.get(), particles_best.get(), eda_container.get(), 50, 50);
-    zagros::static_segment_crossover<container_type, dim> seg_str(problem.get(), particles_best.get(), eda_container.get(), 25, 10);
+    zagros::eda_mutivariate_normal<container_type, dim> eda_str(problem.get(), particles_best.get(), eda_container.get(), 50);
+    zagros::static_segment_crossover<container_type, dim> seg_str(problem.get(), particles_best.get(), eda_container.get(), 10);
     zagros::basic_differential_evolution<container_type, dim> de_str(problem.get(), particles_best.get(), gen_container.get());
 
     pso_str_l1.initialize_velocity();
@@ -93,9 +93,10 @@ int main(int argc, char* argv[]){
     pso_str_l1.apply();
 
     spdlog::info("applying pso strategy");
-    for(int i=0; i<500; i++){
+    for(int i=0; i<1500; i++){
         pso_str_l1.apply();
         de_str.apply();
+        eda_str.apply();
         spdlog::info("P({}) L1 iteration {} best node solution is {}", rank, i, *std::min_element(particles_best->values.begin(), particles_best->values.end()));     
     }
     MPI_Finalize();

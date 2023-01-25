@@ -216,10 +216,10 @@ public:
      /**
       * @brief find top-k solutions and fill the indices
       * 
-      * @param k number of picks
       * @param indices an integer array to access the result
+      * @param k number of picks
       */
-     void best_k(int k, int* indices){
+     void best_k(int* indices, int k){
         auto comp_values = [this](int x, int y){
             return this->values[x] < this->values[y];
         };
@@ -231,10 +231,10 @@ public:
      /**
       * @brief find worst-k solutions and fill the indices
       * 
-      * @param k number of picks
       * @param indices an integer array to access the result
+      * @param k number of picks
       */
-     void worst_k(int k, int* indices){
+     void worst_k(int* indices, int k){
         auto comp_values = [this](int x, int y){
             return this->values[x] > this->values[y];
         };
@@ -253,8 +253,8 @@ public:
         // sort the solutions in both containers
         std::vector<int> src_ind(cnt->n_particles());
         std::vector<int> des_ind(n_particles());
-        cnt->best_k(cnt->n_particles(), src_ind.data());
-        worst_k(n_particles(), des_ind.data());
+        cnt->best_k(src_ind.data(), cnt->n_particles());
+        worst_k(des_ind.data(), n_particles());
         int src_i=0, des_i=0;
         T_e src_b, des_w;
         while((src_i < cnt->n_particles()) && (des_i < n_particles())){

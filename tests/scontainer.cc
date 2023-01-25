@@ -34,7 +34,7 @@ TEST_CASE("solution container operations", "[container][zagros][rocky]"){
         container.values[75] = 4.5;
         container.values[7] = 3.5;
         int top[3];
-        container.best_k(3, top);
+        container.best_k(top, 3);
         REQUIRE(top[0] == 7);
         REQUIRE(top[1] == 75);
         REQUIRE(top[2] == 10);       
@@ -45,7 +45,7 @@ TEST_CASE("solution container operations", "[container][zagros][rocky]"){
         container.values[50] = 10.0;
         container.values[17] = 8.0;
 
-        container.worst_k(2, worst);
+        container.worst_k(worst, 2);
         REQUIRE(worst[0] == 50);
         REQUIRE(worst[1] == 17);  
     }
@@ -58,7 +58,7 @@ TEST_CASE("solution container operations", "[container][zagros][rocky]"){
 
         container.replace_with(&c2);
         int top[3];
-        container.best_k(3, top);
+        container.best_k(top, 3);
         REQUIRE(container.values[top[0]] == c2.values[2]);
         REQUIRE(container.values[top[1]] == c2.values[0]);
         REQUIRE(container.values[top[2]] == c2.values[1]);  

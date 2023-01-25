@@ -154,8 +154,8 @@ protected:
     // number of crossovers
     int n_crossovers_;
 public:
-    static_segment_crossover(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, basic_scontainer<T_e, T_dim>* cnd_container, int n_crossovers, int segment_length){
-        this->n_crossovers_ = n_crossovers;
+    static_segment_crossover(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, basic_scontainer<T_e, T_dim>* cnd_container, int segment_length){
+        this->n_crossovers_ = cnd_container->n_particles() / 2;
         this->segment_length_ = segment_length;
         this->problem_ = problem;
         this->container_ = container;

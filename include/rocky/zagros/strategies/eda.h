@@ -45,12 +45,12 @@ protected:
     int n_candidates_;
 
 public:
-    eda_mutivariate_normal(system<T_e>* problem, basic_scontainer<T_e, T_dim>* tgt_container, basic_scontainer<T_e, T_dim>* cnd_container, int sample_size, int n_candidates){
+    eda_mutivariate_normal(system<T_e>* problem, basic_scontainer<T_e, T_dim>* tgt_container, basic_scontainer<T_e, T_dim>* cnd_container, int sample_size){
         this->problem_ = problem;
         this->target_container_ = tgt_container;
         this->candidates_container_ = cnd_container;
         this->sample_size_ = sample_size;
-        this->n_candidates_ = n_candidates;
+        this->n_candidates_ = cnd_container->n_particles();
         top_particles_mem_.resize(sample_size * T_dim);
         solution_ind_.resize(sample_size);
         cov_mem_.resize(T_dim * T_dim);
@@ -64,7 +64,7 @@ public:
     }
     virtual void apply(){
         // find top k solutions
-        target_container_->best_k(sample_size_, solution_ind_.data());
+        target_container_->best_k(solution_ind_.data(), sample_size_);
         // copy the best soluions
         T_e* top_particles_ptr = top_particles_mem_.data();
 
