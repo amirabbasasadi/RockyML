@@ -5,6 +5,7 @@
 #include<rocky/zagros/strategies/init.h>
 #include<rocky/zagros/strategies/log.h>
 #include<rocky/zagros/strategies/pso.h>
+#include<rocky/zagros/strategies/genetic.h>
 #include<rocky/zagros/strategies/blocked_descent.h>
 #include<rocky/zagros/dena.h>
 
@@ -171,6 +172,12 @@ struct allocation_visitor{
     void operator()(dena::container_create_node node){
         main_storage->allocate_container(node.id, node.n_particles, node.group_size);
     }
+    void operator()(dena::mutate_gaussian_node node){
+        // allocate required solution containers for particle swarm
+        auto main_cnt = main_storage->container(node.id);
+        int n_particles = main_cnt->n_particles();
+        main_storage->allocate_container(dena::utils::temp_name(node.tag), n_particles, n_particles);
+    }
     void operator()(dena::pso_memory_create_node node){
         // allocate required solution containers for particle swarm
         auto main_cnt = main_storage->container(node.main_cnt_id);
@@ -292,6 +299,13 @@ struct assigning_visitor{
         auto node_mem = main_storage->container(pso::memory::node_mem(node.memory_id));
         auto cluster_mem = main_storage->container(pso::memory::cluster_mem(node.memory_id));
         auto str = std::make_unique<pso_l3_strategy<T_e, T_block_dim>>(problem, main_cnt, particles_v, particles_mem, groups_mem, node_mem, cluster_mem);
+        // add the strategy to the container
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
+    void operator()(dena::mutate_gaussian_node node){
+        auto main_cnt = main_storage->container(node.id);
+        auto temp_cnt = main_storage->container(dena::utils::temp_name(node.tag));
+        auto str = std::make_unique<gaussian_mutation<T_e, T_block_dim>>(problem, main_cnt, temp_cnt, node.dims, node.mu, node.sigma);
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }

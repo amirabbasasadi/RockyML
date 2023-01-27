@@ -72,6 +72,14 @@ struct pso_step_node: public pso_node{
 struct pso_group_level_step_node: public pso_step_node{};
 struct pso_cluster_level_step_node: public pso_step_node{};
 
+struct mutate_node: public flow_node{};
+struct mutate_gaussian_node: public mutate_node{
+    std::string id;
+    int dims;
+    float mu;
+    float sigma;
+};
+
 struct bcd_node: public flow_node{};
 enum bcd_mask_generator { uniform };
 struct bcd_mask_node: public bcd_node{
@@ -107,6 +115,7 @@ typedef std::variant<log_local_best_node,
                     pso_memory_create_node,
                     pso_group_level_step_node,
                     pso_cluster_level_step_node,
+                    mutate_gaussian_node,
                     run_with_probability_node,
                     run_n_times_node,
                     run_every_n_steps_node,
@@ -174,6 +183,28 @@ public:
 };
 
 /**
+ * @brief utils for dena
+ * 
+ */
+class utils{
+public:
+    /**
+     * @brief generate the name for temporal containers
+     * 
+     */
+    static std::string temp_name(int tag){
+        return fmt::format("__temp__{}__", tag);
+    }
+    /**
+     * @brief generate the name for temporal containers
+     * 
+     */
+    static std::string temp_name(int tag, std::string desc){
+        return fmt::format("__temp__{}__{}__", tag, desc);
+    }
+};
+
+/**
  * @brief factories for initialization strategies
  * 
  */
@@ -213,7 +244,7 @@ public:
     }
     // an overload of the best function which selects the best continer automatically
     static flow best(local_optimization_log& handler){
-        return best(std::string("__best__"), handler);
+        return best("__best__", handler);
     }
 }; // end of local
 
@@ -448,7 +479,7 @@ public:
  * @brief group level particle convergence
  * 
  */
-class group{
+class local{
 public:
     /**
      * @brief single step based on pso-l1
@@ -469,10 +500,10 @@ public:
 }; // end of group level
 
 /**
- * @brief group level particle convergence
+ * @brief cluster level particle convergence
  * 
  */
-class cluster{
+class global{
 public:
     /**
      * @brief single step based on pso-l3
@@ -493,6 +524,22 @@ public:
 }; // end of group level
 
 }; // end of pso
+
+class mutate{
+public:
+    static flow gaussian(std::string id, int dims=1, float mu=0.0, float sigma=1.0){
+        flow f;
+        mutate_gaussian_node node;
+        node.id = id;
+        node.dims = dims;
+        node.mu = mu;
+        node.sigma = sigma;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+
+}; // end of mutate
 
 
 }; // end of dena
