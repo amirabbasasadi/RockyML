@@ -46,9 +46,13 @@ struct init_uniform: public init_node{
 struct init_normal: public init_node{};
 
 struct log_node: public flow_node{};
-struct log_best_node: public log_node{
+struct log_local_best_node: public log_node{
     std::string id;
     local_optimization_log* handler;
+};
+struct log_comet_best_node: public log_node{
+    std::string id;
+    comet_optimization_log* handler;
 };
 
 struct comm_node: public flow_node{};
@@ -93,7 +97,8 @@ struct run_every_n_steps_node: public run_node{
 
 
 // a variant containing all nodes
-typedef std::variant<log_best_node,
+typedef std::variant<log_local_best_node,
+                    log_comet_best_node,
                     bcd_mask_node,
                     comm_cluster_prop_best,
                     init_uniform,
@@ -199,7 +204,7 @@ public:
      */
     static flow best(std::string id, local_optimization_log& handler){
         flow f;
-        log_best_node node;
+        log_local_best_node node;
         node.id = id;
         node.handler = &handler;
         auto node_tag = node::register_node<>(node);
@@ -208,15 +213,32 @@ public:
     }
     // an overload of the best function which selects the best continer automatically
     static flow best(local_optimization_log& handler){
+        return best(std::string("__best__"), handler);
+    }
+}; // end of local
+
+class comet{
+public:
+    /**
+     * @brief local logging strategies
+     * 
+     * @return * flow 
+     */
+    static flow best(std::string id, comet_optimization_log& handler){
         flow f;
-        log_best_node node;
-        node.id = std::string("");
+        log_comet_best_node node;
+        node.id = id;
         node.handler = &handler;
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
         return f;
     }
-}; // end of local
+    // an overload of the best function which selects the best continer automatically
+    static flow best(comet_optimization_log& handler){
+        return best(std::string("__best__"), handler);
+    }
+}; // end of comet
+
 }; // end of log
 
 namespace blocked_descent{

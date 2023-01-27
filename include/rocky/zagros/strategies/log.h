@@ -61,6 +61,7 @@ struct local_optimization_log{
         this->save();
     }
 };
+
 /**
  * @brief Log the best solution in the container in a csv file
  * 
@@ -93,22 +94,9 @@ public:
     };
 };
 
-/**
- * @brief Interface for Comet logging strategies
- * 
- */
-template<typename T_e, int T_dim>
-class comet_strategy: public logging_strategy<T_e, T_dim>{};
 
-/**
- * @brief A strategy for logging the best solution on Comet server
- * 
- */
-template<typename T_e, int T_dim>
-class comet_log_best: public comet_strategy<T_e, T_dim>{
-protected:
-    system<T_e>* problem_;
-    basic_scontainer<T_e, T_dim>* container_;
+
+struct comet_optimization_log{
     std::string comet_api_key_;
     std::string workspace_;
     std::string project_;
@@ -117,20 +105,13 @@ protected:
     std::string experiment_link_;
     std::string experiment_key_;
 
-public:
-    comet_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, std::string comet_api_key, std::string workspace, std::string project, std::string metric_name){
-        this->problem_ = problem;
-        this->container_ = container;
+    comet_optimization_log(std::string comet_api_key, std::string workspace, std::string project, std::string metric_name){
         this->comet_api_key_ = comet_api_key;
         this->workspace_ = workspace;
         this->project_ = project;
         this->metric_name_ = metric_name;
-         // we need to make sure in an MPI app only the root process will create the experiment        
-        this->create_experiment();        
-    }
-    void connection_warning(int status_code){
-        if(status_code != 200)
-            spdlog::warn("Error while connecting Comet server! request status code : {}", status_code);
+        // we need to make sure in an MPI app only the root process will create the experiment        
+        this->create_experiment();   
     }
     void create_experiment(){
         spdlog::info("creating comet experiment...");
@@ -156,7 +137,6 @@ public:
         spdlog::info("{} experiment link : {}", proc_metric_name, this->experiment_link_);
         spdlog::info("{} experiment key : {}", proc_metric_name, this->experiment_key_);
     }
-    #ifdef ROCKY_USE_MPI
     void broadcast_experiment(){
         // root process should broadcast the experiment info
         int mpi_rank;
@@ -172,31 +152,57 @@ public:
             spdlog::info("process {} has the key : {}", mpi_rank, experiment_key_);
         }
     }
-    #endif
     std::string get_metric_name(){
-        std::string name = metric_name_;
-        #ifdef ROCKY_USE_MPI
-            int mpi_rank;
-            MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
-            name = std::string("proc_") + std::to_string(mpi_rank) + "_" + name;
-        #endif
+        int mpi_rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+        std::string name = fmt::format("proc_{}_{}", mpi_rank, metric_name_);
         return name;
+    }
+    void connection_warning(int status_code){
+        if(status_code != 200)
+            spdlog::warn("Error while connecting Comet server! request status code : {}", status_code);
+    }
+};
+
+/**
+ * @brief Interface for Comet logging strategies
+ * 
+ */
+template<typename T_e, int T_dim>
+class comet_strategy: public logging_strategy<T_e, T_dim>{};
+
+/**
+ * @brief A strategy for logging the best solution on Comet server
+ * 
+ */
+template<typename T_e, int T_dim>
+class comet_log_best: public comet_strategy<T_e, T_dim>{
+protected:
+    system<T_e>* problem_;
+    basic_scontainer<T_e, T_dim>* container_;
+    comet_optimization_log* handler_;
+
+public:
+    comet_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, comet_optimization_log* handler){
+        this->problem_ = problem;
+        this->container_ = container;
+        this->handler_ = handler;
     }
     virtual void apply(){
          // find the best solution
         T_e best = container_->best_min();
         // encode the metric data
-        nlohmann::json metric_data = {{"experimentKey", this->experiment_key_},
-                                      {"metricName", this->get_metric_name()},
+        nlohmann::json metric_data = {{"experimentKey", handler_->experiment_key_},
+                                      {"metricName", handler_->get_metric_name()},
                                       {"metricValue", best}};
         // send metric data using an async call
-        auto req_future = std::async([=](){
+        auto req_future = std::async([this, &metric_data](){
             cpr::Response r = cpr::Post(cpr::Url{"https://www.comet.com/api/rest/v2/write/experiment/metric"},
-                                cpr::Header{{"Authorization", this->comet_api_key_},
+                                cpr::Header{{"Authorization", this->handler_->comet_api_key_},
                                             {"Content-type", "application/json"},
                                             {"Accept", "application/json"}},
                                 cpr::Body{metric_data.dump()});
-            this->connection_warning(r.status_code);
+            this->handler_->connection_warning(r.status_code);
         });
         
     };

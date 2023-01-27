@@ -149,7 +149,8 @@ struct allocation_visitor{
     std::stack<int>* path_stack;
 
     void operator()(dena::bcd_mask_node node){}
-    void operator()(dena::log_best_node node){}
+    void operator()(dena::log_local_best_node node){}
+    void operator()(dena::log_comet_best_node node){}
     void operator()(dena::comm_cluster_prop_best node){}
     void operator()(dena::init_uniform node){}
     void operator()(dena::init_normal node){}
@@ -215,16 +216,25 @@ struct assigning_visitor{
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(sync_str));
     }
-
-    void operator()(dena::log_best_node node){
+    void operator()(dena::log_local_best_node node){
         basic_scontainer<T_e, T_block_dim>* target_cnt = nullptr;
         if(node.id.size() == 0)
             target_cnt = main_storage->partial_best.get();
         else
             target_cnt = main_storage->container(node.id);
         // reserve the strategy
-        
         auto str = std::make_unique<local_log_best<T_e, T_block_dim>>(problem, target_cnt, node.handler);
+        // add the strategy to the container
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
+    void operator()(dena::log_comet_best_node node){
+        basic_scontainer<T_e, T_block_dim>* target_cnt = nullptr;
+        if(node.id.size() == 0)
+            target_cnt = main_storage->partial_best.get();
+        else
+            target_cnt = main_storage->container(node.id);
+        // reserve the strategy
+        auto str = std::make_unique<comet_log_best<T_e, T_block_dim>>(problem, target_cnt, node.handler);
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
@@ -342,7 +352,7 @@ struct running_visitor{
             // synchronize best values for the current state over the cluster
             main_storage->update_partial_best();
             main_storage->sync_partial_best();
-            spdlog::info("a new BCD mask has been generated. best solution: {}", main_storage->partial_best->values[0]);
+            spdlog::info("synchronizing BCD mask. best solution: {}", main_storage->partial_best->values[0]);
             // generate a new mask
             main_storage->str_storage[node.tag][0]->apply();
             // synchronize the generated mask
