@@ -81,6 +81,11 @@ struct crossover_multipoint_node: public crossover_node{
     std::string id;
     int dims;
 };
+struct crossover_differential_evolution_node: public crossover_node{
+    std::string id;
+    float crossover_prob;
+    float differential_weight;
+};
 
 struct bcd_node: public flow_node{};
 enum bcd_mask_generator { uniform };
@@ -119,6 +124,7 @@ typedef std::variant<log_local_best_node,
                     pso_cluster_level_step_node,
                     mutate_gaussian_node,
                     crossover_multipoint_node,
+                    crossover_differential_evolution_node,
                     run_with_probability_node,
                     run_n_times_node,
                     run_every_n_steps_node,
@@ -571,9 +577,26 @@ public:
         f.procedure.push_back(node_tag);
         return f;
     }
+    /**
+     * @brief differential evolution
+     * 
+     * @param id target container
+     * @param cr crossover probability
+     * @param dw differential weight
+     * @return * flow 
+     */
+    static flow differential_evolution(std::string id, float cr=0.9, float dw=0.9){
+        flow f;
+        crossover_differential_evolution_node node;
+        node.id = id;
+        node.crossover_prob = cr;
+        node.differential_weight = dw;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
 
 }; // end of mutate
-
 
 }; // end of dena
 }; // end of zagros

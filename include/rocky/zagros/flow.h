@@ -6,6 +6,7 @@
 #include<rocky/zagros/strategies/log.h>
 #include<rocky/zagros/strategies/pso.h>
 #include<rocky/zagros/strategies/genetic.h>
+#include<rocky/zagros/strategies/differential_evolution.h>
 #include<rocky/zagros/strategies/blocked_descent.h>
 #include<rocky/zagros/dena.h>
 
@@ -200,7 +201,13 @@ struct allocation_visitor{
         main_storage->allocate_container(dena::utils::temp_name(node.tag), n_particles, n_particles);
     }
     void operator()(dena::crossover_multipoint_node node){
-        // allocate required solution containers for particle swarm
+        // allocate required solution container
+        auto main_cnt = main_storage->container(node.id);
+        int n_particles = main_cnt->n_particles();
+        main_storage->allocate_container(dena::utils::temp_name(node.tag), n_particles, n_particles);
+    }
+    void operator()(dena::crossover_differential_evolution_node node){
+        // allocate required solution container
         auto main_cnt = main_storage->container(node.id);
         int n_particles = main_cnt->n_particles();
         main_storage->allocate_container(dena::utils::temp_name(node.tag), n_particles, n_particles);
@@ -319,6 +326,13 @@ struct assigning_visitor{
         auto main_cnt = main_storage->container(node.id);
         auto temp_cnt = main_storage->container(dena::utils::temp_name(node.tag));
         auto str = std::make_unique<multipoint_crossover<T_e, T_block_dim>>(problem, main_cnt, temp_cnt, node.dims);
+        // add the strategy to the container
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
+    void operator()(dena::crossover_differential_evolution_node node){
+        auto main_cnt = main_storage->container(node.id);
+        auto temp_cnt = main_storage->container(dena::utils::temp_name(node.tag));
+        auto str = std::make_unique<basic_differential_evolution<T_e, T_block_dim>>(problem, main_cnt, temp_cnt, node.crossover_prob, node.differential_weight);
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
