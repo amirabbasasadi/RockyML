@@ -17,7 +17,7 @@ int main(int argc, char* argv[]){
     const int n_particles = 300;
     const int group_size = 10;
     const int dim = 200;
-    const int block_dim = 100;
+    const int block_dim = 20;
 
     using namespace zagros::dena;
     
@@ -25,17 +25,20 @@ int main(int argc, char* argv[]){
     zagros::benchmark::rastrigin<swarm_type> problem(dim);
     std::fstream f;
     zagros::local_optimization_log log_handler(f, "loss.csv");
-
+    
     auto f2 = container::create("A", n_particles, group_size)
               >> pso::memory::create("M", "A")
               >> init::uniform("A")
-              >> run::while_improve(
+              >> run::while_improve(10,
                     blocked_descent::uniform::step()
-                    >> run::n_times(1, 
-                            pso::group::step("M", "A"))
-                    >> run::while_improve(2, 
-                            pso::cluster::step("M", "A")
-                            >> run::with_probability(1.0, log::local::best(log_handler))));
+                    >> run::while_improve(5, 
+                            pso::local::step("M", "A")
+                            >> mutate::gaussian(pso::memory::particles_mem("M"), 4)
+                            >> crossover::multipoint(pso::memory::particles_mem("M"))
+                            >> run::with_probability(0.05, log::local::best(log_handler)))
+                    >> run::while_improve(5, 
+                            pso::global::step("M", "A")
+                            >> run::with_probability(0.05, log::local::best(log_handler))));
 
     zagros::basic_runtime<swarm_type, dim, block_dim> runtime(&problem);
     

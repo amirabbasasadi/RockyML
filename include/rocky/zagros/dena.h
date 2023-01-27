@@ -14,10 +14,6 @@
 namespace rocky{
 namespace zagros{
 
-// overload pattern for simplifying visitors
-template<class... T_s> struct overload : T_s... { using T_s::operator()...; };
-template<class... T_s> overload(T_s...) -> overload<T_s...>;
-
 namespace dena{
 
 
@@ -80,6 +76,12 @@ struct mutate_gaussian_node: public mutate_node{
     float sigma;
 };
 
+struct crossover_node: public flow_node{};
+struct crossover_multipoint_node: public crossover_node{
+    std::string id;
+    int dims;
+};
+
 struct bcd_node: public flow_node{};
 enum bcd_mask_generator { uniform };
 struct bcd_mask_node: public bcd_node{
@@ -116,6 +118,7 @@ typedef std::variant<log_local_best_node,
                     pso_group_level_step_node,
                     pso_cluster_level_step_node,
                     mutate_gaussian_node,
+                    crossover_multipoint_node,
                     run_with_probability_node,
                     run_n_times_node,
                     run_every_n_steps_node,
@@ -193,7 +196,7 @@ public:
      * 
      */
     static std::string temp_name(int tag){
-        return fmt::format("__temp__{}__", tag);
+        return fmt::format("__temp__T[{}]__", tag);
     }
     /**
      * @brief generate the name for temporal containers
@@ -527,6 +530,15 @@ public:
 
 class mutate{
 public:
+    /**
+     * @brief Gaussian mutation
+     * 
+     * @param id target container
+     * @param dims number of affected dimensions
+     * @param mu mean of the gaussian noise
+     * @param sigma std of the gaussian noise
+     * @return * flow 
+     */
     static flow gaussian(std::string id, int dims=1, float mu=0.0, float sigma=1.0){
         flow f;
         mutate_gaussian_node node;
@@ -534,6 +546,27 @@ public:
         node.dims = dims;
         node.mu = mu;
         node.sigma = sigma;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+
+}; // end of mutate
+
+class crossover{
+public:
+    /**
+     * @brief multipoint crossover
+     * 
+     * @param id target container
+     * @param dims number of affected dimensions
+     * @return * flow 
+     */
+    static flow multipoint(std::string id, int dims=1){
+        flow f;
+        crossover_multipoint_node node;
+        node.id = id;
+        node.dims = dims;
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
         return f;

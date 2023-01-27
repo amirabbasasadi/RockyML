@@ -23,7 +23,7 @@ TEST_CASE("Creating a flow", "[flow][zagros][rocky]"){
     auto f1 = container::create("A", n_particles, group_size)
               >> pso::memory::create("M", "A")
               >> init::uniform("A")
-              >> run::n_times(20, pso::group::step("M", "A"));
+              >> run::n_times(20, pso::local::step("M", "A"));
     
     zagros::basic_runtime<swarm_type, dim, block_dim> runtime(&problem);
     runtime.run(f1);

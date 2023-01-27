@@ -172,12 +172,6 @@ struct allocation_visitor{
     void operator()(dena::container_create_node node){
         main_storage->allocate_container(node.id, node.n_particles, node.group_size);
     }
-    void operator()(dena::mutate_gaussian_node node){
-        // allocate required solution containers for particle swarm
-        auto main_cnt = main_storage->container(node.id);
-        int n_particles = main_cnt->n_particles();
-        main_storage->allocate_container(dena::utils::temp_name(node.tag), n_particles, n_particles);
-    }
     void operator()(dena::pso_memory_create_node node){
         // allocate required solution containers for particle swarm
         auto main_cnt = main_storage->container(node.main_cnt_id);
@@ -199,6 +193,18 @@ struct allocation_visitor{
     }
     void operator()(dena::pso_group_level_step_node node){}
     void operator()(dena::pso_cluster_level_step_node node){}
+    void operator()(dena::mutate_gaussian_node node){
+        // allocate required solution containers for particle swarm
+        auto main_cnt = main_storage->container(node.id);
+        int n_particles = main_cnt->n_particles();
+        main_storage->allocate_container(dena::utils::temp_name(node.tag), n_particles, n_particles);
+    }
+    void operator()(dena::crossover_multipoint_node node){
+        // allocate required solution containers for particle swarm
+        auto main_cnt = main_storage->container(node.id);
+        int n_particles = main_cnt->n_particles();
+        main_storage->allocate_container(dena::utils::temp_name(node.tag), n_particles, n_particles);
+    }
 };
 /**
  * @brief Assigning visitor
@@ -306,6 +312,13 @@ struct assigning_visitor{
         auto main_cnt = main_storage->container(node.id);
         auto temp_cnt = main_storage->container(dena::utils::temp_name(node.tag));
         auto str = std::make_unique<gaussian_mutation<T_e, T_block_dim>>(problem, main_cnt, temp_cnt, node.dims, node.mu, node.sigma);
+        // add the strategy to the container
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
+    void operator()(dena::crossover_multipoint_node node){
+        auto main_cnt = main_storage->container(node.id);
+        auto temp_cnt = main_storage->container(dena::utils::temp_name(node.tag));
+        auto str = std::make_unique<multipoint_crossover<T_e, T_block_dim>>(problem, main_cnt, temp_cnt, node.dims);
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
