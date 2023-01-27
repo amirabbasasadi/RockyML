@@ -113,11 +113,21 @@ public:
      * @param n sample size
      */
     void sample_n_particles(int* indices, int n=1){
-        auto dist = weighted_sampler();
+        auto weighted_dist = weighted_sampler();
         std::set<int> indices_set;
+        int max_iters = 10 * n;
+        int iters = 0;
         do{
-            indices_set.insert(dist(rocky::utils::random::prng()));
-        }while(indices_set.size() < n);
+            indices_set.insert(weighted_dist(rocky::utils::random::prng()));
+            iters++;
+        } while((indices_set.size() < n) && (iters < max_iters));
+
+        if(indices_set.size() < n){
+            std::uniform_int_distribution uniform_dist(0, n_particles()-1);
+            do{
+                indices_set.insert(uniform_dist(rocky::utils::random::prng()));
+            }while(indices_set.size() < n);
+        }
         int i = 0;
         for(auto index: indices_set)
             indices[i++] = index;
@@ -279,12 +289,19 @@ public:
      * @return a discrete distribution for weighted sampling
      */
     std::discrete_distribution<int> weighted_sampler(){
-        std::vector<T_e> weights(n_particles());
-        for(int p=0; p<n_particles(); p++){
-            if (values[p] == std::numeric_limits<T_e>::max())
-                weights[p] = 1.0;
-            else
-                weights[p] = 1.0/(1.0 + values[p] * values[p]);
+        std::vector<T_e> weights;
+        T_e max_el = *std::max_element(values.begin(), values.end());
+        if(max_el == std::numeric_limits<T_e>::max())
+            weights.assign(values.size(), 1.0);
+        else{
+            T_e min_el = *std::min_element(values.begin(), values.end());
+            T_e shift = 0.0;
+            if (min_el < 0.0)
+                shift = -min_el + 0.0001;
+            max_el += shift;
+            weights.resize(n_particles());
+            for(int p=0; p<n_particles(); p++)
+                weights[p] = max_el - (shift + values[p]);            
         }
         // construct a distribution for weighted sampling
         std::discrete_distribution<int> sampling_dist(weights.begin(), weights.end());

@@ -37,6 +37,7 @@ TEST_CASE("strategy", "[strategy][zagros][rocky]"){
     zagros::uniform_init_strategy<container_type, dim> init_str(&problem, &container);
 
     init_str.apply();
+    container.evaluate_and_update(&problem);
 
     SECTION("gaussian mutation"){
         int affected_dims = 8;
