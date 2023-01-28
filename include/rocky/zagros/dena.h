@@ -86,6 +86,10 @@ struct crossover_differential_evolution_node: public crossover_node{
     float crossover_prob;
     float differential_weight;
 };
+struct crossover_segment_node: public crossover_node{
+    std::string id;
+    int segment_length;
+};
 
 struct eda_node: public flow_node{};
 struct eda_mvn_node: public eda_node{};
@@ -131,6 +135,7 @@ typedef std::variant<log_local_best_node,
                     mutate_gaussian_node,
                     crossover_multipoint_node,
                     crossover_differential_evolution_node,
+                    crossover_segment_node,
                     eda_mvn_fullcov_node,
                     run_with_probability_node,
                     run_n_times_node,
@@ -598,6 +603,15 @@ public:
         node.id = id;
         node.crossover_prob = cr;
         node.differential_weight = dw;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+    static flow segment(std::string id, int segment_length){
+        flow f;
+        crossover_segment_node node;
+        node.id = id;
+        node.segment_length = segment_length;
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
         return f;

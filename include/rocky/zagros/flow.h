@@ -180,7 +180,7 @@ struct allocation_visitor{
         int n_particles = main_cnt->n_particles();
         int n_groups = main_cnt->n_groups();
         int group_size = main_cnt->group_size();
-        
+
         using namespace dena;
         // particles velocity
         main_storage->allocate_container(pso::memory::particles_vel(node.memory_id), n_particles, group_size);
@@ -223,6 +223,12 @@ struct allocation_visitor{
             spdlog::warn("For using EDA it is recommended to choose number of particles larger than BCD block");
         }
         main_storage->allocate_container(dena::utils::temp_name(node.tag), T_block_dim, T_block_dim);
+    }
+    void operator()(dena::crossover_segment_node node){
+        // allocate required solution container
+        auto main_cnt = main_storage->container(node.id);
+        int n_particles = main_cnt->n_particles();
+        main_storage->allocate_container(dena::utils::temp_name(node.tag), n_particles, n_particles);
     }
 };
 /**
@@ -352,6 +358,18 @@ struct assigning_visitor{
         auto main_cnt = main_storage->container(node.id);
         auto temp_cnt = main_storage->container(dena::utils::temp_name(node.tag));
         auto str = std::make_unique<eda_mutivariate_normal<T_e, T_block_dim>>(problem, main_cnt, temp_cnt, T_block_dim);
+        // add the strategy to the container
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
+    void operator()(dena::crossover_segment_node node){
+        auto main_cnt = main_storage->container(node.id);
+        auto temp_cnt = main_storage->container(dena::utils::temp_name(node.tag));
+        int segment_length = node.segment_length;
+        if (segment_length >= T_block_dim){
+            int segment_length = std::max(T_block_dim-1, 1);
+            spdlog::warn("segment length must be less than BCD block size!");
+        }
+        auto str = std::make_unique<static_segment_crossover<T_e, T_block_dim>>(problem, main_cnt, temp_cnt, segment_length);
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
