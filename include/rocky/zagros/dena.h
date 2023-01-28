@@ -87,6 +87,12 @@ struct crossover_differential_evolution_node: public crossover_node{
     float differential_weight;
 };
 
+struct eda_node: public flow_node{};
+struct eda_mvn_node: public eda_node{};
+struct eda_mvn_fullcov_node: public eda_mvn_node{
+    std::string id;
+};
+
 struct bcd_node: public flow_node{};
 enum bcd_mask_generator { uniform };
 struct bcd_mask_node: public bcd_node{
@@ -125,6 +131,7 @@ typedef std::variant<log_local_best_node,
                     mutate_gaussian_node,
                     crossover_multipoint_node,
                     crossover_differential_evolution_node,
+                    eda_mvn_fullcov_node,
                     run_with_probability_node,
                     run_n_times_node,
                     run_every_n_steps_node,
@@ -597,6 +604,37 @@ public:
     }
 
 }; // end of mutate
+
+/**
+ * @brief factories for estimation of distribution algorithms
+ * 
+ */
+namespace eda{
+/**
+ * @brief mutivariate normal EDA
+ * 
+ */
+class mvn{
+public:
+    /**
+     * @brief Multivariate Normal with Full Covariance Matrix
+     * 
+     * @param id target container
+     * @param sample_size number of samples to estimate covariance matrix
+     * @return * flow 
+     */
+    static flow full_cov(std::string id){
+        flow f;
+        eda_mvn_fullcov_node node;
+        node.id = id;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+}; // end of mvn
+}; // end of eda
+
+
 
 }; // end of dena
 }; // end of zagros
