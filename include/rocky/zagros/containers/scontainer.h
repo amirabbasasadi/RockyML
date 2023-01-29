@@ -1,3 +1,7 @@
+/*
+    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved
+    distributed under Apache-2.0 license
+*/
 #ifndef ROCKY_ZAGROS_SCONTAINER_GUARD
 #define ROCKY_ZAGROS_SCONTAINER_GUARD
 
@@ -295,13 +299,13 @@ public:
             weights.assign(values.size(), 1.0);
         else{
             T_e min_el = *std::min_element(values.begin(), values.end());
-            T_e shift = 0.0;
+            T_e shift = 0.0001;
             if (min_el < 0.0)
-                shift = -min_el + 0.0001;
+                shift += -min_el;
             max_el += shift;
             weights.resize(n_particles());
             for(int p=0; p<n_particles(); p++)
-                weights[p] = max_el - (shift + values[p]);            
+                weights[p] = max_el - (shift + values[p]);               
         }
         // construct a distribution for weighted sampling
         std::discrete_distribution<int> sampling_dist(weights.begin(), weights.end());

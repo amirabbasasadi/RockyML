@@ -1,3 +1,7 @@
+/*
+    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved
+    distributed under Apache-2.0 license
+*/
 #ifndef ROCKY_ZAGROS_LOG_STRATEGY
 #define ROCKY_ZAGROS_LOG_STRATEGY
 
@@ -93,8 +97,6 @@ public:
         this->handler_->step++;
     };
 };
-
-
 
 struct comet_optimization_log{
     std::string comet_api_key_;

@@ -1,3 +1,7 @@
+/*
+    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved
+    distributed under Apache-2.0 license
+*/
 #ifndef ROCKY_ZAGROS_DE_STRATEGY
 #define ROCKY_ZAGROS_DE_STRATEGY
 
