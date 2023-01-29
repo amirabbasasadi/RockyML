@@ -5,6 +5,7 @@
 #include<rocky/zagros/strategies/init.h>
 #include<rocky/zagros/strategies/log.h>
 #include<rocky/zagros/strategies/pso.h>
+#include<rocky/zagros/strategies/analysis.h>
 #include<rocky/zagros/strategies/genetic.h>
 #include<rocky/zagros/strategies/differential_evolution.h>
 #include<rocky/zagros/strategies/eda.h>
@@ -230,6 +231,7 @@ struct allocation_visitor{
         int n_particles = main_cnt->n_particles();
         main_storage->allocate_container(dena::utils::temp_name(node.tag), n_particles, n_particles);
     }
+    void operator()(dena::plot_heatmap_node node){}
 };
 /**
  * @brief Assigning visitor
@@ -373,6 +375,18 @@ struct assigning_visitor{
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
+    void operator()(dena::plot_heatmap_node node){
+        if (T_block_dim != 2){
+            spdlog::warn("For using heatmap the block dimension should be 2.");
+        }
+        T_e x_min = problem->lower_bound(0);
+        T_e y_min = problem->lower_bound(1);
+        T_e x_max = problem->upper_bound(0);
+        T_e y_max = problem->upper_bound(1);
+
+        auto str = std::make_unique<loss_projection_2d<T_e, T_block_dim>>(problem, node.label, node.width, node.height, x_min, y_min, x_max, y_max);
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
 };
 
 /**
@@ -427,6 +441,8 @@ struct running_visitor{
             return;
         }
         if constexpr (std::is_base_of<dena::bcd_mask_node, T_n>::value){
+            if constexpr(T_block_dim == T_dim)
+                return;
             // synchronize best values for the current state over the cluster
             main_storage->update_partial_best();
             main_storage->sync_partial_best();

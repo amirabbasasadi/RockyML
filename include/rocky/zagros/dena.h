@@ -97,6 +97,14 @@ struct eda_mvn_fullcov_node: public eda_mvn_node{
     std::string id;
 };
 
+struct analysis_node: public flow_node{};
+struct plot_node: public analysis_node{};
+struct plot_heatmap_node: public plot_node{
+    int width;
+    int height;
+    std::string label;
+};
+
 struct bcd_node: public flow_node{};
 enum bcd_mask_generator { uniform };
 struct bcd_mask_node: public bcd_node{
@@ -137,6 +145,7 @@ typedef std::variant<log_local_best_node,
                     crossover_differential_evolution_node,
                     crossover_segment_node,
                     eda_mvn_fullcov_node,
+                    plot_heatmap_node,
                     run_with_probability_node,
                     run_n_times_node,
                     run_every_n_steps_node,
@@ -648,7 +657,48 @@ public:
 }; // end of mvn
 }; // end of eda
 
+/**
+ * @brief utils for analyzing optimizers and loss functions
+ * 
+ */
+namespace analyze{
+    
+/**
+ * @brief utilities for plotting loss function or optimization stage
+ * 
+ */
+class plot{
+public:
+    /**
+     * @brief plotting a heatmap of loss function
+     * 
+     * @param label a string which will be included in the name of output file
+     * @param width width of the heatmap in pixels
+     * @param height height of the heatmap in pixels
+     * @return * flow 
+     */
+    static flow heatmap(std::string label, int width, int height){
+        flow f;
+        plot_heatmap_node node;
+        node.label = label;
+        node.width = width;
+        node.height = height;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+    static flow heatmap(std::string label, int width){
+        return heatmap(label, width, width);
+    }
+    static flow heatmap(std::string label){
+        return heatmap(label, 500);
+    }
+    static flow heatmap(){
+        return heatmap(std::string("heatmap"));
+    }
+}; // end of plot
 
+}; // end of analysis
 
 }; // end of dena
 }; // end of zagros

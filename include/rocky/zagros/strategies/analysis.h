@@ -26,8 +26,8 @@ class loss_projection_2d: public analysis_strategy<T_e, T_dim>{
 protected:
     // objective system
     system<T_e>* problem_;
-    // output directory path
-    std::string output_path_;
+    // output setting
+    std::string label_;
     // loss boundaries
     T_e x_min_;
     T_e x_max_;
@@ -45,10 +45,11 @@ protected:
     int step_;
     // loss function values
     std::vector<std::vector<T_e>> z;
-
+    
 public:
-    loss_projection_2d(system<T_e>* problem, int width, int height, T_e x_min, T_e y_min, T_e x_max, T_e y_max){
+    loss_projection_2d(system<T_e>* problem, std::string label, int width, int height, T_e x_min, T_e y_min, T_e x_max, T_e y_max){
         problem_ = problem;
+        label_ = label;
         width_ = width;
         height_ = height;
         x_min_ = x_min;
@@ -68,7 +69,7 @@ public:
             z[y].resize(l_width_);
     }
     void save_mesh(){
-        std::string path = fmt::format("zagros_loss_{}.data", step_);
+        std::string path = fmt::format("zagros_{}_{}.data", label_, step_);
         std::fstream handler(path, std::fstream::out);
         // writing metadata
         handler << step_ << std::endl;
