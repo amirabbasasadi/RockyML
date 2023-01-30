@@ -1,0 +1,7 @@
+<map id="rocky::zagros::comet_log_best&lt; T_e, T_dim &gt;" name="rocky::zagros::comet_log_best&lt; T_e, T_dim &gt;">
+<area shape="rect" id="node1" title="A strategy for logging the best solution on Comet server." alt="" coords="137,291,304,332"/>
+<area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1comet__strategy.html" title="Interface for Comet logging strategies." alt="" coords="5,187,169,228"/>
+<area shape="rect" id="node3" href="$classrocky_1_1zagros_1_1logging__strategy.html" title="Interface for logging strategies." alt="" coords="5,96,169,137"/>
+<area shape="rect" id="node4" href="$classrocky_1_1zagros_1_1basic__strategy.html" title="Interface for all strategies." alt="" coords="5,5,169,47"/>
+<area shape="rect" id="node5" href="$structrocky_1_1zagros_1_1comet__optimization__log.html" title=" " alt="" coords="193,187,339,228"/>
+</map>

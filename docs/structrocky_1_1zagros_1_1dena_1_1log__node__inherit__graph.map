@@ -1,0 +1,6 @@
+<map id="rocky::zagros::dena::log_node" name="rocky::zagros::dena::log_node">
+<area shape="rect" id="node1" title=" " alt="" coords="103,95,241,136"/>
+<area shape="rect" id="node3" href="$structrocky_1_1zagros_1_1dena_1_1log__comet__best__node.html" title=" " alt="" coords="5,184,163,225"/>
+<area shape="rect" id="node4" href="$structrocky_1_1zagros_1_1dena_1_1log__local__best__node.html" title=" " alt="" coords="187,184,335,225"/>
+<area shape="rect" id="node2" href="$structrocky_1_1zagros_1_1dena_1_1flow__node.html" title="abstract flow node" alt="" coords="103,5,241,47"/>
+</map>

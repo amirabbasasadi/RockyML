@@ -1,0 +1,5 @@
+<map id="RockyML Core" name="RockyML Core">
+<area shape="rect" id="node1" title="A high performance scientific computing framework." alt="" coords="5,31,116,56"/>
+<area shape="rect" id="node2" href="$group__group__etna.html" title="Building blocks for non&#45;differentiable neural networks." alt="" coords="171,5,220,31"/>
+<area shape="rect" id="node3" href="$group__group__zagros.html" title="A Parallel and distributed optimization framework." alt="" coords="164,55,227,80"/>
+</map>

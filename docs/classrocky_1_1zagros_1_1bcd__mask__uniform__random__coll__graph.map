@@ -1,0 +1,6 @@
+<map id="rocky::zagros::bcd_mask_uniform_random&lt; T_e, T_dim &gt;" name="rocky::zagros::bcd_mask_uniform_random&lt; T_e, T_dim &gt;">
+<area shape="rect" id="node1" title="Uniform mask generator." alt="" coords="7,288,168,344"/>
+<area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1bcd__mask__gen__strategy.html" title="Interface for bcd mask generation strategies." alt="" coords="12,184,163,240"/>
+<area shape="rect" id="node3" href="$classrocky_1_1zagros_1_1bcd__strategy.html" title="Interface for blocked descent strategies." alt="" coords="5,95,169,136"/>
+<area shape="rect" id="node4" href="$classrocky_1_1zagros_1_1basic__strategy.html" title="Interface for all strategies." alt="" coords="5,5,169,47"/>
+</map>
