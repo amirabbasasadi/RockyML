@@ -1,14 +1,7 @@
 name: Documentation
 
 on:
-  push:
-    branches: [ "main" ]
-    paths:
-      - include/**
-      - docs/**
-
-  pull_request:
-    branches: [ "main" ]
+  workflow_dispatch:
     
 env:
   # Customize the CMake build type here (Release, Debug, RelWithDebInfo, etc.)
@@ -26,5 +19,14 @@ jobs:
 
     - name: Doxygen Generation
       uses: mattnotmitt/doxygen-action@1.9.5
-       with:
+      with:
         doxyfile-path: ./DoxygenConfig
+    
+    - uses: stefanzweifel/git-auto-commit-action@v4
+      with:
+        commit_message: Updating documentation
+
+    - name: Deploy on GitHub Pages
+      uses: JamesIves/github-pages-deploy-action@v4
+      with:
+        folder: docs/docs/html
