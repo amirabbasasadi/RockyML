@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RockyML: Related Pages</title>
+<title>RockyML: Building and linking using CMake</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -73,7 +73,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:cf05388f2679ee054f2beb29a391d25f4e673ac3&amp;dn=gpl-2.0.txt GPL-v2 */
-$(document).ready(function(){initNavTree('pages.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('build.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -91,26 +91,66 @@ $(document).ready(function(){initNavTree('pages.html',''); initResizable(); });
 </iframe>
 </div>
 
-<div class="header">
+<div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Related Pages</div>  </div>
+<div class="title">Building and linking using CMake </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all related documentation pages:</div><div class="directory">
-<div class="levels">[detail level <span onclick="javascript:toggleLevel(1);">1</span><span onclick="javascript:toggleLevel(2);">2</span><span onclick="javascript:toggleLevel(3);">3</span>]</div><table class="directory">
-<tr id="row_0_" class="even"><td class="entry"><span style="width:0px;display:inline-block;">&#160;</span><span id="arr_0_" class="arrow" onclick="toggleFolder('0_')">&#9660;</span><a class="el" href="guide.html" target="_self">Guide</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_0_0_" class="arrow" onclick="toggleFolder('0_0_')">&#9660;</span><a class="el" href="getting_started.html" target="_self">Getting Started</a></td><td class="desc"></td></tr>
-<tr id="row_0_0_0_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a class="el" href="build.html" target="_self">Building and linking using CMake</a></td><td class="desc"></td></tr>
-<tr id="row_0_1_"><td class="entry"><span style="width:16px;display:inline-block;">&#160;</span><span id="arr_0_1_" class="arrow" onclick="toggleFolder('0_1_')">&#9660;</span><a class="el" href="zagros.html" target="_self">Zagros</a></td><td class="desc"></td></tr>
-<tr id="row_0_1_0_" class="even"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a class="el" href="dena.html" target="_self">Dena</a></td><td class="desc"></td></tr>
-<tr id="row_0_1_1_"><td class="entry"><span style="width:48px;display:inline-block;">&#160;</span><a class="el" href="landscapes.html" target="_self">Landscapes</a></td><td class="desc"></td></tr>
-</table>
-</div><!-- directory -->
-</div><!-- contents -->
+<div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
+Building on Linux</h1>
+<p>Before buiding RockyML make sure you have installed the required dependencies: </p>
+<h2><a class="anchor" id="autotoc_md1"></a>
+Dependencies</h2>
+<ul>
+<li>A C++ compiler supporting C++17, GCC is tested</li>
+<li>CMake</li>
+<li><a href="https://eigen.tuxfamily.org">Eigen</a>, latest stable version</li>
+<li>A BLAS/LAPACK implementation, OpenBLAS is tested</li>
+<li>Intel Threading Building Blocks (<a href="https://github.com/oneapi-src/oneTBB">oneTBB</a>)</li>
+<li>An MPI implementation, OpenMPI is recommended <br  />
+</li>
+<li><a href="https://github.com/libcpr/cpr">Cpr</a></li>
+<li><a href="https://github.com/gabime/spdlog">Spdlog</a></li>
+</ul>
+<p>First install Open MPI and OpenBLAS: </p><div class="fragment"><div class="line">apt install libopenblas-dev openmpi-bin openmpi-common libopenmpi-dev</div>
+</div><!-- fragment --><p>You can install the other dependencies as you like. For example using <a href="https://vcpkg.io/">vcpkg</a>: </p><div class="fragment"><div class="line">vcpkg install tbb eigen3 cpr spdlog catch2</div>
+</div><!-- fragment --><p>Build the source code using CMake. To do so, create a build directory inside the source code and run cmake. you should add MPI flags for compiling, or you can simply use <code>mpic++</code> for compiling the source. <br  />
+ <b>Note</b> : if you've used vcpkg to install requirements, make sure that you set the <code>CMAKE_TOOLCHAIN_FILE</code>.</p>
+<div class="fragment"><div class="line">cmake .. -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_TOOLCHAIN_FILE=&lt;path-to-vcpkg.cmake&gt;</div>
+</div><!-- fragment --><div class="fragment"><div class="line">make</div>
+</div><!-- fragment --><p>If building was successful, you should be able to find <code>librockyml.a</code>. you need to link this static library to your program. </p>
+<h2><a class="anchor" id="autotoc_md2"></a>
+Using with CMake</h2>
+<p>Here is a minimal CMakeLists.txt example for using RockyML: <br  />
+ </p><div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.2)</div>
+<div class="line">project(Example LANGUAGES CXX)</div>
+<div class="line"> </div>
+<div class="line"># make sure your compiler supports c++17</div>
+<div class="line">set(CMAKE_CXX_STANDARD 17)</div>
+<div class="line">set(CMAKE_CXX_FLAGS &quot;${CMAKE_CXX_FLAGS} -O3 -ffast-math -march=native&quot;)</div>
+<div class="line"> </div>
+<div class="line">include_directories(&lt;rockyml-headers-directory&gt;)</div>
+<div class="line"> </div>
+<div class="line"># find requirements</div>
+<div class="line">find_package(TBB CONFIG REQUIRED)</div>
+<div class="line">find_package(Eigen3 CONFIG REQUIRED)</div>
+<div class="line">find_package(spdlog CONFIG REQUIRED)</div>
+<div class="line">find_package(cpr CONFIG REQUIRED)</div>
+<div class="line">find_package(Catch2 CONFIG REQUIRED)</div>
+<div class="line"> </div>
+<div class="line"># find the library which you&#39;ve built in the previous step </div>
+<div class="line">find_library(RockyML NAMES rockyml librockyml HINTS &quot;&lt;path-to-rockyml-static-library&gt;&quot;)</div>
+<div class="line"> </div>
+<div class="line"># linking the requirements</div>
+<div class="line">add_executable(app &lt;path-to-source-of-your-program&gt;)</div>
+<div class="line">target_link_libraries(app PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog RockyML)</div>
+</div><!-- fragment --> </div></div><!-- contents -->
+</div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="guide.html">Guide</a></li><li class="navelem"><a class="el" href="getting_started.html">Getting Started</a></li>
     <li class="footer">Generated by
     <a href="http://www.doxygen.org/index.html">
     <img class="footer" src="doxygen.png" alt="doxygen"/></a> 1.8.17 </li>

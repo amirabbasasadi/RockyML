@@ -16,5 +16,6 @@ var searchData=
   ['best_5fk_17',['best_k',['../classrocky_1_1zagros_1_1basic__scontainer.html#aa1b9205c60b64912103c0d79cf164e70',1,'rocky::zagros::basic_scontainer']]],
   ['best_5fmin_18',['best_min',['../classrocky_1_1zagros_1_1basic__scontainer.html#ac2a40d121ffe0ac18cfe3d24aecdcdcd',1,'rocky::zagros::basic_scontainer']]],
   ['best_5fmin_5findex_19',['best_min_index',['../classrocky_1_1zagros_1_1basic__scontainer.html#a5151b7ac2eb9b23321f87c7e3a52c62c',1,'rocky::zagros::basic_scontainer']]],
-  ['blocked_5fsystem_20',['blocked_system',['../classrocky_1_1zagros_1_1blocked__system.html',1,'rocky::zagros']]]
+  ['blocked_5fsystem_20',['blocked_system',['../classrocky_1_1zagros_1_1blocked__system.html',1,'rocky::zagros']]],
+  ['building_20and_20linking_20using_20cmake_21',['Building and linking using CMake',['../build.html',1,'getting_started']]]
 ];
