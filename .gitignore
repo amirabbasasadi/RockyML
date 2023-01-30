@@ -37,4 +37,7 @@
 
 build/
 build/*
+
+docs/docs/
+docs/docs/*
 # End of https://www.toptal.com/developers/gitignore/api/c++
