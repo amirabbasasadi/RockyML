@@ -6,7 +6,7 @@ on:
     paths:
       - include/**
       - docs/**
-      - .github/workflows
+
   pull_request:
     branches: [ "main" ]
     

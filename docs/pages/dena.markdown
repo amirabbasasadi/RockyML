@@ -11,6 +11,7 @@ auto optimizer = container::create("A", n_particles, group_size)
 
 After designing the optimizer we can execute it using Zagros runtime:
 ```cpp
+// create the runtime
 zagros::basic_runtime<swarm_type, dim, block_dim> runtime(&problem);
 // execute the optimizer
 runtime.run(optimizer);
