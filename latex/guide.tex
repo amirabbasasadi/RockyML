@@ -1,0 +1,52 @@
+\label{guide_md_docs_pages_guide}%
+\Hypertarget{guide_md_docs_pages_guide}%
+ Table of Contents\+: ~\newline
+
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{zagros}{Zagros}} \+: Optimization Framework
+\begin{DoxyItemize}
+\item \mbox{\hyperlink{dena}{Dena}} \+: A language for designing search strategies
+\item \mbox{\hyperlink{landscapes}{Landscapes}} \+: Test functions for benchmarking 
+\end{DoxyItemize}
+\end{DoxyItemize}\hypertarget{zagros}{}\doxysection{Zagros}\label{zagros}
+\label{zagros_md_docs_pages_zagros}%
+\Hypertarget{zagros_md_docs_pages_zagros}%
+ \mbox{\hyperlink{dena}{Dena}} ~\newline
+ \mbox{\hyperlink{landscapes}{Landscapes}} \hypertarget{dena}{}\doxysubsection{Dena}\label{dena}
+\label{dena_md_docs_pages_dena}%
+\Hypertarget{dena_md_docs_pages_dena}%
+ Let\textquotesingle{}s see a simple example of an optimizer written in Dena\+:
+
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{keyword}{auto} optimizer = container::create(\textcolor{stringliteral}{"{}A"{}}, n\_particles, group\_size)}
+\DoxyCodeLine{                 >> pso::memory::create(\textcolor{stringliteral}{"{}M"{}}, \textcolor{stringliteral}{"{}A"{}})}
+\DoxyCodeLine{                 >> init::uniform(\textcolor{stringliteral}{"{}A"{}})}
+\DoxyCodeLine{                 >> run::n\_times(20, pso::local::step(\textcolor{stringliteral}{"{}M"{}}, \textcolor{stringliteral}{"{}A"{}}));}
+
+\end{DoxyCode}
+
+
+After designing the optimizer we can execute it using Zagros runtime\+: 
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\textcolor{comment}{// create the runtime}}
+\DoxyCodeLine{zagros::basic\_runtime<swarm\_type, dim, block\_dim> runtime(\&problem);}
+\DoxyCodeLine{\textcolor{comment}{// execute the optimizer}}
+\DoxyCodeLine{runtime.run(optimizer);}
+
+\end{DoxyCode}
+ \hypertarget{landscapes}{}\doxysubsection{Landscapes}\label{landscapes}
+\label{landscapes_md_docs_pages_landscapes}%
+\Hypertarget{landscapes_md_docs_pages_landscapes}%
+ \tabulinesep=1mm
+\begin{longtabu}spread 0pt [c]{*{4}{|X[-1]}|}
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ Function }&\cellcolor{\tableheadbgcolor}\textbf{ Definition }&\cellcolor{\tableheadbgcolor}\textbf{ Heat Map }&\cellcolor{\tableheadbgcolor}\textbf{ 3D Plot  }\\\cline{1-4}
+\endfirsthead
+\hline
+\endfoot
+\hline
+\cellcolor{\tableheadbgcolor}\textbf{ Function }&\cellcolor{\tableheadbgcolor}\textbf{ Definition }&\cellcolor{\tableheadbgcolor}\textbf{ Heat Map }&\cellcolor{\tableheadbgcolor}\textbf{ 3D Plot  }\\\cline{1-4}
+\endhead
+\mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin}{Rastrigin Function}} &$ f(\mathbf {x} )=10n+\sum _{i=1}^{n}\left[x_{i}^{2}-10\cos(2\pi x_{i})\right] $ & &  \\\cline{1-4}
+\end{longtabu}

@@ -1,0 +1,266 @@
+\hypertarget{pso_8h_source}{}\doxysection{pso.\+h}
+\label{pso_8h_source}\index{include/rocky/zagros/strategies/pso.h@{include/rocky/zagros/strategies/pso.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved}}
+\DoxyCodeLine{3 \textcolor{comment}{    distributed under Apache-\/2.0 license}}
+\DoxyCodeLine{4 \textcolor{comment}{*/}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ROCKY\_ZAGROS\_PSO\_STRATEGY}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ROCKY\_ZAGROS\_PSO\_STRATEGY}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <rocky/zagros/strategies/strategy.h>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }rocky\{}
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }zagros\{}
+\DoxyCodeLine{15 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{16 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__pso}{basic\_pso}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1search__strategy}{search\_strategy}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{17 \textcolor{keyword}{public}:}
+\DoxyCodeLine{18     \textcolor{keyword}{typedef} Eigen::Map<Eigen::Matrix<T\_e, 1, T\_dim, Eigen::RowMajor>> eigen\_particle;}
+\DoxyCodeLine{19     \textcolor{keyword}{enum} update\_mode \{use\_particles, use\_groups\};}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{22     \textcolor{comment}{// system}}
+\DoxyCodeLine{23     \mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem\_;}
+\DoxyCodeLine{24     \textcolor{comment}{// main container}}
+\DoxyCodeLine{25     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* main\_container\_;}
+\DoxyCodeLine{26     \textcolor{comment}{// particles velocity}}
+\DoxyCodeLine{27     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* particles\_v\_;}
+\DoxyCodeLine{28     \textcolor{comment}{// best solutions for each particle}}
+\DoxyCodeLine{29     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* particles\_best\_;}
+\DoxyCodeLine{30     \textcolor{comment}{// groups best solution}}
+\DoxyCodeLine{31     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* groups\_best\_;}
+\DoxyCodeLine{32     \textcolor{comment}{// best solution in the current node}}
+\DoxyCodeLine{33     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* node\_best\_;}
+\DoxyCodeLine{34     \textcolor{comment}{// best current cluster solution}}
+\DoxyCodeLine{35     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* cluster\_best\_;  }
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37     \textcolor{comment}{// intertial}}
+\DoxyCodeLine{38     T\_e hyper\_w\_;}
+\DoxyCodeLine{39 }
+\DoxyCodeLine{40 \textcolor{keyword}{public}:}
+\DoxyCodeLine{41     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__pso}{basic\_pso}}(\mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem,}
+\DoxyCodeLine{42               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* main\_container,}
+\DoxyCodeLine{43               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* particles\_v,}
+\DoxyCodeLine{44               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* particles\_best,}
+\DoxyCodeLine{45               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* groups\_best,}
+\DoxyCodeLine{46               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* node\_best,}
+\DoxyCodeLine{47               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* cluster\_best)\{}
+\DoxyCodeLine{48         this-\/>problem\_ = problem; }
+\DoxyCodeLine{49         this-\/>main\_container\_ = main\_container;}
+\DoxyCodeLine{50         this-\/>particles\_v\_ = particles\_v;}
+\DoxyCodeLine{51         this-\/>particles\_best\_ = particles\_best;}
+\DoxyCodeLine{52         this-\/>groups\_best\_ = groups\_best;}
+\DoxyCodeLine{53         this-\/>node\_best\_ = node\_best;}
+\DoxyCodeLine{54         this-\/>cluster\_best\_ = cluster\_best;}
+\DoxyCodeLine{55     \}}
+\DoxyCodeLine{56     T\_e rand\_uniform()\{}
+\DoxyCodeLine{57         \textcolor{keyword}{static} std::uniform\_real\_distribution<T\_e> dist(0.0, 1.0);}
+\DoxyCodeLine{58         \textcolor{keywordflow}{return} dist(rocky::utils::random::prng());}
+\DoxyCodeLine{59     \}}
+\DoxyCodeLine{60     \textcolor{comment}{// initialize particles velocity to zero}}
+\DoxyCodeLine{61     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} initialize\_velocity()\{}
+\DoxyCodeLine{62         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} p=0; p<main\_container\_-\/>n\_particles(); ++p)\{}
+\DoxyCodeLine{63             std::fill(particles\_v\_-\/>particles[p].begin(), particles\_v\_-\/>particles[p].end(), 0.0);}
+\DoxyCodeLine{64         \}}
+\DoxyCodeLine{65     \}}
+\DoxyCodeLine{66     \textcolor{comment}{// reset the memory containers}}
+\DoxyCodeLine{67     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} reset()\{}
+\DoxyCodeLine{68         this-\/>initialize\_velocity();}
+\DoxyCodeLine{69     \}}
+\DoxyCodeLine{70     \textcolor{comment}{// [todo] evaluate and update best solution of each particle in parallel}}
+\DoxyCodeLine{71     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} update\_particles\_best(\textcolor{keywordtype}{int} rng\_start, \textcolor{keywordtype}{int} rng\_end)\{}
+\DoxyCodeLine{72         this-\/>main\_container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_a8566e2a8a6419f5c5ba60986855b5c0d}{evaluate\_and\_update}}(this-\/>problem\_);}
+\DoxyCodeLine{73         tbb::parallel\_for(rng\_start, rng\_end, [\textcolor{keyword}{this}](\textcolor{keywordtype}{int} p)\{      }
+\DoxyCodeLine{74             T\_e val = this-\/>main\_container\_-\/>values[p]; }
+\DoxyCodeLine{75             \textcolor{keywordflow}{if} (val < this-\/>particles\_best\_-\/>values[p])\{}
+\DoxyCodeLine{76                 this-\/>particles\_best\_-\/>values[p] = val;}
+\DoxyCodeLine{77                 \textcolor{comment}{// copy the particle solution}}
+\DoxyCodeLine{78                 std::copy(this-\/>main\_container\_-\/>particle(p),}
+\DoxyCodeLine{79                           this-\/>main\_container\_-\/>particle(p) + T\_dim,}
+\DoxyCodeLine{80                           this-\/>particles\_best\_-\/>particle(p));}
+\DoxyCodeLine{81             \}}
+\DoxyCodeLine{82         \});}
+\DoxyCodeLine{83     \}}
+\DoxyCodeLine{84     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} update\_particles\_best(\textcolor{keywordtype}{int} rng\_start=0)\{}
+\DoxyCodeLine{85         update\_particles\_best(rng\_start, main\_container\_-\/>n\_particles());}
+\DoxyCodeLine{86     \}}
+\DoxyCodeLine{87     \textcolor{comment}{// update best groups solutions}}
+\DoxyCodeLine{88     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} update\_groups\_best(\textcolor{keywordtype}{int} rng\_start, \textcolor{keywordtype}{int} rng\_end)\{}
+\DoxyCodeLine{89         tbb::parallel\_for(rng\_start, rng\_end, [\textcolor{keyword}{this}](\textcolor{keywordtype}{int} t)\{}
+\DoxyCodeLine{90             \textcolor{keyword}{auto} rng = this-\/>main\_container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_a23a4f83d33ad22684baf2773a158d463}{group\_range}}(t);}
+\DoxyCodeLine{91             \textcolor{keyword}{auto} min\_el = std::min\_element(this-\/>particles\_best\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_a2e57930a0301bbd6acb861ac6271339c}{value}}(rng.first),}
+\DoxyCodeLine{92                                            this-\/>particles\_best\_-\/>value(rng.second));}
+\DoxyCodeLine{93             \textcolor{keywordflow}{if} (*min\_el < this-\/>groups\_best\_-\/>values[t])\{}
+\DoxyCodeLine{94                 \textcolor{keywordtype}{int} min\_el\_ind = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(min\_el -\/ this-\/>particles\_best\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_a2e57930a0301bbd6acb861ac6271339c}{value}}(0));}
+\DoxyCodeLine{95                 this-\/>groups\_best\_-\/>values[t] = *min\_el;}
+\DoxyCodeLine{96                 std::copy(this-\/>particles\_best\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_ab608784fc75d08bba940962dfd5761b5}{particle}}(min\_el\_ind),}
+\DoxyCodeLine{97                           this-\/>particles\_best\_-\/>particle(min\_el\_ind)+T\_dim,}
+\DoxyCodeLine{98                           this-\/>groups\_best\_-\/>particle(t));}
+\DoxyCodeLine{99             \}}
+\DoxyCodeLine{100 }
+\DoxyCodeLine{101         \});}
+\DoxyCodeLine{102     \}}
+\DoxyCodeLine{103     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} update\_groups\_best()\{}
+\DoxyCodeLine{104         update\_groups\_best(0, this-\/>main\_container\_-\/>n\_groups());}
+\DoxyCodeLine{105     \}}
+\DoxyCodeLine{106     \textcolor{keyword}{template}<update\_mode T\_um=use\_groups>}
+\DoxyCodeLine{107     \textcolor{keywordtype}{void} update\_node\_best()\{}
+\DoxyCodeLine{108         \textcolor{keywordflow}{if} \textcolor{keyword}{constexpr}(T\_um == use\_groups)\{}
+\DoxyCodeLine{109             \textcolor{keyword}{auto} min\_el = std::min\_element(this-\/>groups\_best\_-\/>values.begin(),}
+\DoxyCodeLine{110                                            this-\/>groups\_best\_-\/>values.end());}
+\DoxyCodeLine{111             \textcolor{keywordflow}{if} (*min\_el < this-\/>node\_best\_-\/>values[0])\{}
+\DoxyCodeLine{112                 \textcolor{keywordtype}{int} min\_el\_ind = \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{int}\textcolor{keyword}{>}(min\_el -\/ this-\/>groups\_best\_-\/>values.begin());}
+\DoxyCodeLine{113                 std::copy(this-\/>groups\_best\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_ab608784fc75d08bba940962dfd5761b5}{particle}}(min\_el\_ind),}
+\DoxyCodeLine{114                           this-\/>groups\_best\_-\/>particle(min\_el\_ind)+T\_dim,}
+\DoxyCodeLine{115                           this-\/>node\_best\_-\/>particle(0));}
+\DoxyCodeLine{116                 node\_best\_-\/>values[0] = *min\_el;}
+\DoxyCodeLine{117             \}}
+\DoxyCodeLine{118         \}}
+\DoxyCodeLine{119     \}}
+\DoxyCodeLine{120     \textcolor{keywordtype}{void} update\_cluster\_best()\{}
+\DoxyCodeLine{121             \textcolor{keywordflow}{if} (this-\/>node\_best\_-\/>values[0] < this-\/>cluster\_best\_-\/>values[0])\{}
+\DoxyCodeLine{122                 std::copy(this-\/>node\_best\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_ab608784fc75d08bba940962dfd5761b5}{particle}}(0),}
+\DoxyCodeLine{123                           this-\/>node\_best\_-\/>particle(0)+T\_dim,}
+\DoxyCodeLine{124                           this-\/>cluster\_best\_-\/>particle(0));}
+\DoxyCodeLine{125                 this-\/>cluster\_best\_-\/>values[0] = this-\/>node\_best\_-\/>values[0];}
+\DoxyCodeLine{126             \}}
+\DoxyCodeLine{127     \}}
+\DoxyCodeLine{133     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__pso_a820a1a499534cf1eaa8982aaef5807a0}{update\_particles\_v}}() = 0;}
+\DoxyCodeLine{139     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__pso_adb0a4c922600c3f2abbad609d6adde3a}{update\_particles\_x}}()\{}
+\DoxyCodeLine{140         tbb::parallel\_for(0, this-\/>main\_container\_-\/>n\_particles(), [\textcolor{keyword}{this}](\textcolor{keywordtype}{int} p)\{}
+\DoxyCodeLine{141             eigen\_particle x(this-\/>main\_container\_-\/>particle(p));}
+\DoxyCodeLine{142             eigen\_particle v(this-\/>particles\_v\_-\/>particle(p));}
+\DoxyCodeLine{143             x += v;}
+\DoxyCodeLine{144         \});}
+\DoxyCodeLine{145     \}}
+\DoxyCodeLine{146 \};}
+\DoxyCodeLine{147 }
+\DoxyCodeLine{148 }
+\DoxyCodeLine{149 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{150 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1pso__l1__strategy}{pso\_l1\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__pso}{basic\_pso}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{151 }
+\DoxyCodeLine{152 \textcolor{keyword}{typedef} Eigen::Map<Eigen::Matrix<T\_e, 1, T\_dim, Eigen::RowMajor>> eigen\_particle;}
+\DoxyCodeLine{153 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{154     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classrocky_1_1zagros_1_1pso__l1__strategy_af3609304937935cd66076d5cab991ac4}{update\_particles\_v}}()\{}
+\DoxyCodeLine{155         tbb::parallel\_for(0, this-\/>main\_container\_-\/>n\_particles(), [\textcolor{keyword}{this}](\textcolor{keywordtype}{int} p)\{}
+\DoxyCodeLine{156             int p\_group = this-\/>main\_container\_-\/>particle\_group(p);}
+\DoxyCodeLine{157             eigen\_particle x(this-\/>main\_container\_-\/>particle(p));}
+\DoxyCodeLine{158             eigen\_particle v(this-\/>particles\_v\_-\/>particle(p));}
+\DoxyCodeLine{159             eigen\_particle p\_best(this-\/>particles\_best\_-\/>particle(p));}
+\DoxyCodeLine{160             eigen\_particle p\_best\_gr(this-\/>groups\_best\_-\/>particle(p\_group));}
+\DoxyCodeLine{161             v = v * this-\/>hyper\_w\_ + (2.0 * this-\/>rand\_uniform() * (p\_best -\/ x)) }
+\DoxyCodeLine{162                                    + (2.0 * this-\/>rand\_uniform() * (p\_best\_gr -\/ x));          }
+\DoxyCodeLine{163         \});}
+\DoxyCodeLine{164     \}}
+\DoxyCodeLine{165 \textcolor{keyword}{public}:}
+\DoxyCodeLine{166     \mbox{\hyperlink{classrocky_1_1zagros_1_1pso__l1__strategy}{pso\_l1\_strategy}}(\mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem,}
+\DoxyCodeLine{167               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* main\_container,}
+\DoxyCodeLine{168               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* particles\_v,}
+\DoxyCodeLine{169               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* particles\_best,}
+\DoxyCodeLine{170               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* groups\_best,}
+\DoxyCodeLine{171               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* node\_best,}
+\DoxyCodeLine{172               \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* cluster\_best):\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__pso}{basic\_pso}}<T\_e, T\_dim>(problem, main\_container, particles\_v, particles\_best, groups\_best, node\_best, cluster\_best)\{            }
+\DoxyCodeLine{173     \}}
+\DoxyCodeLine{174     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} apply()\{}
+\DoxyCodeLine{175         this-\/>hyper\_w\_ = this-\/>rand\_uniform();}
+\DoxyCodeLine{176         this-\/>update\_particles\_best();}
+\DoxyCodeLine{177         this-\/>update\_groups\_best();}
+\DoxyCodeLine{178         this-\/>update\_node\_best();}
+\DoxyCodeLine{179         this-\/>update\_cluster\_best();}
+\DoxyCodeLine{180         this-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1pso__l1__strategy_af3609304937935cd66076d5cab991ac4}{update\_particles\_v}}();}
+\DoxyCodeLine{181         this-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__pso_adb0a4c922600c3f2abbad609d6adde3a}{update\_particles\_x}}();}
+\DoxyCodeLine{182     \}}
+\DoxyCodeLine{183 \}; \textcolor{comment}{// End of PSO L1}}
+\DoxyCodeLine{184 }
+\DoxyCodeLine{185 }
+\DoxyCodeLine{186 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{187 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1pso__l2__strategy}{pso\_l2\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__pso}{basic\_pso}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{188 }
+\DoxyCodeLine{189 \textcolor{keyword}{typedef} Eigen::Map<Eigen::Matrix<T\_e, 1, T\_dim, Eigen::RowMajor>> eigen\_particle;}
+\DoxyCodeLine{190 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{191     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classrocky_1_1zagros_1_1pso__l2__strategy_a41b97482f0cec16806bc5324e466b8d9}{update\_particles\_v}}()\{}
+\DoxyCodeLine{192         tbb::parallel\_for(0, this-\/>main\_container\_-\/>n\_particles(), [\textcolor{keyword}{this}](\textcolor{keywordtype}{int} p)\{}
+\DoxyCodeLine{193             int p\_group = this-\/>main\_container\_-\/>particle\_group(p);}
+\DoxyCodeLine{194             eigen\_particle x(this-\/>main\_container\_-\/>particle(p));}
+\DoxyCodeLine{195             eigen\_particle v(this-\/>particles\_v\_-\/>particle(p));}
+\DoxyCodeLine{196             eigen\_particle p\_best(this-\/>particles\_best\_-\/>particle(p));}
+\DoxyCodeLine{197             eigen\_particle p\_best\_gr(this-\/>groups\_best\_-\/>particle(p\_group));}
+\DoxyCodeLine{198             eigen\_particle p\_best\_n(this-\/>node\_best\_-\/>particle(0));}
+\DoxyCodeLine{199             if(this-\/>particles\_best\_-\/>values[p] == this-\/>groups\_best\_-\/>values[p\_group])\{}
+\DoxyCodeLine{200                 v = v * this-\/>hyper\_w\_ + (2.0 * this-\/>rand\_uniform() * (p\_best -\/ x)) }
+\DoxyCodeLine{201                                        + (2.0 * this-\/>rand\_uniform() * (p\_best\_n -\/ x));}
+\DoxyCodeLine{202             \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{203                 v = v * this-\/>hyper\_w\_ + (2.0 * this-\/>rand\_uniform() * (p\_best -\/ x)) }
+\DoxyCodeLine{204                                        + (2.0 * this-\/>rand\_uniform() * (p\_best\_gr -\/ x));}
+\DoxyCodeLine{205             \}              }
+\DoxyCodeLine{206         \});}
+\DoxyCodeLine{207     \}}
+\DoxyCodeLine{208 \textcolor{keyword}{public}:}
+\DoxyCodeLine{209     pso\_l2\_strategy(system<T\_e>* problem,}
+\DoxyCodeLine{210               basic\_scontainer<T\_e, T\_dim>* main\_container,}
+\DoxyCodeLine{211               basic\_scontainer<T\_e, T\_dim>* particles\_v,}
+\DoxyCodeLine{212               basic\_scontainer<T\_e, T\_dim>* particles\_best,}
+\DoxyCodeLine{213               basic\_scontainer<T\_e, T\_dim>* groups\_best,}
+\DoxyCodeLine{214               basic\_scontainer<T\_e, T\_dim>* node\_best,}
+\DoxyCodeLine{215               basic\_scontainer<T\_e, T\_dim>* cluster\_best):basic\_pso<T\_e, T\_dim>(problem, main\_container, particles\_v, particles\_best, groups\_best, node\_best, cluster\_best)\{            }
+\DoxyCodeLine{216     \}}
+\DoxyCodeLine{217     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} apply()\{}
+\DoxyCodeLine{218         this-\/>hyper\_w\_ = this-\/>rand\_uniform();}
+\DoxyCodeLine{219         this-\/>update\_particles\_best();}
+\DoxyCodeLine{220         this-\/>update\_groups\_best();}
+\DoxyCodeLine{221         this-\/>update\_node\_best();}
+\DoxyCodeLine{222         this-\/>update\_cluster\_best();}
+\DoxyCodeLine{223         this-\/>update\_particles\_v();}
+\DoxyCodeLine{224         this-\/>update\_particles\_x();}
+\DoxyCodeLine{225     \}}
+\DoxyCodeLine{226 \}; \textcolor{comment}{// End of PSO L2}}
+\DoxyCodeLine{227 }
+\DoxyCodeLine{228 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{229 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1pso__l3__strategy}{pso\_l3\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__pso}{basic\_pso}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{230 }
+\DoxyCodeLine{231 \textcolor{keyword}{typedef} Eigen::Map<Eigen::Matrix<T\_e, 1, T\_dim, Eigen::RowMajor>> eigen\_particle;}
+\DoxyCodeLine{232 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{233     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} \mbox{\hyperlink{classrocky_1_1zagros_1_1pso__l3__strategy_a13fbb7bfa94ad76c45c1d6ed6c4b71bd}{update\_particles\_v}}()\{}
+\DoxyCodeLine{234         tbb::parallel\_for(0, this-\/>main\_container\_-\/>n\_particles(), [\textcolor{keyword}{this}](\textcolor{keywordtype}{int} p)\{}
+\DoxyCodeLine{235             int p\_group = this-\/>main\_container\_-\/>particle\_group(p);}
+\DoxyCodeLine{236             eigen\_particle x(this-\/>main\_container\_-\/>particle(p));}
+\DoxyCodeLine{237             eigen\_particle v(this-\/>particles\_v\_-\/>particle(p));}
+\DoxyCodeLine{238             eigen\_particle p\_best(this-\/>particles\_best\_-\/>particle(p));}
+\DoxyCodeLine{239             eigen\_particle p\_best\_gr(this-\/>groups\_best\_-\/>particle(p\_group));}
+\DoxyCodeLine{240             eigen\_particle p\_best\_c(this-\/>cluster\_best\_-\/>particle(0));}
+\DoxyCodeLine{241             if(this-\/>particles\_best\_-\/>values[p] == this-\/>groups\_best\_-\/>values[p\_group])\{}
+\DoxyCodeLine{242                 v = v * this-\/>hyper\_w\_ + (2.0 * this-\/>rand\_uniform() * (p\_best -\/ x)) }
+\DoxyCodeLine{243                                        + (2.0 * this-\/>rand\_uniform() * (p\_best\_c -\/ x));}
+\DoxyCodeLine{244             \}\textcolor{keywordflow}{else}\{}
+\DoxyCodeLine{245                 v = v * this-\/>hyper\_w\_ + (2.0 * this-\/>rand\_uniform() * (p\_best -\/ x)) }
+\DoxyCodeLine{246                                        + (2.0 * this-\/>rand\_uniform() * (p\_best\_gr -\/ x));}
+\DoxyCodeLine{247             \}       }
+\DoxyCodeLine{248         \});}
+\DoxyCodeLine{249     \}}
+\DoxyCodeLine{250 \textcolor{keyword}{public}:}
+\DoxyCodeLine{251     pso\_l3\_strategy(system<T\_e>* problem,}
+\DoxyCodeLine{252               basic\_scontainer<T\_e, T\_dim>* main\_container,}
+\DoxyCodeLine{253               basic\_scontainer<T\_e, T\_dim>* particles\_v,}
+\DoxyCodeLine{254               basic\_scontainer<T\_e, T\_dim>* particles\_best,}
+\DoxyCodeLine{255               basic\_scontainer<T\_e, T\_dim>* groups\_best,}
+\DoxyCodeLine{256               basic\_scontainer<T\_e, T\_dim>* node\_best,}
+\DoxyCodeLine{257               basic\_scontainer<T\_e, T\_dim>* cluster\_best):basic\_pso<T\_e, T\_dim>(problem, main\_container, particles\_v, particles\_best, groups\_best, node\_best, cluster\_best)\{            }
+\DoxyCodeLine{258     \}}
+\DoxyCodeLine{259     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} apply()\{}
+\DoxyCodeLine{260         this-\/>hyper\_w\_ = this-\/>rand\_uniform();}
+\DoxyCodeLine{261         this-\/>update\_particles\_best();}
+\DoxyCodeLine{262         this-\/>update\_groups\_best();}
+\DoxyCodeLine{263         this-\/>update\_node\_best();}
+\DoxyCodeLine{264         this-\/>update\_cluster\_best();}
+\DoxyCodeLine{265         this-\/>update\_particles\_v();}
+\DoxyCodeLine{266         this-\/>update\_particles\_x();}
+\DoxyCodeLine{267     \}}
+\DoxyCodeLine{268 \}; \textcolor{comment}{// End of PSO L3}}
+\DoxyCodeLine{269 }
+\DoxyCodeLine{270 \};}
+\DoxyCodeLine{271 \};}
+\DoxyCodeLine{272 }
+\DoxyCodeLine{273 }
+\DoxyCodeLine{274 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,10 @@
+digraph "rocky::zagros::analysis_strategy&lt; T_e, T_dim &gt;"
+{
+ // LATEX_PDF_SIZE
+  bgcolor="transparent";
+  edge [fontname=Helvetica,fontsize=10,labelfontname=Helvetica,labelfontsize=10];
+  node [fontname=Helvetica,fontsize=10,shape=box,height=0.2,width=0.4];
+  Node1 [label="rocky::zagros::analysis\l_strategy\< T_e, T_dim \>",height=0.2,width=0.4,color="gray40", fillcolor="grey60", style="filled", fontcolor="black",tooltip="base class for strategies for analysing loss functions"];
+  Node2 -> Node1 [dir="back",color="steelblue1",style="solid"];
+  Node2 [label="rocky::zagros::basic\l_strategy\< T_e, T_dim \>",height=0.2,width=0.4,color="gray40", fillcolor="white", style="filled",URL="$classrocky_1_1zagros_1_1basic__strategy.html",tooltip="Interface for all strategies."];
+}

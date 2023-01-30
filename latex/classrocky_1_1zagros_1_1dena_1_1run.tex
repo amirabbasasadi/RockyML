@@ -1,0 +1,159 @@
+\hypertarget{classrocky_1_1zagros_1_1dena_1_1run}{}\doxysection{rocky\+::zagros\+::dena\+::run Class Reference}
+\label{classrocky_1_1zagros_1_1dena_1_1run}\index{rocky::zagros::dena::run@{rocky::zagros::dena::run}}
+
+
+factories for composable flows  
+
+
+
+
+{\ttfamily \#include $<$dena.\+h$>$}
+
+\doxysubsection*{Static Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_a7b5c3755a7a924c668f970e0ff3dbe03}{n\+\_\+times}} (int iters, const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&wrapped\+\_\+flow)
+\begin{DoxyCompactList}\small\item\em run the wrapped flow {\ttfamily n} times \mbox{[}todo\mbox{]} there is a problem with the last node \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_a466e83ac2939c069003c7bf90cfc44e4}{with\+\_\+probability}} (float prob, const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&wrapped\+\_\+flow)
+\begin{DoxyCompactList}\small\item\em run a flow with a specified probability \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_af5240a001703ec36dc5fd621fb89ab26}{every\+\_\+n\+\_\+steps}} (int n, const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&wrapped\+\_\+flow)
+\begin{DoxyCompactList}\small\item\em run a flow with given period \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_a9c5b85518f74bea8becb99a7922a003a}{while\+\_\+improve}} (std\+::string id, int n, const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&wrapped\+\_\+flow)
+\begin{DoxyCompactList}\small\item\em run a flow until the best solution of a container does not improve \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_a5262087443a5a4c96f6d82c035b1a1f2}{while\+\_\+improve}} (int n, const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&wrapped\+\_\+flow)
+\begin{DoxyCompactList}\small\item\em run a flow until the best solution does not improve \end{DoxyCompactList}\item 
+static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_ae847af4095c18ce178558fb58cf13aa3}{while\+\_\+improve}} (const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&wrapped\+\_\+flow)
+\begin{DoxyCompactList}\small\item\em run a flow until the best solution does not improve \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+factories for composable flows 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1dena_1_1run_af5240a001703ec36dc5fd621fb89ab26}\label{classrocky_1_1zagros_1_1dena_1_1run_af5240a001703ec36dc5fd621fb89ab26}} 
+\index{rocky::zagros::dena::run@{rocky::zagros::dena::run}!every\_n\_steps@{every\_n\_steps}}
+\index{every\_n\_steps@{every\_n\_steps}!rocky::zagros::dena::run@{rocky::zagros::dena::run}}
+\doxysubsubsection{\texorpdfstring{every\_n\_steps()}{every\_n\_steps()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} rocky\+::zagros\+::dena\+::run\+::every\+\_\+n\+\_\+steps (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&}]{wrapped\+\_\+flow }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+run a flow with given period 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & the period of running the flow \\
+\hline
+{\em wrapped\+\_\+flow} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+$\ast$ flow 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1dena_1_1run_a7b5c3755a7a924c668f970e0ff3dbe03}\label{classrocky_1_1zagros_1_1dena_1_1run_a7b5c3755a7a924c668f970e0ff3dbe03}} 
+\index{rocky::zagros::dena::run@{rocky::zagros::dena::run}!n\_times@{n\_times}}
+\index{n\_times@{n\_times}!rocky::zagros::dena::run@{rocky::zagros::dena::run}}
+\doxysubsubsection{\texorpdfstring{n\_times()}{n\_times()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} rocky\+::zagros\+::dena\+::run\+::n\+\_\+times (\begin{DoxyParamCaption}\item[{int}]{iters,  }\item[{const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&}]{wrapped\+\_\+flow }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+run the wrapped flow {\ttfamily n} times \mbox{[}todo\mbox{]} there is a problem with the last node 
+
+
+\begin{DoxyParams}{Parameters}
+{\em iters} & int number of iterations \\
+\hline
+{\em wrapped\+\_\+flow} & target flow for running \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+$\ast$ flow 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1dena_1_1run_ae847af4095c18ce178558fb58cf13aa3}\label{classrocky_1_1zagros_1_1dena_1_1run_ae847af4095c18ce178558fb58cf13aa3}} 
+\index{rocky::zagros::dena::run@{rocky::zagros::dena::run}!while\_improve@{while\_improve}}
+\index{while\_improve@{while\_improve}!rocky::zagros::dena::run@{rocky::zagros::dena::run}}
+\doxysubsubsection{\texorpdfstring{while\_improve()}{while\_improve()}\hspace{0.1cm}{\footnotesize\ttfamily [1/3]}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} rocky\+::zagros\+::dena\+::run\+::while\+\_\+improve (\begin{DoxyParamCaption}\item[{const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&}]{wrapped\+\_\+flow }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+run a flow until the best solution does not improve 
+
+
+\begin{DoxyParams}{Parameters}
+{\em wrapped\+\_\+flow} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+$\ast$ flow 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1dena_1_1run_a5262087443a5a4c96f6d82c035b1a1f2}\label{classrocky_1_1zagros_1_1dena_1_1run_a5262087443a5a4c96f6d82c035b1a1f2}} 
+\index{rocky::zagros::dena::run@{rocky::zagros::dena::run}!while\_improve@{while\_improve}}
+\index{while\_improve@{while\_improve}!rocky::zagros::dena::run@{rocky::zagros::dena::run}}
+\doxysubsubsection{\texorpdfstring{while\_improve()}{while\_improve()}\hspace{0.1cm}{\footnotesize\ttfamily [2/3]}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} rocky\+::zagros\+::dena\+::run\+::while\+\_\+improve (\begin{DoxyParamCaption}\item[{int}]{n,  }\item[{const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&}]{wrapped\+\_\+flow }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+run a flow until the best solution does not improve 
+
+
+\begin{DoxyParams}{Parameters}
+{\em n} & maximum number of waiting before termination \\
+\hline
+{\em wrapped\+\_\+flow} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+$\ast$ flow 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1dena_1_1run_a9c5b85518f74bea8becb99a7922a003a}\label{classrocky_1_1zagros_1_1dena_1_1run_a9c5b85518f74bea8becb99a7922a003a}} 
+\index{rocky::zagros::dena::run@{rocky::zagros::dena::run}!while\_improve@{while\_improve}}
+\index{while\_improve@{while\_improve}!rocky::zagros::dena::run@{rocky::zagros::dena::run}}
+\doxysubsubsection{\texorpdfstring{while\_improve()}{while\_improve()}\hspace{0.1cm}{\footnotesize\ttfamily [3/3]}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} rocky\+::zagros\+::dena\+::run\+::while\+\_\+improve (\begin{DoxyParamCaption}\item[{std\+::string}]{id,  }\item[{int}]{n,  }\item[{const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&}]{wrapped\+\_\+flow }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+run a flow until the best solution of a container does not improve 
+
+
+\begin{DoxyParams}{Parameters}
+{\em id} & the id of the target container \\
+\hline
+{\em n} & maximum number of waiting before termination \\
+\hline
+{\em wrapped\+\_\+flow} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+$\ast$ flow 
+\end{DoxyReturn}
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1dena_1_1run_a466e83ac2939c069003c7bf90cfc44e4}\label{classrocky_1_1zagros_1_1dena_1_1run_a466e83ac2939c069003c7bf90cfc44e4}} 
+\index{rocky::zagros::dena::run@{rocky::zagros::dena::run}!with\_probability@{with\_probability}}
+\index{with\_probability@{with\_probability}!rocky::zagros::dena::run@{rocky::zagros::dena::run}}
+\doxysubsubsection{\texorpdfstring{with\_probability()}{with\_probability()}}
+{\footnotesize\ttfamily static \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} rocky\+::zagros\+::dena\+::run\+::with\+\_\+probability (\begin{DoxyParamCaption}\item[{float}]{prob,  }\item[{const \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \&}]{wrapped\+\_\+flow }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [static]}}
+
+
+
+run a flow with a specified probability 
+
+
+\begin{DoxyParams}{Parameters}
+{\em prob} & the probability of running the flow \\
+\hline
+{\em wrapped\+\_\+flow} & \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+$\ast$ flow 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/rocky/zagros/dena.\+h\end{DoxyCompactItemize}

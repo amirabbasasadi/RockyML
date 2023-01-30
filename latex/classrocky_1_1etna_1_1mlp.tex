@@ -1,0 +1,50 @@
+\hypertarget{classrocky_1_1etna_1_1mlp}{}\doxysection{rocky\+::etna\+::mlp\texorpdfstring{$<$}{<} T\+\_\+e, T\+\_\+layers\+\_\+num, T\+\_\+in\+\_\+num, T\+\_\+in\+\_\+dim, T\+\_\+out\+\_\+dim, T\+\_\+hidden\+\_\+dim, T\+\_\+opt\+\_\+bias \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classrocky_1_1etna_1_1mlp}\index{rocky::etna::mlp$<$ T\_e, T\_layers\_num, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_hidden\_dim, T\_opt\_bias $>$@{rocky::etna::mlp$<$ T\_e, T\_layers\_num, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_hidden\_dim, T\_opt\_bias $>$}}
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1etna_1_1mlp_a06456d26b3a7e44ec1195c00fac73569}\label{classrocky_1_1etna_1_1mlp_a06456d26b3a7e44ec1195c00fac73569}} 
+constexpr size\+\_\+t {\bfseries deduce\+\_\+num\+\_\+params\+\_\+in} ()
+\item 
+\mbox{\Hypertarget{classrocky_1_1etna_1_1mlp_a00052ee8d9b12295e10b9f6032a33b71}\label{classrocky_1_1etna_1_1mlp_a00052ee8d9b12295e10b9f6032a33b71}} 
+constexpr size\+\_\+t {\bfseries deduce\+\_\+num\+\_\+params\+\_\+hidden} ()
+\item 
+\mbox{\Hypertarget{classrocky_1_1etna_1_1mlp_ae120f396130676866a87db23f4993562}\label{classrocky_1_1etna_1_1mlp_ae120f396130676866a87db23f4993562}} 
+constexpr size\+\_\+t {\bfseries deduce\+\_\+num\+\_\+params\+\_\+out} ()
+\item 
+\mbox{\Hypertarget{classrocky_1_1etna_1_1mlp_a267905247b91d1985006ab2694fa4bcf}\label{classrocky_1_1etna_1_1mlp_a267905247b91d1985006ab2694fa4bcf}} 
+constexpr size\+\_\+t {\bfseries deduce\+\_\+num\+\_\+params} ()
+\item 
+void \mbox{\hyperlink{classrocky_1_1etna_1_1mlp_aaf2f5ff5d66f2a05dd76c49e9aafa796}{feed}} (T\+\_\+e $\ast$layer\+\_\+mem\+\_\+ptr, T\+\_\+e $\ast$in\+\_\+mem\+\_\+ptr, T\+\_\+e $\ast$out\+\_\+mem\+\_\+ptr)
+\begin{DoxyCompactList}\small\item\em apply the multi-\/layer perceptron on data in {\ttfamily in\+\_\+mem\+\_\+ptr} \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrocky_1_1etna_1_1mlp_aaf2f5ff5d66f2a05dd76c49e9aafa796}\label{classrocky_1_1etna_1_1mlp_aaf2f5ff5d66f2a05dd76c49e9aafa796}} 
+\index{rocky::etna::mlp$<$ T\_e, T\_layers\_num, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_hidden\_dim, T\_opt\_bias $>$@{rocky::etna::mlp$<$ T\_e, T\_layers\_num, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_hidden\_dim, T\_opt\_bias $>$}!feed@{feed}}
+\index{feed@{feed}!rocky::etna::mlp$<$ T\_e, T\_layers\_num, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_hidden\_dim, T\_opt\_bias $>$@{rocky::etna::mlp$<$ T\_e, T\_layers\_num, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_hidden\_dim, T\_opt\_bias $>$}}
+\doxysubsubsection{\texorpdfstring{feed()}{feed()}}
+{\footnotesize\ttfamily template$<$typename T\+\_\+e , size\+\_\+t T\+\_\+layers\+\_\+num, size\+\_\+t T\+\_\+in\+\_\+num, size\+\_\+t T\+\_\+in\+\_\+dim, size\+\_\+t T\+\_\+out\+\_\+dim, size\+\_\+t T\+\_\+hidden\+\_\+dim, opt T\+\_\+opt\+\_\+bias = opt\+::bias$>$ \\
+void \mbox{\hyperlink{classrocky_1_1etna_1_1mlp}{rocky\+::etna\+::mlp}}$<$ T\+\_\+e, T\+\_\+layers\+\_\+num, T\+\_\+in\+\_\+num, T\+\_\+in\+\_\+dim, T\+\_\+out\+\_\+dim, T\+\_\+hidden\+\_\+dim, T\+\_\+opt\+\_\+bias $>$\+::feed (\begin{DoxyParamCaption}\item[{T\+\_\+e $\ast$}]{layer\+\_\+mem\+\_\+ptr,  }\item[{T\+\_\+e $\ast$}]{in\+\_\+mem\+\_\+ptr,  }\item[{T\+\_\+e $\ast$}]{out\+\_\+mem\+\_\+ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+apply the multi-\/layer perceptron on data in {\ttfamily in\+\_\+mem\+\_\+ptr} 
+
+
+\begin{DoxyParams}{Parameters}
+{\em layer\+\_\+mem\+\_\+ptr} & memory block containing layer parameters \\
+\hline
+{\em in\+\_\+mem\+\_\+ptr} & memory block containing input data \\
+\hline
+{\em out\+\_\+mem\+\_\+ptr} & memory block for storing the result \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+$\ast$$\ast$ void 
+\end{DoxyReturn}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/rocky/etna/blocks.\+h\end{DoxyCompactItemize}

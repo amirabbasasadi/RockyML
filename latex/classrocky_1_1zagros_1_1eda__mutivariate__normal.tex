@@ -1,0 +1,86 @@
+\hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal}{}\doxysection{rocky\+::zagros\+::eda\+\_\+mutivariate\+\_\+normal\texorpdfstring{$<$}{<} T\+\_\+e, T\+\_\+dim \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classrocky_1_1zagros_1_1eda__mutivariate__normal}\index{rocky::zagros::eda\_mutivariate\_normal$<$ T\_e, T\_dim $>$@{rocky::zagros::eda\_mutivariate\_normal$<$ T\_e, T\_dim $>$}}
+
+
+estimating the distribution of solutions using eda  
+
+
+
+
+{\ttfamily \#include $<$eda.\+h$>$}
+
+
+
+Inheritance diagram for rocky\+::zagros\+::eda\+\_\+mutivariate\+\_\+normal\texorpdfstring{$<$}{<} T\+\_\+e, T\+\_\+dim \texorpdfstring{$>$}{>}\+:
+% FIG 0
+
+
+Collaboration diagram for rocky\+::zagros\+::eda\+\_\+mutivariate\+\_\+normal\texorpdfstring{$<$}{<} T\+\_\+e, T\+\_\+dim \texorpdfstring{$>$}{>}\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_a7a844ecf078361ee2f795c3c4ed1c9d9}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_a7a844ecf078361ee2f795c3c4ed1c9d9}} 
+{\bfseries eda\+\_\+mutivariate\+\_\+normal} (\mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system}}$<$ T\+\_\+e $>$ $\ast$problem, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\+\_\+scontainer}}$<$ T\+\_\+e, T\+\_\+dim $>$ $\ast$tgt\+\_\+container, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\+\_\+scontainer}}$<$ T\+\_\+e, T\+\_\+dim $>$ $\ast$cnd\+\_\+container, int sample\+\_\+size)
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_a703fb5702369269bd245ddf0c0fcf6a2}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_a703fb5702369269bd245ddf0c0fcf6a2}} 
+void {\bfseries sample\+\_\+std\+\_\+normal} (T\+\_\+e $\ast$vec)
+\item 
+virtual void \mbox{\hyperlink{classrocky_1_1zagros_1_1eda__mutivariate__normal_ae1af33f675c8e6e57790e7273b975fe7}{apply}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_afe5608c7dfec1fd03630837d6d2728b5}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_afe5608c7dfec1fd03630837d6d2728b5}} 
+\mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system}}$<$ T\+\_\+e $>$ $\ast$ {\bfseries problem\+\_\+}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_a9bd2a46c2fbd0e0ab61be8d9af8c6253}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_a9bd2a46c2fbd0e0ab61be8d9af8c6253}} 
+\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\+\_\+scontainer}}$<$ T\+\_\+e, T\+\_\+dim $>$ $\ast$ {\bfseries target\+\_\+container\+\_\+}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_a603885190456d34ad94afe0e13d2ed9f}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_a603885190456d34ad94afe0e13d2ed9f}} 
+\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\+\_\+scontainer}}$<$ T\+\_\+e, T\+\_\+dim $>$ $\ast$ {\bfseries candidates\+\_\+container\+\_\+}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_a71e39f7ba7162a5c1606bcd0f780564a}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_a71e39f7ba7162a5c1606bcd0f780564a}} 
+std\+::vector$<$ T\+\_\+e $>$ {\bfseries top\+\_\+particles\+\_\+mem\+\_\+}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_ad79eb7bdeb8c816c5bdd3e14c5e6a9f5}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_ad79eb7bdeb8c816c5bdd3e14c5e6a9f5}} 
+std\+::vector$<$ int $>$ {\bfseries solution\+\_\+ind\+\_\+}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_a250890dee5b36006be3149180e336e33}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_a250890dee5b36006be3149180e336e33}} 
+std\+::vector$<$ T\+\_\+e $>$ {\bfseries cov\+\_\+mem\+\_\+}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_a45e7b3578e58e1b7a04ab086c71cebad}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_a45e7b3578e58e1b7a04ab086c71cebad}} 
+std\+::vector$<$ T\+\_\+e $>$ {\bfseries mean\+\_\+mem\+\_\+}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_a2cdbb4694e79fb8a79d6a1cd62299062}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_a2cdbb4694e79fb8a79d6a1cd62299062}} 
+int {\bfseries sample\+\_\+size\+\_\+}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_ab59c55af6fbd5ea7a6d7c20fb2254b71}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_ab59c55af6fbd5ea7a6d7c20fb2254b71}} 
+int {\bfseries n\+\_\+candidates\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T\+\_\+e, int T\+\_\+dim$>$\newline
+class rocky\+::zagros\+::eda\+\_\+mutivariate\+\_\+normal$<$ T\+\_\+e, T\+\_\+dim $>$}
+estimating the distribution of solutions using eda 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1eda__mutivariate__normal_ae1af33f675c8e6e57790e7273b975fe7}\label{classrocky_1_1zagros_1_1eda__mutivariate__normal_ae1af33f675c8e6e57790e7273b975fe7}} 
+\index{rocky::zagros::eda\_mutivariate\_normal$<$ T\_e, T\_dim $>$@{rocky::zagros::eda\_mutivariate\_normal$<$ T\_e, T\_dim $>$}!apply@{apply}}
+\index{apply@{apply}!rocky::zagros::eda\_mutivariate\_normal$<$ T\_e, T\_dim $>$@{rocky::zagros::eda\_mutivariate\_normal$<$ T\_e, T\_dim $>$}}
+\doxysubsubsection{\texorpdfstring{apply()}{apply()}}
+{\footnotesize\ttfamily template$<$typename T\+\_\+e , int T\+\_\+dim$>$ \\
+virtual void \mbox{\hyperlink{classrocky_1_1zagros_1_1eda__mutivariate__normal}{rocky\+::zagros\+::eda\+\_\+mutivariate\+\_\+normal}}$<$ T\+\_\+e, T\+\_\+dim $>$\+::apply (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__strategy}{rocky\+::zagros\+::basic\+\_\+strategy$<$ T\+\_\+e, T\+\_\+dim $>$}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/rocky/zagros/strategies/eda.\+h\end{DoxyCompactItemize}

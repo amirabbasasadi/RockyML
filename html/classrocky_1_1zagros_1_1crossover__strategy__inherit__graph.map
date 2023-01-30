@@ -1,0 +1,6 @@
+<map id="rocky::zagros::crossover_strategy&lt; T_e, T_dim &gt;" name="rocky::zagros::crossover_strategy&lt; T_e, T_dim &gt;">
+<area shape="rect" id="node1" title="Base class for genetic crossovers." alt="" coords="216,41,379,81"/>
+<area shape="rect" id="node3" href="$classrocky_1_1zagros_1_1multipoint__crossover.html" title="Multipoint crossover." alt="" coords="427,5,600,45"/>
+<area shape="rect" id="node4" href="$classrocky_1_1zagros_1_1static__segment__crossover.html" title=" " alt="" coords="432,70,595,125"/>
+<area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1basic__strategy.html" title="Interface for all strategies." alt="" coords="5,41,168,81"/>
+</map>

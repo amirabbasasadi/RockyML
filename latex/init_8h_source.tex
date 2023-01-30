@@ -1,0 +1,47 @@
+\hypertarget{init_8h_source}{}\doxysection{init.\+h}
+\label{init_8h_source}\index{include/rocky/zagros/strategies/init.h@{include/rocky/zagros/strategies/init.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved}}
+\DoxyCodeLine{3 \textcolor{comment}{    distributed under Apache-\/2.0 license}}
+\DoxyCodeLine{4 \textcolor{comment}{*/}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ROCKY\_ZAGROS\_INIT\_STRATEGY}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ROCKY\_ZAGROS\_INIT\_STRATEGY}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <rocky/zagros/strategies/strategy.h>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{keyword}{namespace }rocky\{}
+\DoxyCodeLine{10 \textcolor{keyword}{namespace }zagros\{}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{16 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{17 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1init__strategy}{init\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__strategy}{basic\_strategy}}<T\_e, T\_dim>\{\};}
+\DoxyCodeLine{18 }
+\DoxyCodeLine{23 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{24 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1uniform__init__strategy}{uniform\_init\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1init__strategy}{init\_strategy}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{25 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{26     \mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem\_;}
+\DoxyCodeLine{27     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* container\_;}
+\DoxyCodeLine{28 }
+\DoxyCodeLine{29     T\_e rand\_uniform(T\_e lb, T\_e ub)\{}
+\DoxyCodeLine{30         std::uniform\_real\_distribution<T\_e> dist(lb, ub);}
+\DoxyCodeLine{31         \textcolor{keywordflow}{return} dist(rocky::utils::random::prng());}
+\DoxyCodeLine{32     \}}
+\DoxyCodeLine{33 \textcolor{keyword}{public}:}
+\DoxyCodeLine{34     \mbox{\hyperlink{classrocky_1_1zagros_1_1uniform__init__strategy}{uniform\_init\_strategy}}(\mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* container)\{}
+\DoxyCodeLine{35         this-\/>problem\_ = problem;}
+\DoxyCodeLine{36         this-\/>container\_ = container; }
+\DoxyCodeLine{37     \}}
+\DoxyCodeLine{38     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} apply()\{}
+\DoxyCodeLine{39         tbb::parallel\_for(0, this-\/>container\_-\/>n\_particles(), [\&](\textcolor{keyword}{auto} p)\{}
+\DoxyCodeLine{40             for(int d=0; d<T\_dim; ++d)}
+\DoxyCodeLine{41                this-\/>container\_-\/>particle(p)[d] = rand\_uniform(this-\/>problem\_-\/>lower\_bound(p), this-\/>problem\_-\/>upper\_bound(p));}
+\DoxyCodeLine{42         \});}
+\DoxyCodeLine{43     \};}
+\DoxyCodeLine{44 \};}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 }
+\DoxyCodeLine{47 \};}
+\DoxyCodeLine{48 \};}
+\DoxyCodeLine{49 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

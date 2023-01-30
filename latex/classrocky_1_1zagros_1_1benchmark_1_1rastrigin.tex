@@ -1,0 +1,115 @@
+\hypertarget{classrocky_1_1zagros_1_1benchmark_1_1rastrigin}{}\doxysection{rocky\+::zagros\+::benchmark\+::rastrigin\texorpdfstring{$<$}{<} T\+\_\+e \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classrocky_1_1zagros_1_1benchmark_1_1rastrigin}\index{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$@{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$}}
+
+
+Rastrigin function.  
+
+
+
+
+{\ttfamily \#include $<$benchmark.\+h$>$}
+
+
+
+Inheritance diagram for rocky\+::zagros\+::benchmark\+::rastrigin\texorpdfstring{$<$}{<} T\+\_\+e \texorpdfstring{$>$}{>}\+:
+% FIG 0
+
+
+Collaboration diagram for rocky\+::zagros\+::benchmark\+::rastrigin\texorpdfstring{$<$}{<} T\+\_\+e \texorpdfstring{$>$}{>}\+:
+% FIG 1
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a9b72d0e52feb01d42f5e0f4586a81e93}\label{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a9b72d0e52feb01d42f5e0f4586a81e93}} 
+{\bfseries rastrigin} (int dim=2, T\+\_\+e shift=0.\+0)
+\item 
+virtual T\+\_\+e \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a99cf541d86dfe5c6449eaf041740f412}{objective}} (T\+\_\+e $\ast$x)
+\item 
+virtual T\+\_\+e \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a3cd39274371e441f26b8e85c9610e2a4}{lower\+\_\+bound}} ()
+\begin{DoxyCompactList}\small\item\em lower bound specification should be used when lower bound is same for all parameters \end{DoxyCompactList}\item 
+virtual T\+\_\+e \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a2147f9aad0a81c5d879068da752d4e97}{upper\+\_\+bound}} ()
+\begin{DoxyCompactList}\small\item\em upper bound specification should be used when upper bound is same for all parameters \end{DoxyCompactList}\item 
+virtual std\+::string \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a0885712f31393acda9d9c1bab8d7ad41}{to\+\_\+string}} ()
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_ae28598a777db8d9076f5697d138ad8d0}\label{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_ae28598a777db8d9076f5697d138ad8d0}} 
+int {\bfseries dim\+\_\+}
+\item 
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a106969f931b7d927c56663bc2070627c}\label{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a106969f931b7d927c56663bc2070627c}} 
+T\+\_\+e {\bfseries shift\+\_\+}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T\+\_\+e$>$\newline
+class rocky\+::zagros\+::benchmark\+::rastrigin$<$ T\+\_\+e $>$}
+Rastrigin function. 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a3cd39274371e441f26b8e85c9610e2a4}\label{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a3cd39274371e441f26b8e85c9610e2a4}} 
+\index{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$@{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$}!lower\_bound@{lower\_bound}}
+\index{lower\_bound@{lower\_bound}!rocky::zagros::benchmark::rastrigin$<$ T\_e $>$@{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$}}
+\doxysubsubsection{\texorpdfstring{lower\_bound()}{lower\_bound()}}
+{\footnotesize\ttfamily template$<$typename T\+\_\+e $>$ \\
+virtual T\+\_\+e \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin}{rocky\+::zagros\+::benchmark\+::rastrigin}}$<$ T\+\_\+e $>$\+::lower\+\_\+bound (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+lower bound specification should be used when lower bound is same for all parameters 
+
+\begin{DoxyReturn}{Returns}
+$\ast$$\ast$ T\+\_\+e 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{classrocky_1_1zagros_1_1system_a8c585163cd377259b6bff2fd9f91276f}{rocky\+::zagros\+::system$<$ T\+\_\+e $>$}}.
+
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a99cf541d86dfe5c6449eaf041740f412}\label{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a99cf541d86dfe5c6449eaf041740f412}} 
+\index{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$@{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$}!objective@{objective}}
+\index{objective@{objective}!rocky::zagros::benchmark::rastrigin$<$ T\_e $>$@{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$}}
+\doxysubsubsection{\texorpdfstring{objective()}{objective()}}
+{\footnotesize\ttfamily template$<$typename T\+\_\+e $>$ \\
+virtual T\+\_\+e \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin}{rocky\+::zagros\+::benchmark\+::rastrigin}}$<$ T\+\_\+e $>$\+::objective (\begin{DoxyParamCaption}\item[{T\+\_\+e $\ast$}]{x }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Implements \mbox{\hyperlink{classrocky_1_1zagros_1_1system}{rocky\+::zagros\+::system$<$ T\+\_\+e $>$}}.
+
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a0885712f31393acda9d9c1bab8d7ad41}\label{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a0885712f31393acda9d9c1bab8d7ad41}} 
+\index{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$@{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$}!to\_string@{to\_string}}
+\index{to\_string@{to\_string}!rocky::zagros::benchmark::rastrigin$<$ T\_e $>$@{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$}}
+\doxysubsubsection{\texorpdfstring{to\_string()}{to\_string()}}
+{\footnotesize\ttfamily template$<$typename T\+\_\+e $>$ \\
+virtual std\+::string \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin}{rocky\+::zagros\+::benchmark\+::rastrigin}}$<$ T\+\_\+e $>$\+::to\+\_\+string (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+Reimplemented from \mbox{\hyperlink{classrocky_1_1zagros_1_1system}{rocky\+::zagros\+::system$<$ T\+\_\+e $>$}}.
+
+\mbox{\Hypertarget{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a2147f9aad0a81c5d879068da752d4e97}\label{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a2147f9aad0a81c5d879068da752d4e97}} 
+\index{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$@{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$}!upper\_bound@{upper\_bound}}
+\index{upper\_bound@{upper\_bound}!rocky::zagros::benchmark::rastrigin$<$ T\_e $>$@{rocky::zagros::benchmark::rastrigin$<$ T\_e $>$}}
+\doxysubsubsection{\texorpdfstring{upper\_bound()}{upper\_bound()}}
+{\footnotesize\ttfamily template$<$typename T\+\_\+e $>$ \\
+virtual T\+\_\+e \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin}{rocky\+::zagros\+::benchmark\+::rastrigin}}$<$ T\+\_\+e $>$\+::upper\+\_\+bound (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}, {\ttfamily [virtual]}}
+
+
+
+upper bound specification should be used when upper bound is same for all parameters 
+
+\begin{DoxyReturn}{Returns}
+$\ast$$\ast$ T\+\_\+e 
+\end{DoxyReturn}
+
+
+Reimplemented from \mbox{\hyperlink{classrocky_1_1zagros_1_1system_a93ad8b3e28cafbcaecfc14e92c8224dc}{rocky\+::zagros\+::system$<$ T\+\_\+e $>$}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/rocky/zagros/benchmark.\+h\end{DoxyCompactItemize}

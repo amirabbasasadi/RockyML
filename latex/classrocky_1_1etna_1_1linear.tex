@@ -1,0 +1,47 @@
+\hypertarget{classrocky_1_1etna_1_1linear}{}\doxysection{rocky\+::etna\+::linear\texorpdfstring{$<$}{<} T\+\_\+e, T\+\_\+in\+\_\+num, T\+\_\+in\+\_\+dim, T\+\_\+out\+\_\+dim, T\+\_\+opt\+\_\+bias \texorpdfstring{$>$}{>} Class Template Reference}
+\label{classrocky_1_1etna_1_1linear}\index{rocky::etna::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$@{rocky::etna::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$}}
+
+
+base class for static layers  
+
+
+
+
+{\ttfamily \#include $<$blocks.\+h$>$}
+
+\doxysubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{classrocky_1_1etna_1_1linear_af964d41d840a619032171ab7049107dc}\label{classrocky_1_1etna_1_1linear_af964d41d840a619032171ab7049107dc}} 
+constexpr size\+\_\+t {\bfseries deduce\+\_\+num\+\_\+params\+\_\+weights} ()
+\item 
+\mbox{\Hypertarget{classrocky_1_1etna_1_1linear_ade2372d78871c3c3a6a1aa77ef0a6136}\label{classrocky_1_1etna_1_1linear_ade2372d78871c3c3a6a1aa77ef0a6136}} 
+constexpr size\+\_\+t {\bfseries deduce\+\_\+num\+\_\+params\+\_\+bias} ()
+\item 
+\mbox{\Hypertarget{classrocky_1_1etna_1_1linear_ab78a51bc5d6c67f5ab206a5502e877b4}\label{classrocky_1_1etna_1_1linear_ab78a51bc5d6c67f5ab206a5502e877b4}} 
+constexpr size\+\_\+t {\bfseries deduce\+\_\+num\+\_\+params} ()
+\item 
+void \mbox{\hyperlink{classrocky_1_1etna_1_1linear_aa4c78803f7d44dfb479ea20f582d4fed}{feed}} (T\+\_\+e $\ast$layer\+\_\+mem\+\_\+ptr, T\+\_\+e $\ast$in\+\_\+mem\+\_\+ptr, T\+\_\+e $\ast$out\+\_\+mem\+\_\+ptr)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\subsubsection*{template$<$typename T\+\_\+e, size\+\_\+t T\+\_\+in\+\_\+num, size\+\_\+t T\+\_\+in\+\_\+dim, size\+\_\+t T\+\_\+out\+\_\+dim, opt T\+\_\+opt\+\_\+bias = opt\+::bias$>$\newline
+class rocky\+::etna\+::linear$<$ T\+\_\+e, T\+\_\+in\+\_\+num, T\+\_\+in\+\_\+dim, T\+\_\+out\+\_\+dim, T\+\_\+opt\+\_\+bias $>$}
+base class for static layers 
+
+
+
+\doxysubsection{Member Function Documentation}
+\mbox{\Hypertarget{classrocky_1_1etna_1_1linear_aa4c78803f7d44dfb479ea20f582d4fed}\label{classrocky_1_1etna_1_1linear_aa4c78803f7d44dfb479ea20f582d4fed}} 
+\index{rocky::etna::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$@{rocky::etna::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$}!feed@{feed}}
+\index{feed@{feed}!rocky::etna::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$@{rocky::etna::linear$<$ T\_e, T\_in\_num, T\_in\_dim, T\_out\_dim, T\_opt\_bias $>$}}
+\doxysubsubsection{\texorpdfstring{feed()}{feed()}}
+{\footnotesize\ttfamily template$<$typename T\+\_\+e , size\+\_\+t T\+\_\+in\+\_\+num, size\+\_\+t T\+\_\+in\+\_\+dim, size\+\_\+t T\+\_\+out\+\_\+dim, opt T\+\_\+opt\+\_\+bias = opt\+::bias$>$ \\
+void \mbox{\hyperlink{classrocky_1_1etna_1_1linear}{rocky\+::etna\+::linear}}$<$ T\+\_\+e, T\+\_\+in\+\_\+num, T\+\_\+in\+\_\+dim, T\+\_\+out\+\_\+dim, T\+\_\+opt\+\_\+bias $>$\+::feed (\begin{DoxyParamCaption}\item[{T\+\_\+e $\ast$}]{layer\+\_\+mem\+\_\+ptr,  }\item[{T\+\_\+e $\ast$}]{in\+\_\+mem\+\_\+ptr,  }\item[{T\+\_\+e $\ast$}]{out\+\_\+mem\+\_\+ptr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+(T\+\_\+in\+\_\+num $\ast$ T\+\_\+in\+\_\+dim) @ (T\+\_\+in\+\_\+dim x T\+\_\+out\+\_\+dim) -\/\texorpdfstring{$>$}{>} (T\+\_\+in\+\_\+num $\ast$ T\+\_\+out\+\_\+dim) 
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+include/rocky/etna/blocks.\+h\end{DoxyCompactItemize}

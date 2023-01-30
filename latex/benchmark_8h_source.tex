@@ -1,0 +1,80 @@
+\hypertarget{benchmark_8h_source}{}\doxysection{benchmark.\+h}
+\label{benchmark_8h_source}\index{include/rocky/zagros/benchmark.h@{include/rocky/zagros/benchmark.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved}}
+\DoxyCodeLine{3 \textcolor{comment}{    distributed under Apache-\/2.0 license}}
+\DoxyCodeLine{4 \textcolor{comment}{*/}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ROCKY\_BENCHMARK\_GUARD}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ROCKY\_BENCHMARK\_GUARD}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#define \_USE\_MATH\_DEFINES}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include<rocky/zagros/system.h>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include<string>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include<sstream>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include<cmath>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include<fstream>}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{keyword}{namespace }rocky\{}
+\DoxyCodeLine{16 \textcolor{keyword}{namespace }zagros}
+\DoxyCodeLine{17 \{}
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }benchmark}
+\DoxyCodeLine{19 \{}
+\DoxyCodeLine{24 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e>}
+\DoxyCodeLine{25 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1sphere}{sphere}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1system}{rocky::zagros::system}}<T\_e>\{}
+\DoxyCodeLine{26 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{27     \textcolor{keywordtype}{int} dim\_;}
+\DoxyCodeLine{28 \textcolor{keyword}{public}:}
+\DoxyCodeLine{29     \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1sphere}{sphere}}(\textcolor{keywordtype}{int} dim)\{}
+\DoxyCodeLine{30         dim\_ = dim;}
+\DoxyCodeLine{31     \}}
+\DoxyCodeLine{32     \textcolor{keyword}{virtual} T\_e objective(T\_e* x)\{}
+\DoxyCodeLine{33         T\_e S = 0.0;}
+\DoxyCodeLine{34         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{size\_t} i=0; i<dim\_; i++)}
+\DoxyCodeLine{35             S += x[i] * x[i];}
+\DoxyCodeLine{36         \textcolor{keywordflow}{return} sqrt(S);}
+\DoxyCodeLine{37     \}}
+\DoxyCodeLine{38     \textcolor{keyword}{virtual} T\_e \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1sphere_afc603071ce47cd0175cbadfc46e03601}{lower\_bound}}()\{ \textcolor{keywordflow}{return} -\/10.0; \}}
+\DoxyCodeLine{39     \textcolor{keyword}{virtual} T\_e \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1sphere_a4975d2924aff867cf05ac238745395a9}{upper\_bound}}()\{ \textcolor{keywordflow}{return} 10.0; \}}
+\DoxyCodeLine{40     \textcolor{keyword}{virtual} std::string to\_string()\{}
+\DoxyCodeLine{41         std::stringstream name;}
+\DoxyCodeLine{42         name << \textcolor{stringliteral}{"{}Sphere(dim="{}} << dim\_ << \textcolor{stringliteral}{"{})"{}};}
+\DoxyCodeLine{43         \textcolor{keywordflow}{return} name.str();}
+\DoxyCodeLine{44     \}}
+\DoxyCodeLine{45 \};}
+\DoxyCodeLine{46 }
+\DoxyCodeLine{51 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e>}
+\DoxyCodeLine{52 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin}{rastrigin}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1system}{rocky::zagros::system}}<T\_e>\{}
+\DoxyCodeLine{53 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{54     \textcolor{keywordtype}{int} dim\_;}
+\DoxyCodeLine{55     T\_e shift\_;}
+\DoxyCodeLine{56 \textcolor{keyword}{public}:}
+\DoxyCodeLine{57     \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin}{rastrigin}}(\textcolor{keywordtype}{int} dim=2, T\_e shift=0.0)\{}
+\DoxyCodeLine{58         dim\_ = dim;}
+\DoxyCodeLine{59         shift\_ = shift;}
+\DoxyCodeLine{60     \}}
+\DoxyCodeLine{61     \textcolor{keyword}{virtual} T\_e objective(T\_e* x)\{}
+\DoxyCodeLine{62         T\_e S = 10.0 * dim\_;}
+\DoxyCodeLine{63         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{size\_t} i=0; i<dim\_; i++)}
+\DoxyCodeLine{64             S += (x[i]-\/shift\_) * (x[i]-\/shift\_) -\/ 10.0*cos(2*M\_PI * (x[i]-\/shift\_));}
+\DoxyCodeLine{65         \textcolor{keywordflow}{return} S;}
+\DoxyCodeLine{66     \}}
+\DoxyCodeLine{67     \textcolor{keyword}{virtual} T\_e \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a3cd39274371e441f26b8e85c9610e2a4}{lower\_bound}}()\{ \textcolor{keywordflow}{return} -\/5.12; \}}
+\DoxyCodeLine{68     \textcolor{keyword}{virtual} T\_e \mbox{\hyperlink{classrocky_1_1zagros_1_1benchmark_1_1rastrigin_a2147f9aad0a81c5d879068da752d4e97}{upper\_bound}}()\{ \textcolor{keywordflow}{return} 5.12; \}}
+\DoxyCodeLine{69     \textcolor{keyword}{virtual} std::string to\_string()\{}
+\DoxyCodeLine{70         std::stringstream name;}
+\DoxyCodeLine{71         name << \textcolor{stringliteral}{"{}Rastrigin(dim="{}} << dim\_ << \textcolor{stringliteral}{"{})"{}};}
+\DoxyCodeLine{72         \textcolor{keywordflow}{return} name.str();}
+\DoxyCodeLine{73     \}}
+\DoxyCodeLine{74 \};}
+\DoxyCodeLine{75 }
+\DoxyCodeLine{76 \}; \textcolor{comment}{// namespace benchmark}}
+\DoxyCodeLine{77         }
+\DoxyCodeLine{78 \}; \textcolor{comment}{// namespace zagros}}
+\DoxyCodeLine{79     }
+\DoxyCodeLine{80 \}; \textcolor{comment}{// namespace rocky}}
+\DoxyCodeLine{81 }
+\DoxyCodeLine{82 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

@@ -1,0 +1,97 @@
+\hypertarget{blocks_8h_source}{}\doxysection{blocks.\+h}
+\label{blocks_8h_source}\index{include/rocky/etna/blocks.h@{include/rocky/etna/blocks.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{preprocessor}{\#ifndef ROCKY\_BLOCK\_GUARD}}
+\DoxyCodeLine{2 \textcolor{preprocessor}{\#define ROCKY\_BLOCK\_GUARD}}
+\DoxyCodeLine{3 \textcolor{preprocessor}{\#include <Eigen/Core>}}
+\DoxyCodeLine{4 \textcolor{preprocessor}{\#include <type\_traits>}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#include <algorithm>}}
+\DoxyCodeLine{6 \textcolor{keyword}{namespace }rocky\{}
+\DoxyCodeLine{7 \textcolor{keyword}{namespace }etna\{}
+\DoxyCodeLine{8 \textcolor{keyword}{enum} opt \{bias, no\_bias\};}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{14 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{size\_t} T\_in\_num, \textcolor{keywordtype}{size\_t} T\_in\_dim, \textcolor{keywordtype}{size\_t} T\_out\_dim,}
+\DoxyCodeLine{15         opt T\_opt\_bias=opt::bias>}
+\DoxyCodeLine{16 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1etna_1_1linear}{linear}}\{}
+\DoxyCodeLine{17 \textcolor{keyword}{public}:}
+\DoxyCodeLine{18     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{size\_t} deduce\_num\_params\_weights()\{}
+\DoxyCodeLine{19         \textcolor{keywordflow}{return} T\_in\_dim * T\_out\_dim;}
+\DoxyCodeLine{20     \}}
+\DoxyCodeLine{21     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{size\_t} deduce\_num\_params\_bias()\{}
+\DoxyCodeLine{22         \textcolor{keywordflow}{if} \textcolor{keyword}{constexpr}(T\_opt\_bias == opt::bias)}
+\DoxyCodeLine{23             \textcolor{keywordflow}{return} T\_out\_dim;}
+\DoxyCodeLine{24         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{25             \textcolor{keywordflow}{return} 0;}
+\DoxyCodeLine{26     \}}
+\DoxyCodeLine{27     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{size\_t} deduce\_num\_params()\{}
+\DoxyCodeLine{28         \textcolor{keywordflow}{return} deduce\_num\_params\_weights() + deduce\_num\_params\_bias(); }
+\DoxyCodeLine{29     \}}
+\DoxyCodeLine{33     \textcolor{keywordtype}{void} \mbox{\hyperlink{classrocky_1_1etna_1_1linear_aa4c78803f7d44dfb479ea20f582d4fed}{feed}}(T\_e* layer\_mem\_ptr, T\_e* in\_mem\_ptr, T\_e* out\_mem\_ptr)\{}
+\DoxyCodeLine{34         Eigen::Map<Eigen::Matrix<T\_e, T\_in\_dim, T\_out\_dim, Eigen::RowMajor>> W\_(layer\_mem\_ptr);}
+\DoxyCodeLine{35         Eigen::Map<Eigen::Matrix<T\_e, T\_in\_num, T\_in\_dim, Eigen::RowMajor>> In\_(in\_mem\_ptr);}
+\DoxyCodeLine{36         Eigen::Map<Eigen::Matrix<T\_e, T\_in\_num, T\_out\_dim, Eigen::RowMajor>> Out\_(out\_mem\_ptr);}
+\DoxyCodeLine{37         Out\_ = In\_ * W\_;}
+\DoxyCodeLine{38         \textcolor{comment}{// adding bias to each row}}
+\DoxyCodeLine{39         \textcolor{keywordflow}{if} \textcolor{keyword}{constexpr} (T\_opt\_bias == opt::bias)\{}
+\DoxyCodeLine{40             Eigen::Map<Eigen::Matrix<T\_e, 1, T\_out\_dim, Eigen::RowMajor>> Bias\_(layer\_mem\_ptr + T\_in\_dim * T\_out\_dim);}
+\DoxyCodeLine{41             Out\_.rowwise() += Bias\_; }
+\DoxyCodeLine{42         \}   }
+\DoxyCodeLine{43     \}}
+\DoxyCodeLine{44 \}; \textcolor{comment}{// end linear}}
+\DoxyCodeLine{45 }
+\DoxyCodeLine{46 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{size\_t} T\_layers\_num,}
+\DoxyCodeLine{47          \textcolor{keywordtype}{size\_t} T\_in\_num, \textcolor{keywordtype}{size\_t} T\_in\_dim,}
+\DoxyCodeLine{48          \textcolor{keywordtype}{size\_t} T\_out\_dim, \textcolor{keywordtype}{size\_t} T\_hidden\_dim,}
+\DoxyCodeLine{49          opt T\_opt\_bias=opt::bias>}
+\DoxyCodeLine{50 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1etna_1_1mlp}{mlp}}\{}
+\DoxyCodeLine{51 \textcolor{keyword}{public}:}
+\DoxyCodeLine{52     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{size\_t} deduce\_num\_params\_in()\{}
+\DoxyCodeLine{53         \textcolor{keywordflow}{return} \mbox{\hyperlink{classrocky_1_1etna_1_1linear}{linear<T\_e, T\_in\_num, T\_in\_dim, T\_hidden\_dim, T\_opt\_bias>}}().deduce\_num\_params();}
+\DoxyCodeLine{54     \}}
+\DoxyCodeLine{55     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{size\_t} deduce\_num\_params\_hidden()\{}
+\DoxyCodeLine{56         \textcolor{keywordflow}{return} \mbox{\hyperlink{classrocky_1_1etna_1_1linear}{linear<T\_e, T\_in\_num, T\_hidden\_dim, T\_hidden\_dim, T\_opt\_bias>}}().deduce\_num\_params();}
+\DoxyCodeLine{57     \}}
+\DoxyCodeLine{58     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{size\_t} deduce\_num\_params\_out()\{}
+\DoxyCodeLine{59         \textcolor{keywordflow}{return} \mbox{\hyperlink{classrocky_1_1etna_1_1linear}{linear<T\_e, T\_in\_num, T\_hidden\_dim, T\_out\_dim, T\_opt\_bias>}}().deduce\_num\_params();}
+\DoxyCodeLine{60     \}}
+\DoxyCodeLine{61     \textcolor{keyword}{constexpr} \textcolor{keywordtype}{size\_t} deduce\_num\_params()\{}
+\DoxyCodeLine{62         \textcolor{keywordflow}{return} T\_layers\_num * deduce\_num\_params\_hidden() + deduce\_num\_params\_in() + deduce\_num\_params\_out();}
+\DoxyCodeLine{63     \}}
+\DoxyCodeLine{73     \textcolor{keywordtype}{void} \mbox{\hyperlink{classrocky_1_1etna_1_1mlp_aaf2f5ff5d66f2a05dd76c49e9aafa796}{feed}}(T\_e* layer\_mem\_ptr, T\_e* in\_mem\_ptr, T\_e* out\_mem\_ptr)\{}
+\DoxyCodeLine{74         \textcolor{comment}{// layers}}
+\DoxyCodeLine{75         \mbox{\hyperlink{classrocky_1_1etna_1_1linear}{linear<T\_e, T\_in\_num, T\_in\_dim, T\_hidden\_dim, T\_opt\_bias>}} l\_in;}
+\DoxyCodeLine{76         \mbox{\hyperlink{classrocky_1_1etna_1_1linear}{linear<T\_e, T\_in\_num, T\_hidden\_dim, T\_hidden\_dim, T\_opt\_bias>}} l\_hidden;}
+\DoxyCodeLine{77         \mbox{\hyperlink{classrocky_1_1etna_1_1linear}{linear<T\_e, T\_in\_num, T\_hidden\_dim, T\_out\_dim, T\_opt\_bias>}} l\_out;}
+\DoxyCodeLine{78         \textcolor{comment}{// reserving space for intermediate matrices}}
+\DoxyCodeLine{79         T\_e* H1\_ = \textcolor{keyword}{new} T\_e[T\_in\_num * T\_hidden\_dim];}
+\DoxyCodeLine{80         T\_e* H2\_ = \textcolor{keyword}{new} T\_e[T\_in\_num * T\_hidden\_dim];}
+\DoxyCodeLine{81         \textcolor{comment}{// apply input layer}}
+\DoxyCodeLine{82         l\_in.\mbox{\hyperlink{classrocky_1_1etna_1_1linear_aa4c78803f7d44dfb479ea20f582d4fed}{feed}}(layer\_mem\_ptr, in\_mem\_ptr, H1\_);}
+\DoxyCodeLine{83         \textcolor{comment}{// apply hidden layers}}
+\DoxyCodeLine{84         T\_e* src, *dest;}
+\DoxyCodeLine{85         \textcolor{keywordtype}{size\_t} offset = l\_in.deduce\_num\_params();}
+\DoxyCodeLine{86         \textcolor{keywordflow}{for} (\textcolor{keywordtype}{size\_t} hidden=0; hidden<T\_layers\_num; hidden++)\{}
+\DoxyCodeLine{87             \textcolor{keywordflow}{if} (hidden \% 2 == 0)\{ src = H1\_; dest = H2\_;\}}
+\DoxyCodeLine{88             \textcolor{keywordflow}{else}\{ src = H2\_; dest = H1\_;\}}
+\DoxyCodeLine{89             l\_hidden.\mbox{\hyperlink{classrocky_1_1etna_1_1linear_aa4c78803f7d44dfb479ea20f582d4fed}{feed}}(layer\_mem\_ptr + offset, src, dest);}
+\DoxyCodeLine{90             offset += l\_hidden.deduce\_num\_params();}
+\DoxyCodeLine{91         \}    }
+\DoxyCodeLine{92         \textcolor{comment}{// apply output layer}}
+\DoxyCodeLine{93         \textcolor{keywordflow}{if} \textcolor{keyword}{constexpr} (T\_layers\_num \% 2 == 0)}
+\DoxyCodeLine{94             l\_out.\mbox{\hyperlink{classrocky_1_1etna_1_1linear_aa4c78803f7d44dfb479ea20f582d4fed}{feed}}(layer\_mem\_ptr + offset, H1\_, out\_mem\_ptr);}
+\DoxyCodeLine{95         \textcolor{keywordflow}{else}}
+\DoxyCodeLine{96             l\_out.\mbox{\hyperlink{classrocky_1_1etna_1_1linear_aa4c78803f7d44dfb479ea20f582d4fed}{feed}}(layer\_mem\_ptr + offset, H2\_, out\_mem\_ptr);}
+\DoxyCodeLine{97         }
+\DoxyCodeLine{98         \textcolor{keyword}{delete}[] H1\_;}
+\DoxyCodeLine{99         \textcolor{keyword}{delete}[] H2\_;}
+\DoxyCodeLine{100     \}}
+\DoxyCodeLine{101 }
+\DoxyCodeLine{102 \};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 }
+\DoxyCodeLine{105 \};}
+\DoxyCodeLine{106 \};}
+\DoxyCodeLine{107 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

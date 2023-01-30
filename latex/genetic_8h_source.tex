@@ -1,0 +1,182 @@
+\hypertarget{genetic_8h_source}{}\doxysection{genetic.\+h}
+\label{genetic_8h_source}\index{include/rocky/zagros/strategies/genetic.h@{include/rocky/zagros/strategies/genetic.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved}}
+\DoxyCodeLine{3 \textcolor{comment}{    distributed under Apache-\/2.0 license}}
+\DoxyCodeLine{4 \textcolor{comment}{*/}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ROCKY\_ZAGROS\_GENETIC\_STRATEGY}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ROCKY\_ZAGROS\_GENETIC\_STRATEGY}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <rocky/zagros/strategies/strategy.h>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <set>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include <iterator>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }rocky\{}
+\DoxyCodeLine{12 \textcolor{keyword}{namespace }zagros\{}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{18 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1mutation__strategy}{mutation\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__strategy}{basic\_strategy}}<T\_e, T\_dim>\{\};}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{25 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dimension__tweak__strategy}{dimension\_tweak\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1mutation__strategy}{mutation\_strategy}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{27 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{28     \textcolor{comment}{// system}}
+\DoxyCodeLine{29     \mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem\_;}
+\DoxyCodeLine{30     \textcolor{comment}{// main container}}
+\DoxyCodeLine{31     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* target\_container\_;}
+\DoxyCodeLine{32     \textcolor{comment}{// candidate container}}
+\DoxyCodeLine{33     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* candidates\_;}
+\DoxyCodeLine{34     \textcolor{comment}{// number of mutations}}
+\DoxyCodeLine{35     \textcolor{keywordtype}{int} n\_mutations\_;}
+\DoxyCodeLine{36     \textcolor{comment}{// number of affected dimensions}}
+\DoxyCodeLine{37     \textcolor{keywordtype}{int} k\_;}
+\DoxyCodeLine{38 \textcolor{keyword}{public}:}
+\DoxyCodeLine{39     \mbox{\hyperlink{classrocky_1_1zagros_1_1dimension__tweak__strategy}{dimension\_tweak\_strategy}}(\mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* tgt\_container, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* cnd\_container, \textcolor{keywordtype}{int} k)\{}
+\DoxyCodeLine{40         this-\/>problem\_ = problem;}
+\DoxyCodeLine{41         this-\/>target\_container\_ = tgt\_container;}
+\DoxyCodeLine{42         this-\/>candidates\_ = cnd\_container;}
+\DoxyCodeLine{43         this-\/>k\_ = k;}
+\DoxyCodeLine{44         this-\/>n\_mutations\_ = cnd\_container-\/>n\_particles();}
+\DoxyCodeLine{45     \}}
+\DoxyCodeLine{46     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} tweak(\textcolor{keywordtype}{int} p\_ind, \textcolor{keywordtype}{int} dim) = 0;}
+\DoxyCodeLine{47     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} apply()\{}
+\DoxyCodeLine{48         tbb::parallel\_for(0, n\_mutations\_, [\textcolor{keyword}{this}](\textcolor{keywordtype}{int} p)\{}
+\DoxyCodeLine{49             \textcolor{keywordtype}{int} samples[1];}
+\DoxyCodeLine{50             this-\/>target\_container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_a06c313144e43da64b42cb2d891d2859c}{sample\_n\_particles}}(samples, 1);}
+\DoxyCodeLine{51             std::copy(this-\/>target\_container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_ab608784fc75d08bba940962dfd5761b5}{particle}}(samples[0]),}
+\DoxyCodeLine{52                       this-\/>target\_container\_-\/>particle(samples[0])+T\_dim,}
+\DoxyCodeLine{53                       this-\/>candidates\_-\/>particle(p));}
+\DoxyCodeLine{54              \textcolor{comment}{// apply mutation on k dimensions}}
+\DoxyCodeLine{55             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} d=0; d<k\_; d++)\{}
+\DoxyCodeLine{56                 \textcolor{comment}{// choose a random dim}}
+\DoxyCodeLine{57                 \textcolor{keywordtype}{int} dim = this-\/>target\_container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_ad950c381f255096ae5a35d86acb515ed}{sample\_dim}}();}
+\DoxyCodeLine{58                 this-\/>tweak(p, dim);}
+\DoxyCodeLine{59             \}}
+\DoxyCodeLine{60         \});}
+\DoxyCodeLine{61         target\_container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_abfd37df0ae67d344d0f0640b196e0f03}{replace\_with}}(candidates\_);}
+\DoxyCodeLine{62     \}}
+\DoxyCodeLine{63 \}; }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 }
+\DoxyCodeLine{70 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{71 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1gaussian__mutation}{gaussian\_mutation}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1dimension__tweak__strategy}{dimension\_tweak\_strategy}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{72 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{73     T\_e mu\_;}
+\DoxyCodeLine{74     T\_e sigma\_;}
+\DoxyCodeLine{75 \textcolor{keyword}{public}:}
+\DoxyCodeLine{76     \mbox{\hyperlink{classrocky_1_1zagros_1_1gaussian__mutation}{gaussian\_mutation}}(\mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* tgt\_container, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* cnd\_container, \textcolor{keywordtype}{int} k=1, T\_e mu=0.0, T\_e sigma=0.5)}
+\DoxyCodeLine{77     :\mbox{\hyperlink{classrocky_1_1zagros_1_1dimension__tweak__strategy}{dimension\_tweak\_strategy<T\_e, T\_dim>}}(problem, tgt\_container, cnd\_container, k)\{}
+\DoxyCodeLine{78         this-\/>mu\_ = mu;}
+\DoxyCodeLine{79         this-\/>sigma\_ = sigma;}
+\DoxyCodeLine{80     \}}
+\DoxyCodeLine{81     \textcolor{comment}{// generate gaussian noise}}
+\DoxyCodeLine{82     T\_e gaussian\_noise()\{}
+\DoxyCodeLine{83         \textcolor{keyword}{static} std::normal\_distribution<T\_e> dist(mu\_, sigma\_);}
+\DoxyCodeLine{84         \textcolor{keyword}{auto} z = dist(rocky::utils::random::prng());}
+\DoxyCodeLine{85         \textcolor{keywordflow}{return} z;}
+\DoxyCodeLine{86     \}}
+\DoxyCodeLine{87     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} tweak(\textcolor{keywordtype}{int} p\_ind, \textcolor{keywordtype}{int} dim)\{}
+\DoxyCodeLine{88         this-\/>candidates\_-\/>particles[p\_ind][dim] += gaussian\_noise();}
+\DoxyCodeLine{89     \}}
+\DoxyCodeLine{90 \};}
+\DoxyCodeLine{91 }
+\DoxyCodeLine{96 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{97 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1crossover__strategy}{crossover\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__strategy}{basic\_strategy}}<T\_e, T\_dim>\{\};}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{103 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{104 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1multipoint__crossover}{multipoint\_crossover}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1crossover__strategy}{crossover\_strategy}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{105 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{106     \textcolor{comment}{// system}}
+\DoxyCodeLine{107     \mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem\_;}
+\DoxyCodeLine{108     \textcolor{comment}{// main container}}
+\DoxyCodeLine{109     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* container\_;}
+\DoxyCodeLine{110     \textcolor{comment}{// condidates container}}
+\DoxyCodeLine{111     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* candidates\_;}
+\DoxyCodeLine{112     \textcolor{comment}{// number of crossovers}}
+\DoxyCodeLine{113     \textcolor{keywordtype}{int} n\_crossovers\_;}
+\DoxyCodeLine{114     \textcolor{comment}{// maximum number of affected dimensions}}
+\DoxyCodeLine{115     \textcolor{keywordtype}{int} k\_;}
+\DoxyCodeLine{116 \textcolor{keyword}{public}:}
+\DoxyCodeLine{117     \mbox{\hyperlink{classrocky_1_1zagros_1_1multipoint__crossover}{multipoint\_crossover}}(\mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* container, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* candidates, \textcolor{keywordtype}{int} k)\{}
+\DoxyCodeLine{118         this-\/>k\_ = k;}
+\DoxyCodeLine{119         this-\/>problem\_ = problem;}
+\DoxyCodeLine{120         this-\/>container\_ = container;}
+\DoxyCodeLine{121         this-\/>candidates\_ = candidates;}
+\DoxyCodeLine{122         this-\/>n\_crossovers\_ = candidates-\/>n\_particles() / 2;}
+\DoxyCodeLine{123     \}}
+\DoxyCodeLine{124     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} apply()\{}
+\DoxyCodeLine{125         tbb::parallel\_for(0, n\_crossovers\_, [\textcolor{keyword}{this}](\textcolor{keywordtype}{int} p)\{}
+\DoxyCodeLine{126             \textcolor{keywordtype}{int} parents[2];}
+\DoxyCodeLine{127             this-\/>container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_a06c313144e43da64b42cb2d891d2859c}{sample\_n\_particles}}(parents, 2);}
+\DoxyCodeLine{128             \textcolor{comment}{// copy thee parents}}
+\DoxyCodeLine{129             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i=0; i<2; i++)}
+\DoxyCodeLine{130                 std::copy(this-\/>container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_ab608784fc75d08bba940962dfd5761b5}{particle}}(parents[i]),}
+\DoxyCodeLine{131                           this-\/>container\_-\/>particle(parents[i])+T\_dim,}
+\DoxyCodeLine{132                           this-\/>candidates\_-\/>particle(2*p+i));}
+\DoxyCodeLine{133             \textcolor{comment}{// affected dims}}
+\DoxyCodeLine{134             std::set<int> dims;}
+\DoxyCodeLine{135             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} d=0; d<k\_; d++)}
+\DoxyCodeLine{136                 dims.insert(this-\/>container\_-\/>sample\_dim());}
+\DoxyCodeLine{137             \textcolor{comment}{// apply the crossover}}
+\DoxyCodeLine{138             \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} dim: dims)}
+\DoxyCodeLine{139                 std::swap(this-\/>candidates\_-\/>particles[parents[0]][dim],}
+\DoxyCodeLine{140                           this-\/>candidates\_-\/>particles[parents[1]][dim]);}
+\DoxyCodeLine{141         \});}
+\DoxyCodeLine{142         container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_abfd37df0ae67d344d0f0640b196e0f03}{replace\_with}}(candidates\_);}
+\DoxyCodeLine{143     \}}
+\DoxyCodeLine{144 \};}
+\DoxyCodeLine{145 }
+\DoxyCodeLine{146 }
+\DoxyCodeLine{147 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{148 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1static__segment__crossover}{static\_segment\_crossover}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1crossover__strategy}{crossover\_strategy}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{149 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{150     \textcolor{comment}{// system}}
+\DoxyCodeLine{151     \mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem\_;}
+\DoxyCodeLine{152     \textcolor{comment}{// main container}}
+\DoxyCodeLine{153     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* container\_;}
+\DoxyCodeLine{154     \textcolor{comment}{// main container}}
+\DoxyCodeLine{155     \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* candidates\_;}
+\DoxyCodeLine{156     \textcolor{comment}{// length of the segment for crossover}}
+\DoxyCodeLine{157     \textcolor{keywordtype}{int} segment\_length\_;}
+\DoxyCodeLine{158     \textcolor{comment}{// number of crossovers}}
+\DoxyCodeLine{159     \textcolor{keywordtype}{int} n\_crossovers\_;}
+\DoxyCodeLine{160 \textcolor{keyword}{public}:}
+\DoxyCodeLine{161     \mbox{\hyperlink{classrocky_1_1zagros_1_1static__segment__crossover}{static\_segment\_crossover}}(\mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* container, \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer}{basic\_scontainer<T\_e, T\_dim>}}* cnd\_container, \textcolor{keywordtype}{int} segment\_length)\{}
+\DoxyCodeLine{162         this-\/>n\_crossovers\_ = cnd\_container-\/>n\_particles() / 2;}
+\DoxyCodeLine{163         this-\/>segment\_length\_ = segment\_length;}
+\DoxyCodeLine{164         this-\/>problem\_ = problem;}
+\DoxyCodeLine{165         this-\/>container\_ = container;}
+\DoxyCodeLine{166         this-\/>candidates\_ = cnd\_container;}
+\DoxyCodeLine{167     \}}
+\DoxyCodeLine{168     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} apply()\{}
+\DoxyCodeLine{169         tbb::parallel\_for(0, n\_crossovers\_, [\textcolor{keyword}{this}](\textcolor{keyword}{auto} ci)\{}
+\DoxyCodeLine{170             \textcolor{comment}{// select two distinct parents}}
+\DoxyCodeLine{171             \textcolor{keywordtype}{int} parents[2];}
+\DoxyCodeLine{172             this-\/>container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_a06c313144e43da64b42cb2d891d2859c}{sample\_n\_particles}}(parents, 2);}
+\DoxyCodeLine{173             \textcolor{comment}{// select a random point for cross over}}
+\DoxyCodeLine{174             std::uniform\_int\_distribution<> point\_dist(0, T\_dim -\/ segment\_length\_ -\/ 1);}
+\DoxyCodeLine{175             \textcolor{keywordtype}{int} point = point\_dist(rocky::utils::random::prng());}
+\DoxyCodeLine{176             \textcolor{comment}{// produce two cantidates}}
+\DoxyCodeLine{177             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} i=0; i<2; i++)\{}
+\DoxyCodeLine{178                 \textcolor{comment}{// copy the solution}}
+\DoxyCodeLine{179                 std::copy(this-\/>container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_ab608784fc75d08bba940962dfd5761b5}{particle}}(parents[i]),}
+\DoxyCodeLine{180                           this-\/>container\_-\/>particle(parents[i])+T\_dim,}
+\DoxyCodeLine{181                           this-\/>candidates\_-\/>particle(2*ci+i));}
+\DoxyCodeLine{182                 \textcolor{comment}{// replace the segment}}
+\DoxyCodeLine{183                 std::copy(this-\/>container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_ab608784fc75d08bba940962dfd5761b5}{particle}}(parents[1-\/i])+point,}
+\DoxyCodeLine{184                           this-\/>container\_-\/>particle(parents[1-\/i])+point+segment\_length\_,}
+\DoxyCodeLine{185                           this-\/>candidates\_-\/>particle(2*ci+i)+point); }
+\DoxyCodeLine{186             \}}
+\DoxyCodeLine{187         \});}
+\DoxyCodeLine{188         \textcolor{comment}{// evaluate the candidates}}
+\DoxyCodeLine{189         this-\/>candidates\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_a8566e2a8a6419f5c5ba60986855b5c0d}{evaluate\_and\_update}}(problem\_);}
+\DoxyCodeLine{190         this-\/>container\_-\/>\mbox{\hyperlink{classrocky_1_1zagros_1_1basic__scontainer_abfd37df0ae67d344d0f0640b196e0f03}{replace\_with}}(this-\/>candidates\_);}
+\DoxyCodeLine{191     \}}
+\DoxyCodeLine{192 \};}
+\DoxyCodeLine{193 }
+\DoxyCodeLine{194 \};}
+\DoxyCodeLine{195 \};}
+\DoxyCodeLine{196 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

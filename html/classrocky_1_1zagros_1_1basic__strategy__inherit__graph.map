@@ -1,0 +1,30 @@
+<map id="rocky::zagros::basic_strategy&lt; T_e, T_dim &gt;" name="rocky::zagros::basic_strategy&lt; T_e, T_dim &gt;">
+<area shape="rect" id="node1" title="Interface for all strategies." alt="" coords="5,393,168,433"/>
+<area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1analysis__strategy.html" title="base class for strategies for analysing loss functions" alt="" coords="216,59,379,99"/>
+<area shape="rect" id="node4" href="$classrocky_1_1zagros_1_1bcd__strategy.html" title="Interface for blocked descent strategies." alt="" coords="216,170,379,210"/>
+<area shape="rect" id="node8" href="$classrocky_1_1zagros_1_1comm__strategy.html" title="Interface for communication strategies." alt="" coords="216,257,379,297"/>
+<area shape="rect" id="node9" href="$classrocky_1_1zagros_1_1crossover__strategy.html" title="Base class for genetic crossovers." alt="" coords="216,321,379,361"/>
+<area shape="rect" id="node12" href="$classrocky_1_1zagros_1_1eda__strategy.html" title="Base class for estimation of distribution algorithms." alt="" coords="216,393,379,433"/>
+<area shape="rect" id="node14" href="$classrocky_1_1zagros_1_1init__strategy.html" title="Interface for initialization strategies." alt="" coords="216,461,379,501"/>
+<area shape="rect" id="node16" href="$classrocky_1_1zagros_1_1logging__strategy.html" title="Interface for logging strategies." alt="" coords="216,529,379,569"/>
+<area shape="rect" id="node20" href="$classrocky_1_1zagros_1_1mutation__strategy.html" title="Base class for genetic mutations." alt="" coords="216,625,379,665"/>
+<area shape="rect" id="node23" href="$classrocky_1_1zagros_1_1search__strategy.html" title="Interface for evolution strategies." alt="" coords="216,729,379,769"/>
+<area shape="rect" id="node3" href="$classrocky_1_1zagros_1_1loss__projection__2d.html" title="creating a 2d projection of loss function" alt="" coords="457,5,600,60"/>
+<area shape="rect" id="node5" href="$classrocky_1_1zagros_1_1bcd__mask__gen__strategy.html" title="Interface for bcd mask generation strategies." alt="" coords="453,84,604,139"/>
+<area shape="rect" id="node7" href="$classrocky_1_1zagros_1_1bcd__sync__strategy.html" title="Interface for bcd synchronization strategies." alt="" coords="455,163,602,217"/>
+<area shape="rect" id="node6" href="$classrocky_1_1zagros_1_1bcd__mask__uniform__random.html" title="Uniform mask generator." alt="" coords="687,84,849,139"/>
+<area shape="rect" id="node10" href="$classrocky_1_1zagros_1_1multipoint__crossover.html" title="Multipoint crossover." alt="" coords="442,242,615,282"/>
+<area shape="rect" id="node11" href="$classrocky_1_1zagros_1_1static__segment__crossover.html" title=" " alt="" coords="447,307,610,361"/>
+<area shape="rect" id="node13" href="$classrocky_1_1zagros_1_1eda__mutivariate__normal.html" title="estimating the distribution of solutions using eda" alt="" coords="459,385,598,440"/>
+<area shape="rect" id="node15" href="$classrocky_1_1zagros_1_1uniform__init__strategy.html" title="Uniform initializer." alt="" coords="435,465,622,505"/>
+<area shape="rect" id="node17" href="$classrocky_1_1zagros_1_1comet__strategy.html" title="Interface for Comet logging strategies." alt="" coords="447,529,610,569"/>
+<area shape="rect" id="node19" href="$classrocky_1_1zagros_1_1local__log__best.html" title="Log the best solution in the container in a csv file." alt="" coords="446,593,611,633"/>
+<area shape="rect" id="node18" href="$classrocky_1_1zagros_1_1comet__log__best.html" title="A strategy for logging the best solution on Comet server." alt="" coords="685,529,851,569"/>
+<area shape="rect" id="node21" href="$classrocky_1_1zagros_1_1dimension__tweak__strategy.html" title="apply a mutation to k dimensions" alt="" coords="427,657,631,697"/>
+<area shape="rect" id="node22" href="$classrocky_1_1zagros_1_1gaussian__mutation.html" title="Gaussian mutation." alt="" coords="685,657,851,697"/>
+<area shape="rect" id="node24" href="$classrocky_1_1zagros_1_1basic__differential__evolution.html" title=" " alt="" coords="455,721,602,776"/>
+<area shape="rect" id="node25" href="$classrocky_1_1zagros_1_1basic__pso.html" title="Base class for Tribes PSO." alt="" coords="460,801,597,841"/>
+<area shape="rect" id="node26" href="$classrocky_1_1zagros_1_1pso__l1__strategy.html" title=" " alt="" coords="679,737,857,777"/>
+<area shape="rect" id="node27" href="$classrocky_1_1zagros_1_1pso__l2__strategy.html" title=" " alt="" coords="679,801,857,841"/>
+<area shape="rect" id="node28" href="$classrocky_1_1zagros_1_1pso__l3__strategy.html" title=" " alt="" coords="679,865,857,905"/>
+</map>

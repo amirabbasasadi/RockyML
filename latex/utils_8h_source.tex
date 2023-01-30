@@ -1,0 +1,59 @@
+\hypertarget{utils_8h_source}{}\doxysection{utils.\+h}
+\label{utils_8h_source}\index{include/rocky/utils.h@{include/rocky/utils.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved}}
+\DoxyCodeLine{3 \textcolor{comment}{    distributed under Apache-\/2.0 license}}
+\DoxyCodeLine{4 \textcolor{comment}{*/}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ROCKY\_UTILS}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ROCKY\_UTILS}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include<cmath>}}
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include<utility>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include<memory>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include<limits>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include<random>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include<chrono>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include<thread>}}
+\DoxyCodeLine{14 \textcolor{preprocessor}{\#include<functional>}}
+\DoxyCodeLine{15 }
+\DoxyCodeLine{16 \textcolor{preprocessor}{\#ifdef ROCKY\_USE\_MPI}}
+\DoxyCodeLine{17 \textcolor{preprocessor}{\#include<mpi.h>}}
+\DoxyCodeLine{18 \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{19 }
+\DoxyCodeLine{20 \textcolor{preprocessor}{\#include<tbb/tbb.h>}}
+\DoxyCodeLine{21 \textcolor{preprocessor}{\#include<Eigen/Core>}}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 \textcolor{keyword}{namespace }rocky\{}
+\DoxyCodeLine{24 \textcolor{keyword}{namespace }utils\{}
+\DoxyCodeLine{25 }
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1utils_1_1thread__safe__prng}{thread\_safe\_prng}}\{}
+\DoxyCodeLine{27 \textcolor{keyword}{public}:}
+\DoxyCodeLine{28     std::mt19937 prng\_;}
+\DoxyCodeLine{29     \mbox{\hyperlink{classrocky_1_1utils_1_1thread__safe__prng}{thread\_safe\_prng}}()\{}
+\DoxyCodeLine{30         prng\_.seed(\textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{unsigned}\textcolor{keyword}{>}(time(0)) + std::hash<std::thread::id>\{\}(std::this\_thread::get\_id()));}
+\DoxyCodeLine{31     \}}
+\DoxyCodeLine{32     std::mt19937\& prng()\{}
+\DoxyCodeLine{33        \textcolor{keywordflow}{return} prng\_; }
+\DoxyCodeLine{34     \}}
+\DoxyCodeLine{35 \};}
+\DoxyCodeLine{36 }
+\DoxyCodeLine{37 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1utils_1_1random}{random}}\{}
+\DoxyCodeLine{38 \textcolor{keyword}{public}:}
+\DoxyCodeLine{39     \textcolor{keyword}{static} tbb::enumerable\_thread\_specific<thread\_safe\_prng> thread\_prng;}
+\DoxyCodeLine{40     \textcolor{comment}{// generate a uniform random variable}}
+\DoxyCodeLine{41     \textcolor{keyword}{static} \textcolor{keyword}{inline} std::mt19937\& prng()\{}
+\DoxyCodeLine{42         \textcolor{keywordflow}{return} thread\_prng.local().prng();}
+\DoxyCodeLine{43     \}}
+\DoxyCodeLine{44     \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e>}
+\DoxyCodeLine{45     \textcolor{keyword}{static} T\_e uniform(\textcolor{keywordtype}{float} a=0.0, \textcolor{keywordtype}{float} b=1.0)\{}
+\DoxyCodeLine{46         \textcolor{keyword}{static} std::uniform\_real\_distribution<T\_e> dist(a, b);}
+\DoxyCodeLine{47         \textcolor{keywordflow}{return} dist(prng());}
+\DoxyCodeLine{48     \}}
+\DoxyCodeLine{49 \};}
+\DoxyCodeLine{50 }
+\DoxyCodeLine{51 \};}
+\DoxyCodeLine{52 \};}
+\DoxyCodeLine{53 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

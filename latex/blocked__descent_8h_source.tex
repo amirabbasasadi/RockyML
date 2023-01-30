@@ -1,0 +1,57 @@
+\hypertarget{blocked__descent_8h_source}{}\doxysection{blocked\+\_\+descent.\+h}
+\label{blocked__descent_8h_source}\index{include/rocky/zagros/strategies/blocked\_descent.h@{include/rocky/zagros/strategies/blocked\_descent.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved}}
+\DoxyCodeLine{3 \textcolor{comment}{    distributed under Apache-\/2.0 license}}
+\DoxyCodeLine{4 \textcolor{comment}{*/}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ROCKY\_ZAGROS\_BCD\_STRATEGY}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ROCKY\_ZAGROS\_BCD\_STRATEGY}}
+\DoxyCodeLine{7 \textcolor{preprocessor}{\#include <rocky/zagros/strategies/strategy.h>}}
+\DoxyCodeLine{8 }
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include<set>}}
+\DoxyCodeLine{10 }
+\DoxyCodeLine{11 \textcolor{keyword}{namespace }rocky\{}
+\DoxyCodeLine{12 \textcolor{keyword}{namespace }zagros\{}
+\DoxyCodeLine{13 }
+\DoxyCodeLine{18 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{19 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1bcd__strategy}{bcd\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__strategy}{basic\_strategy}}<T\_e, T\_dim>\{\};}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{25 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{26 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1bcd__mask__gen__strategy}{bcd\_mask\_gen\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1bcd__strategy}{bcd\_strategy}}<T\_e, T\_dim>\{\};}
+\DoxyCodeLine{27 }
+\DoxyCodeLine{32 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{33 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1bcd__sync__strategy}{bcd\_sync\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1bcd__strategy}{bcd\_strategy}}<T\_e, T\_dim>\{\};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{39 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{40 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1bcd__mask__uniform__random}{bcd\_mask\_uniform\_random}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1bcd__mask__gen__strategy}{bcd\_mask\_gen\_strategy}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{41 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{42     \mbox{\hyperlink{classrocky_1_1zagros_1_1blocked__system}{blocked\_system<T\_e>}}* problem\_;}
+\DoxyCodeLine{43     std::vector<int>* bcd\_mask\_;}
+\DoxyCodeLine{44 }
+\DoxyCodeLine{45 \textcolor{keywordtype}{int} rand\_dim()\{}
+\DoxyCodeLine{46         \textcolor{keyword}{static} std::uniform\_int\_distribution<int> dist(0, problem\_-\/>original\_dim()-\/1);}
+\DoxyCodeLine{47         \textcolor{keywordflow}{return} dist(rocky::utils::random::prng());}
+\DoxyCodeLine{48 \}}
+\DoxyCodeLine{49 \textcolor{keyword}{public}:}
+\DoxyCodeLine{50     \mbox{\hyperlink{classrocky_1_1zagros_1_1bcd__mask__uniform__random}{bcd\_mask\_uniform\_random}}(\mbox{\hyperlink{classrocky_1_1zagros_1_1blocked__system}{blocked\_system<T\_e>}}* problem, std::vector<int>* bcd\_mask)\{}
+\DoxyCodeLine{51         this-\/>problem\_ = problem;}
+\DoxyCodeLine{52         this-\/>bcd\_mask\_ = bcd\_mask;}
+\DoxyCodeLine{53     \}}
+\DoxyCodeLine{54     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} apply()\{}
+\DoxyCodeLine{55        std::set<int> dims;}
+\DoxyCodeLine{56        \textcolor{keywordflow}{while}(dims.size() < this-\/>problem\_-\/>block\_dim())}
+\DoxyCodeLine{57             dims.insert(this-\/>rand\_dim());}
+\DoxyCodeLine{58        \textcolor{keywordtype}{int} i = 0;}
+\DoxyCodeLine{59        \textcolor{keywordflow}{for}(\textcolor{keyword}{auto} dim: dims)}
+\DoxyCodeLine{60            bcd\_mask\_-\/>at(i++) = dim;}
+\DoxyCodeLine{61     \};}
+\DoxyCodeLine{62 \};}
+\DoxyCodeLine{63 }
+\DoxyCodeLine{64 }
+\DoxyCodeLine{65 \};}
+\DoxyCodeLine{66 \};}
+\DoxyCodeLine{67 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

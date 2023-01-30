@@ -1,0 +1,103 @@
+\hypertarget{analysis_8h_source}{}\doxysection{analysis.\+h}
+\label{analysis_8h_source}\index{include/rocky/zagros/strategies/analysis.h@{include/rocky/zagros/strategies/analysis.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved}}
+\DoxyCodeLine{3 \textcolor{comment}{    distributed under Apache-\/2.0 license}}
+\DoxyCodeLine{4 \textcolor{comment}{*/}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ROCKY\_ZAGROS\_ANALYSIS}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ROCKY\_ZAGROS\_ANALYSIS}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include <fstream>}}
+\DoxyCodeLine{9 }
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include <rocky/zagros/strategies/strategy.h>}}
+\DoxyCodeLine{11 }
+\DoxyCodeLine{12 \textcolor{keyword}{namespace }rocky\{}
+\DoxyCodeLine{13 \textcolor{keyword}{namespace }zagros\{}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{21 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{22 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1analysis__strategy}{analysis\_strategy}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1basic__strategy}{basic\_strategy}}<T\_e, T\_dim>\{\};}
+\DoxyCodeLine{23 }
+\DoxyCodeLine{28 \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_e, \textcolor{keywordtype}{int} T\_dim>}
+\DoxyCodeLine{29 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1loss__projection__2d}{loss\_projection\_2d}}: \textcolor{keyword}{public} \mbox{\hyperlink{classrocky_1_1zagros_1_1analysis__strategy}{analysis\_strategy}}<T\_e, T\_dim>\{}
+\DoxyCodeLine{30 \textcolor{keyword}{protected}:}
+\DoxyCodeLine{31     \textcolor{comment}{// objective system}}
+\DoxyCodeLine{32     \mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem\_;}
+\DoxyCodeLine{33     \textcolor{comment}{// output setting}}
+\DoxyCodeLine{34     std::string label\_;}
+\DoxyCodeLine{35     \textcolor{comment}{// loss boundaries}}
+\DoxyCodeLine{36     T\_e x\_min\_;}
+\DoxyCodeLine{37     T\_e x\_max\_;}
+\DoxyCodeLine{38     T\_e y\_min\_;}
+\DoxyCodeLine{39     T\_e y\_max\_;}
+\DoxyCodeLine{40     \textcolor{comment}{// image size}}
+\DoxyCodeLine{41     \textcolor{keywordtype}{int} width\_;}
+\DoxyCodeLine{42     \textcolor{keywordtype}{int} height\_;}
+\DoxyCodeLine{43     \textcolor{comment}{// resolution settings}}
+\DoxyCodeLine{44     \textcolor{keywordtype}{double} delta\_x\_;}
+\DoxyCodeLine{45     \textcolor{keywordtype}{double} delta\_y\_;}
+\DoxyCodeLine{46     \textcolor{keywordtype}{int} l\_width\_;}
+\DoxyCodeLine{47     \textcolor{keywordtype}{int} l\_height\_;}
+\DoxyCodeLine{48     \textcolor{comment}{// step}}
+\DoxyCodeLine{49     \textcolor{keywordtype}{int} step\_;}
+\DoxyCodeLine{50     \textcolor{comment}{// loss function values}}
+\DoxyCodeLine{51     std::vector<std::vector<T\_e>> z;}
+\DoxyCodeLine{52     }
+\DoxyCodeLine{53 \textcolor{keyword}{public}:}
+\DoxyCodeLine{54     \mbox{\hyperlink{classrocky_1_1zagros_1_1loss__projection__2d}{loss\_projection\_2d}}(\mbox{\hyperlink{classrocky_1_1zagros_1_1system}{system<T\_e>}}* problem, std::string label, \textcolor{keywordtype}{int} width, \textcolor{keywordtype}{int} height, T\_e x\_min, T\_e y\_min, T\_e x\_max, T\_e y\_max)\{}
+\DoxyCodeLine{55         problem\_ = problem;}
+\DoxyCodeLine{56         label\_ = label;}
+\DoxyCodeLine{57         width\_ = width;}
+\DoxyCodeLine{58         height\_ = height;}
+\DoxyCodeLine{59         x\_min\_ = x\_min;}
+\DoxyCodeLine{60         y\_min\_ = y\_min;}
+\DoxyCodeLine{61         x\_max\_ = x\_max;}
+\DoxyCodeLine{62         y\_max\_ = y\_max;}
+\DoxyCodeLine{63         step\_ = 0;}
+\DoxyCodeLine{64         \textcolor{comment}{// obtain resolution settings}}
+\DoxyCodeLine{65         delta\_x\_ = (x\_max\_ -\/ x\_min\_) / \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(width\_);}
+\DoxyCodeLine{66         delta\_y\_ = (y\_max\_ -\/ y\_min\_) / \textcolor{keyword}{static\_cast<}\textcolor{keywordtype}{double}\textcolor{keyword}{>}(height\_);}
+\DoxyCodeLine{67         \textcolor{comment}{// real image size after possible numerical errors}}
+\DoxyCodeLine{68         l\_width\_ = (x\_max\_ -\/ x\_min\_) / delta\_x\_ ;}
+\DoxyCodeLine{69         l\_height\_ = (y\_max\_ -\/ y\_min\_) / delta\_y\_;}
+\DoxyCodeLine{70         \textcolor{comment}{// allocate memory for the mesh}}
+\DoxyCodeLine{71         z.resize(l\_height\_);}
+\DoxyCodeLine{72         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} y=0; y<l\_height\_; y++)}
+\DoxyCodeLine{73             z[y].resize(l\_width\_);}
+\DoxyCodeLine{74     \}}
+\DoxyCodeLine{75     \textcolor{keywordtype}{void} save\_mesh()\{}
+\DoxyCodeLine{76         std::string path = fmt::format(\textcolor{stringliteral}{"{}zagros\_\{\}\_\{\}.data"{}}, label\_, step\_);}
+\DoxyCodeLine{77         std::fstream handler(path, std::fstream::out);}
+\DoxyCodeLine{78         \textcolor{comment}{// writing metadata}}
+\DoxyCodeLine{79         handler << step\_ << std::endl;}
+\DoxyCodeLine{80         handler << fmt::format(\textcolor{stringliteral}{"{}\{\} \{\} \{\} \{\}"{}}, x\_min\_, y\_min\_, x\_max\_, y\_max\_) << std::endl;}
+\DoxyCodeLine{81         handler << fmt::format(\textcolor{stringliteral}{"{}\{\} \{\}"{}}, l\_height\_, l\_width\_) << std::endl;}
+\DoxyCodeLine{82         \textcolor{comment}{// writing the mesh values}}
+\DoxyCodeLine{83         \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} y=0; y<l\_height\_; y++)}
+\DoxyCodeLine{84             \textcolor{keywordflow}{for}(\textcolor{keywordtype}{int} x=0; x<l\_width\_; x++)}
+\DoxyCodeLine{85                 handler << z[y][x] << \textcolor{stringliteral}{"{} "{}};}
+\DoxyCodeLine{86         handler.close();}
+\DoxyCodeLine{87     \}}
+\DoxyCodeLine{88     \textcolor{keyword}{virtual} \textcolor{keywordtype}{void} apply()\{}
+\DoxyCodeLine{89         \textcolor{comment}{// traverse the 2D mesh in parallel}}
+\DoxyCodeLine{90         tbb::parallel\_for(0, this-\/>l\_width\_, [\&](\textcolor{keyword}{auto} x)\{}
+\DoxyCodeLine{91             tbb::parallel\_for(0, this-\/>l\_height\_, [\&](\textcolor{keyword}{auto} y)\{}
+\DoxyCodeLine{92                 T\_e thread\_point[2];}
+\DoxyCodeLine{93                 thread\_point[0] = x * this-\/>delta\_x\_ + this-\/>x\_min\_;}
+\DoxyCodeLine{94                 thread\_point[1] = y * this-\/>delta\_y\_ + this-\/>y\_min\_;}
+\DoxyCodeLine{95                 this-\/>z[y][x] = this-\/>problem\_-\/>objective(thread\_point);}
+\DoxyCodeLine{96             \});}
+\DoxyCodeLine{97         \});}
+\DoxyCodeLine{98 }
+\DoxyCodeLine{99         save\_mesh();}
+\DoxyCodeLine{100         step\_++;}
+\DoxyCodeLine{101     \}}
+\DoxyCodeLine{102 \};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \};}
+\DoxyCodeLine{105 \};}
+\DoxyCodeLine{106 }
+\DoxyCodeLine{107 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

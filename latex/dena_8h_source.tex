@@ -1,0 +1,496 @@
+\hypertarget{dena_8h_source}{}\doxysection{dena.\+h}
+\label{dena_8h_source}\index{include/rocky/zagros/dena.h@{include/rocky/zagros/dena.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{1 \textcolor{comment}{/*}}
+\DoxyCodeLine{2 \textcolor{comment}{    Copyright (C) 2022 Amirabbas Asadi , All Rights Reserved}}
+\DoxyCodeLine{3 \textcolor{comment}{    distributed under Apache-\/2.0 license}}
+\DoxyCodeLine{4 \textcolor{comment}{*/}}
+\DoxyCodeLine{5 \textcolor{preprocessor}{\#ifndef ROCKY\_ZAGROS\_DENA\_GUARD}}
+\DoxyCodeLine{6 \textcolor{preprocessor}{\#define ROCKY\_ZAGROS\_DENA\_GUARD}}
+\DoxyCodeLine{7 }
+\DoxyCodeLine{8 \textcolor{preprocessor}{\#include<vector>}}
+\DoxyCodeLine{9 \textcolor{preprocessor}{\#include<deque>}}
+\DoxyCodeLine{10 \textcolor{preprocessor}{\#include<map>}}
+\DoxyCodeLine{11 \textcolor{preprocessor}{\#include<stack>}}
+\DoxyCodeLine{12 \textcolor{preprocessor}{\#include<type\_traits>}}
+\DoxyCodeLine{13 \textcolor{preprocessor}{\#include<variant>}}
+\DoxyCodeLine{14 }
+\DoxyCodeLine{15 \textcolor{preprocessor}{\#include<rocky/zagros/strategies/log.h>}}
+\DoxyCodeLine{16 }
+\DoxyCodeLine{17 }
+\DoxyCodeLine{18 \textcolor{keyword}{namespace }rocky\{}
+\DoxyCodeLine{19 \textcolor{keyword}{namespace }zagros\{}
+\DoxyCodeLine{20 }
+\DoxyCodeLine{21 \textcolor{keyword}{namespace }dena\{}
+\DoxyCodeLine{22 }
+\DoxyCodeLine{23 }
+\DoxyCodeLine{28 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{}
+\DoxyCodeLine{29     \textcolor{comment}{// a unique identifier}}
+\DoxyCodeLine{30     \textcolor{keywordtype}{int} tag;}
+\DoxyCodeLine{31 \};}
+\DoxyCodeLine{32 }
+\DoxyCodeLine{33 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1null__node}{null\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{34 }
+\DoxyCodeLine{35 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1container__node}{container\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{36 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1container__create__node}{container\_create\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1container__node}{container\_node}}\{}
+\DoxyCodeLine{37     std::string id;}
+\DoxyCodeLine{38     \textcolor{keywordtype}{int} n\_particles;}
+\DoxyCodeLine{39     \textcolor{keywordtype}{int} group\_size;}
+\DoxyCodeLine{40 \};}
+\DoxyCodeLine{41 }
+\DoxyCodeLine{42 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1init__node}{init\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{43 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1init__uniform}{init\_uniform}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1init__node}{init\_node}}\{}
+\DoxyCodeLine{44     std::string id;}
+\DoxyCodeLine{45 \};}
+\DoxyCodeLine{46 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1init__normal}{init\_normal}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1init__node}{init\_node}}\{\};}
+\DoxyCodeLine{47 }
+\DoxyCodeLine{48 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1log__node}{log\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{49 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1log__local__best__node}{log\_local\_best\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1log__node}{log\_node}}\{}
+\DoxyCodeLine{50     std::string id;}
+\DoxyCodeLine{51     \mbox{\hyperlink{structrocky_1_1zagros_1_1local__optimization__log}{local\_optimization\_log}}* handler;}
+\DoxyCodeLine{52 \};}
+\DoxyCodeLine{53 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1log__comet__best__node}{log\_comet\_best\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1log__node}{log\_node}}\{}
+\DoxyCodeLine{54     std::string id;}
+\DoxyCodeLine{55     \mbox{\hyperlink{structrocky_1_1zagros_1_1comet__optimization__log}{comet\_optimization\_log}}* handler;}
+\DoxyCodeLine{56 \};}
+\DoxyCodeLine{57 }
+\DoxyCodeLine{58 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1comm__node}{comm\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{59 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1comm__cluster__prop__best}{comm\_cluster\_prop\_best}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1comm__node}{comm\_node}}\{}
+\DoxyCodeLine{60     std::string id;}
+\DoxyCodeLine{61 \};}
+\DoxyCodeLine{62 }
+\DoxyCodeLine{63 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__node}{pso\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{64 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__memory__create__node}{pso\_memory\_create\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__node}{pso\_node}}\{}
+\DoxyCodeLine{65     std::string memory\_id;}
+\DoxyCodeLine{66     std::string main\_cnt\_id;}
+\DoxyCodeLine{67 \};}
+\DoxyCodeLine{68 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__step__node}{pso\_step\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__node}{pso\_node}}\{}
+\DoxyCodeLine{69     std::string memory\_id;}
+\DoxyCodeLine{70     std::string main\_cnt\_id;}
+\DoxyCodeLine{71 \};}
+\DoxyCodeLine{72 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__group__level__step__node}{pso\_group\_level\_step\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__step__node}{pso\_step\_node}}\{\};}
+\DoxyCodeLine{73 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__cluster__level__step__node}{pso\_cluster\_level\_step\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__step__node}{pso\_step\_node}}\{\};}
+\DoxyCodeLine{74 }
+\DoxyCodeLine{75 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1mutate__node}{mutate\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{76 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1mutate__gaussian__node}{mutate\_gaussian\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1mutate__node}{mutate\_node}}\{}
+\DoxyCodeLine{77     std::string id;}
+\DoxyCodeLine{78     \textcolor{keywordtype}{int} dims;}
+\DoxyCodeLine{79     \textcolor{keywordtype}{float} mu;}
+\DoxyCodeLine{80     \textcolor{keywordtype}{float} sigma;}
+\DoxyCodeLine{81 \};}
+\DoxyCodeLine{82 }
+\DoxyCodeLine{83 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__node}{crossover\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{84 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__multipoint__node}{crossover\_multipoint\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__node}{crossover\_node}}\{}
+\DoxyCodeLine{85     std::string id;}
+\DoxyCodeLine{86     \textcolor{keywordtype}{int} dims;}
+\DoxyCodeLine{87 \};}
+\DoxyCodeLine{88 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__differential__evolution__node}{crossover\_differential\_evolution\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__node}{crossover\_node}}\{}
+\DoxyCodeLine{89     std::string id;}
+\DoxyCodeLine{90     \textcolor{keywordtype}{float} crossover\_prob;}
+\DoxyCodeLine{91     \textcolor{keywordtype}{float} differential\_weight;}
+\DoxyCodeLine{92 \};}
+\DoxyCodeLine{93 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__segment__node}{crossover\_segment\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__node}{crossover\_node}}\{}
+\DoxyCodeLine{94     std::string id;}
+\DoxyCodeLine{95     \textcolor{keywordtype}{int} segment\_length;}
+\DoxyCodeLine{96 \};}
+\DoxyCodeLine{97 }
+\DoxyCodeLine{98 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1eda__node}{eda\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{99 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1eda__mvn__node}{eda\_mvn\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1eda__node}{eda\_node}}\{\};}
+\DoxyCodeLine{100 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1eda__mvn__fullcov__node}{eda\_mvn\_fullcov\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1eda__mvn__node}{eda\_mvn\_node}}\{}
+\DoxyCodeLine{101     std::string id;}
+\DoxyCodeLine{102 \};}
+\DoxyCodeLine{103 }
+\DoxyCodeLine{104 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1analysis__node}{analysis\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{105 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1plot__node}{plot\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1analysis__node}{analysis\_node}}\{\};}
+\DoxyCodeLine{106 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1plot__heatmap__node}{plot\_heatmap\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1plot__node}{plot\_node}}\{}
+\DoxyCodeLine{107     \textcolor{keywordtype}{int} width;}
+\DoxyCodeLine{108     \textcolor{keywordtype}{int} height;}
+\DoxyCodeLine{109     std::string label;}
+\DoxyCodeLine{110 \};}
+\DoxyCodeLine{111 }
+\DoxyCodeLine{112 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1bcd__node}{bcd\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{\};}
+\DoxyCodeLine{113 \textcolor{keyword}{enum} bcd\_mask\_generator \{ uniform \};}
+\DoxyCodeLine{114 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1bcd__mask__node}{bcd\_mask\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1bcd__node}{bcd\_node}}\{}
+\DoxyCodeLine{115     bcd\_mask\_generator generator;}
+\DoxyCodeLine{116 \};}
+\DoxyCodeLine{117 }
+\DoxyCodeLine{118 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__node}{run\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1flow__node}{flow\_node}}\{}
+\DoxyCodeLine{119     std::vector<int> sub\_procedure;}
+\DoxyCodeLine{120 \};}
+\DoxyCodeLine{121 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__until__no__improve__node}{run\_until\_no\_improve\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__node}{run\_node}}\{}
+\DoxyCodeLine{122     std::string id;}
+\DoxyCodeLine{123     \textcolor{keywordtype}{int} max\_check;}
+\DoxyCodeLine{124 \};}
+\DoxyCodeLine{125 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__with__probability__node}{run\_with\_probability\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__node}{run\_node}}\{}
+\DoxyCodeLine{126     \textcolor{keywordtype}{float} prob;}
+\DoxyCodeLine{127 \};}
+\DoxyCodeLine{128 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__n__times__node}{run\_n\_times\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__node}{run\_node}}\{}
+\DoxyCodeLine{129     \textcolor{keywordtype}{int} n\_iters;}
+\DoxyCodeLine{130 \};}
+\DoxyCodeLine{131 \textcolor{keyword}{struct }\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__every__n__steps__node}{run\_every\_n\_steps\_node}}: \textcolor{keyword}{public} \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__node}{run\_node}}\{}
+\DoxyCodeLine{132     \textcolor{keywordtype}{int} period;}
+\DoxyCodeLine{133 \};}
+\DoxyCodeLine{134 }
+\DoxyCodeLine{135 }
+\DoxyCodeLine{136 \textcolor{comment}{// a variant containing all nodes}}
+\DoxyCodeLine{137 \textcolor{keyword}{typedef} std::variant<\mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1log__local__best__node}{log\_local\_best\_node}},}
+\DoxyCodeLine{138                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1log__comet__best__node}{log\_comet\_best\_node}},}
+\DoxyCodeLine{139                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1bcd__mask__node}{bcd\_mask\_node}},}
+\DoxyCodeLine{140                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1comm__cluster__prop__best}{comm\_cluster\_prop\_best}},}
+\DoxyCodeLine{141                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1init__uniform}{init\_uniform}},}
+\DoxyCodeLine{142                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1init__normal}{init\_normal}},}
+\DoxyCodeLine{143                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1container__create__node}{container\_create\_node}},}
+\DoxyCodeLine{144                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__memory__create__node}{pso\_memory\_create\_node}},}
+\DoxyCodeLine{145                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__group__level__step__node}{pso\_group\_level\_step\_node}},}
+\DoxyCodeLine{146                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__cluster__level__step__node}{pso\_cluster\_level\_step\_node}},}
+\DoxyCodeLine{147                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1mutate__gaussian__node}{mutate\_gaussian\_node}},}
+\DoxyCodeLine{148                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__multipoint__node}{crossover\_multipoint\_node}},}
+\DoxyCodeLine{149                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__differential__evolution__node}{crossover\_differential\_evolution\_node}},}
+\DoxyCodeLine{150                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__segment__node}{crossover\_segment\_node}},}
+\DoxyCodeLine{151                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1eda__mvn__fullcov__node}{eda\_mvn\_fullcov\_node}},}
+\DoxyCodeLine{152                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1plot__heatmap__node}{plot\_heatmap\_node}},}
+\DoxyCodeLine{153                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__with__probability__node}{run\_with\_probability\_node}},}
+\DoxyCodeLine{154                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__n__times__node}{run\_n\_times\_node}},}
+\DoxyCodeLine{155                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__every__n__steps__node}{run\_every\_n\_steps\_node}},}
+\DoxyCodeLine{156                     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__until__no__improve__node}{run\_until\_no\_improve\_node}}> flow\_node\_variant;}
+\DoxyCodeLine{157 }
+\DoxyCodeLine{158 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}\{}
+\DoxyCodeLine{159 \textcolor{keyword}{public}:}
+\DoxyCodeLine{160     \textcolor{keyword}{static} std::vector<flow\_node\_variant> nodes;}
+\DoxyCodeLine{161     \textcolor{keyword}{static} std::map<int, int> next\_node;}
+\DoxyCodeLine{162     \textcolor{keyword}{template}<\textcolor{keyword}{typename} T\_n>}
+\DoxyCodeLine{163     \textcolor{keyword}{static} \textcolor{keywordtype}{int} register\_node(T\_n \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}})\{ }
+\DoxyCodeLine{164         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.tag = nodes.size();}
+\DoxyCodeLine{165         nodes.push\_back(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{166         next\_node[\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.tag] = -\/1;}
+\DoxyCodeLine{167         \textcolor{keywordflow}{return} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.tag;}
+\DoxyCodeLine{168     \}}
+\DoxyCodeLine{169     \textcolor{keyword}{static} \textcolor{keywordtype}{void} register\_link(\textcolor{keywordtype}{int} s, \textcolor{keywordtype}{int} e)\{}
+\DoxyCodeLine{170         next\_node[s] = e;}
+\DoxyCodeLine{171     \}}
+\DoxyCodeLine{172     \textcolor{keyword}{static} \textcolor{keywordtype}{int} next(\textcolor{keywordtype}{int} tag)\{}
+\DoxyCodeLine{173         \textcolor{keywordflow}{return} next\_node[tag];}
+\DoxyCodeLine{174     \}}
+\DoxyCodeLine{175 \};}
+\DoxyCodeLine{176 }
+\DoxyCodeLine{177 }
+\DoxyCodeLine{178 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}}\{}
+\DoxyCodeLine{179 \textcolor{keyword}{public}:}
+\DoxyCodeLine{180     std::vector<int> procedure;}
+\DoxyCodeLine{181     \textcolor{keywordtype}{size\_t} total\_memory;}
+\DoxyCodeLine{182 }
+\DoxyCodeLine{183     \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}}\& operator >>(\textcolor{keyword}{const} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}}\& f)\{}
+\DoxyCodeLine{184         \textcolor{comment}{// concat the two procedures}}
+\DoxyCodeLine{185         \textcolor{keyword}{auto} last\_node = procedure.back();}
+\DoxyCodeLine{186         \textcolor{keyword}{auto} first\_node = f.procedure.front();}
+\DoxyCodeLine{187         node::register\_link(last\_node, first\_node);}
+\DoxyCodeLine{188         this-\/>procedure.insert(this-\/>procedure.end(), f.procedure.begin(), f.procedure.end());}
+\DoxyCodeLine{189         \textcolor{keywordflow}{return} *\textcolor{keyword}{this};}
+\DoxyCodeLine{190     \}}
+\DoxyCodeLine{191 \};}
+\DoxyCodeLine{192 }
+\DoxyCodeLine{197 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1container}{container}}\{}
+\DoxyCodeLine{198 \textcolor{keyword}{public}:}
+\DoxyCodeLine{207     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1container_a4e35d0e45a4074d6db51ef53501dc19b}{create}}(std::string \textcolor{keywordtype}{id}, \textcolor{keywordtype}{int} n\_particles, \textcolor{keywordtype}{int} group\_size)\{}
+\DoxyCodeLine{208         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{209         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1container__create__node}{container\_create\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{210         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{211         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.n\_particles = n\_particles;}
+\DoxyCodeLine{212         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.group\_size = group\_size;}
+\DoxyCodeLine{213         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{214         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{215         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{216     \}}
+\DoxyCodeLine{217 \};}
+\DoxyCodeLine{218 }
+\DoxyCodeLine{223 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1utils}{utils}}\{}
+\DoxyCodeLine{224 \textcolor{keyword}{public}:}
+\DoxyCodeLine{229     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1utils_a585cb0fb9000379dcde2587611d12604}{temp\_name}}(\textcolor{keywordtype}{int} tag)\{}
+\DoxyCodeLine{230         \textcolor{keywordflow}{return} fmt::format(\textcolor{stringliteral}{"{}\_\_temp\_\_T[\{\}]\_\_"{}}, tag);}
+\DoxyCodeLine{231     \}}
+\DoxyCodeLine{236     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1utils_ac8b3c613dbac67da2a4ad8818d84de38}{temp\_name}}(\textcolor{keywordtype}{int} tag, std::string desc)\{}
+\DoxyCodeLine{237         \textcolor{keywordflow}{return} fmt::format(\textcolor{stringliteral}{"{}\_\_temp\_\_\{\}\_\_\{\}\_\_"{}}, tag, desc);}
+\DoxyCodeLine{238     \}}
+\DoxyCodeLine{239 \};}
+\DoxyCodeLine{240 }
+\DoxyCodeLine{245 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1init}{init}}\{}
+\DoxyCodeLine{246 \textcolor{keyword}{public}:}
+\DoxyCodeLine{252     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1init_a5ba672657504454a994586320fb3d789}{uniform}}(std::string \textcolor{keywordtype}{id})\{}
+\DoxyCodeLine{253         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{254         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1init__uniform}{init\_uniform}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{255         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{256         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{257         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{258         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{259     \}}
+\DoxyCodeLine{260 \}; \textcolor{comment}{// end of init}}
+\DoxyCodeLine{261 }
+\DoxyCodeLine{262 \textcolor{keyword}{namespace }log\{}
+\DoxyCodeLine{263 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1log_1_1local}{local}}\{}
+\DoxyCodeLine{264 \textcolor{keyword}{public}:}
+\DoxyCodeLine{270     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1log_1_1local_ae0d196a1dbce30a830e1e0094f76cfa3}{best}}(std::string \textcolor{keywordtype}{id}, \mbox{\hyperlink{structrocky_1_1zagros_1_1local__optimization__log}{local\_optimization\_log}}\& handler)\{}
+\DoxyCodeLine{271         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{272         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1log__local__best__node}{log\_local\_best\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{273         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{274         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.handler = \&handler;}
+\DoxyCodeLine{275         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{276         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{277         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{278     \}}
+\DoxyCodeLine{279     \textcolor{comment}{// an overload of the best function which selects the best continer automatically}}
+\DoxyCodeLine{280     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1log_1_1local_ae0d196a1dbce30a830e1e0094f76cfa3}{best}}(\mbox{\hyperlink{structrocky_1_1zagros_1_1local__optimization__log}{local\_optimization\_log}}\& handler)\{}
+\DoxyCodeLine{281         \textcolor{keywordflow}{return} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1log_1_1local_ae0d196a1dbce30a830e1e0094f76cfa3}{best}}(\textcolor{stringliteral}{"{}\_\_best\_\_"{}}, handler);}
+\DoxyCodeLine{282     \}}
+\DoxyCodeLine{283 \}; \textcolor{comment}{// end of local}}
+\DoxyCodeLine{284 }
+\DoxyCodeLine{285 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1log_1_1comet}{comet}}\{}
+\DoxyCodeLine{286 \textcolor{keyword}{public}:}
+\DoxyCodeLine{292     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1log_1_1comet_abcd89958b71c1122cb913f61a6391e2f}{best}}(std::string \textcolor{keywordtype}{id}, \mbox{\hyperlink{structrocky_1_1zagros_1_1comet__optimization__log}{comet\_optimization\_log}}\& handler)\{}
+\DoxyCodeLine{293         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{294         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1log__comet__best__node}{log\_comet\_best\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{295         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{296         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.handler = \&handler;}
+\DoxyCodeLine{297         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{298         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{299         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{300     \}}
+\DoxyCodeLine{301     \textcolor{comment}{// an overload of the best function which selects the best continer automatically}}
+\DoxyCodeLine{302     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1log_1_1comet_abcd89958b71c1122cb913f61a6391e2f}{best}}(\mbox{\hyperlink{structrocky_1_1zagros_1_1comet__optimization__log}{comet\_optimization\_log}}\& handler)\{}
+\DoxyCodeLine{303         \textcolor{keywordflow}{return} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1log_1_1comet_abcd89958b71c1122cb913f61a6391e2f}{best}}(std::string(\textcolor{stringliteral}{"{}\_\_best\_\_"{}}), handler);}
+\DoxyCodeLine{304     \}}
+\DoxyCodeLine{305 \}; \textcolor{comment}{// end of comet}}
+\DoxyCodeLine{306 }
+\DoxyCodeLine{307 \}; \textcolor{comment}{// end of log}}
+\DoxyCodeLine{308 }
+\DoxyCodeLine{309 \textcolor{keyword}{namespace }blocked\_descent\{}
+\DoxyCodeLine{313 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1blocked__descent_1_1uniform}{uniform}}\{}
+\DoxyCodeLine{314 \textcolor{keyword}{public}:}
+\DoxyCodeLine{315     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} step()\{}
+\DoxyCodeLine{316         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{317         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1bcd__mask__node}{bcd\_mask\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{318         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.generator = bcd\_mask\_generator::uniform;}
+\DoxyCodeLine{319         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{320         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{321         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{322     \}}
+\DoxyCodeLine{323 \}; \textcolor{comment}{// end of uniform}}
+\DoxyCodeLine{324 \}; \textcolor{comment}{// end of blocked descent}}
+\DoxyCodeLine{325 }
+\DoxyCodeLine{326 }
+\DoxyCodeLine{327 \textcolor{keyword}{namespace }propagate\{}
+\DoxyCodeLine{328 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1propagate_1_1cluster}{cluster}}\{}
+\DoxyCodeLine{329 \textcolor{keyword}{public}:}
+\DoxyCodeLine{336 \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1propagate_1_1cluster_ae42a38bd9f2738cf88ba8eb4d1df9149}{best}}(std::string \textcolor{keywordtype}{id})\{}
+\DoxyCodeLine{337     \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{338     \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1comm__cluster__prop__best}{comm\_cluster\_prop\_best}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{339     \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{340     \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{341     f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{342     \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{343 \}}
+\DoxyCodeLine{344 \}; \textcolor{comment}{// end of cluster}}
+\DoxyCodeLine{345 \}; \textcolor{comment}{// end of comm}}
+\DoxyCodeLine{346 }
+\DoxyCodeLine{351 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run}{run}}\{}
+\DoxyCodeLine{352 \textcolor{keyword}{public}:}
+\DoxyCodeLine{360     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_a7b5c3755a7a924c668f970e0ff3dbe03}{n\_times}}(\textcolor{keywordtype}{int} iters, \textcolor{keyword}{const} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}}\& wrapped\_flow)\{}
+\DoxyCodeLine{361         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{362         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__n__times__node}{run\_n\_times\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{363         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.n\_iters = iters;}
+\DoxyCodeLine{364         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.sub\_procedure.insert(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.sub\_procedure.end(), wrapped\_flow.procedure.begin(), wrapped\_flow.procedure.end());}
+\DoxyCodeLine{365         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{366         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{367         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{368     \}}
+\DoxyCodeLine{376     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_a466e83ac2939c069003c7bf90cfc44e4}{with\_probability}}(\textcolor{keywordtype}{float} prob, \textcolor{keyword}{const} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}}\& wrapped\_flow)\{}
+\DoxyCodeLine{377         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{378         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__with__probability__node}{run\_with\_probability\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{379         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.prob = prob;}
+\DoxyCodeLine{380         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.sub\_procedure.insert(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.sub\_procedure.end(), wrapped\_flow.procedure.begin(), wrapped\_flow.procedure.end());}
+\DoxyCodeLine{381         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{382         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{383         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{384     \}}
+\DoxyCodeLine{392     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_af5240a001703ec36dc5fd621fb89ab26}{every\_n\_steps}}(\textcolor{keywordtype}{int} n, \textcolor{keyword}{const} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}}\& wrapped\_flow)\{}
+\DoxyCodeLine{393         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{394         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__every__n__steps__node}{run\_every\_n\_steps\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{395         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.period = n;}
+\DoxyCodeLine{396         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.sub\_procedure.insert(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.sub\_procedure.end(), wrapped\_flow.procedure.begin(), wrapped\_flow.procedure.end());}
+\DoxyCodeLine{397         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{398         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{399         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{400     \}}
+\DoxyCodeLine{409     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_a9c5b85518f74bea8becb99a7922a003a}{while\_improve}}(std::string \textcolor{keywordtype}{id}, \textcolor{keywordtype}{int} n, \textcolor{keyword}{const} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}}\& wrapped\_flow)\{}
+\DoxyCodeLine{410         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{411         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1run__until__no__improve__node}{run\_until\_no\_improve\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{412         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{413         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.max\_check = n;}
+\DoxyCodeLine{414         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.sub\_procedure.insert(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.sub\_procedure.end(), wrapped\_flow.procedure.begin(), wrapped\_flow.procedure.end());}
+\DoxyCodeLine{415         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{416         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{417         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{418     \}}
+\DoxyCodeLine{426     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_a5262087443a5a4c96f6d82c035b1a1f2}{while\_improve}}(\textcolor{keywordtype}{int} n, \textcolor{keyword}{const} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}}\& wrapped\_flow)\{}
+\DoxyCodeLine{427         \textcolor{keywordflow}{return} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_a9c5b85518f74bea8becb99a7922a003a}{while\_improve}}(std::string(\textcolor{stringliteral}{"{}\_\_best\_\_"{}}), n, wrapped\_flow);}
+\DoxyCodeLine{428     \}}
+\DoxyCodeLine{435     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_ae847af4095c18ce178558fb58cf13aa3}{while\_improve}}(\textcolor{keyword}{const} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}}\& wrapped\_flow)\{}
+\DoxyCodeLine{436         \textcolor{keywordflow}{return} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1run_a9c5b85518f74bea8becb99a7922a003a}{while\_improve}}(std::string(\textcolor{stringliteral}{"{}\_\_best\_\_"{}}), 20, wrapped\_flow);}
+\DoxyCodeLine{437     \}}
+\DoxyCodeLine{438 }
+\DoxyCodeLine{439 \}; \textcolor{comment}{// end of init}}
+\DoxyCodeLine{440 }
+\DoxyCodeLine{441 }
+\DoxyCodeLine{442 \textcolor{keyword}{namespace }pso\{}
+\DoxyCodeLine{447 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1memory}{memory}}\{}
+\DoxyCodeLine{448 \textcolor{keyword}{public}:}
+\DoxyCodeLine{456     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1memory_a7dbc82b2f48347f990a743f6555140c7}{create}}(std::string mem\_id, std::string main\_id)\{}
+\DoxyCodeLine{457         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{458         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__memory__create__node}{pso\_memory\_create\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{459         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.memory\_id = mem\_id;}
+\DoxyCodeLine{460         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.main\_cnt\_id = main\_id;}
+\DoxyCodeLine{461         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{462         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{463         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{464     \}}
+\DoxyCodeLine{471     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1memory_ab621285f13ff0fbd3e2788d9d855f192}{particles\_vel}}(std::string base)\{}
+\DoxyCodeLine{472         \textcolor{keywordflow}{return} base + std::string(\textcolor{stringliteral}{"{}\_\_pvel\_\_"{}});}
+\DoxyCodeLine{473     \}}
+\DoxyCodeLine{480     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1memory_a20dfde7da50b5d299dce8f9217087688}{particles\_mem}}(std::string base)\{}
+\DoxyCodeLine{481         \textcolor{keywordflow}{return} base + std::string(\textcolor{stringliteral}{"{}\_\_pmem\_\_"{}});}
+\DoxyCodeLine{482     \}}
+\DoxyCodeLine{489     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1memory_a11c76293b213c49077e7449d44ee4f20}{groups\_mem}}(std::string base)\{}
+\DoxyCodeLine{490         \textcolor{keywordflow}{return} base + std::string(\textcolor{stringliteral}{"{}\_\_gmem\_\_"{}});}
+\DoxyCodeLine{491     \}}
+\DoxyCodeLine{498     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1memory_a12ec129a5fa1cdac9e51fac9f35cc7dd}{node\_mem}}(std::string base)\{}
+\DoxyCodeLine{499         \textcolor{keywordflow}{return} base + std::string(\textcolor{stringliteral}{"{}\_\_nmem\_\_"{}});}
+\DoxyCodeLine{500     \}}
+\DoxyCodeLine{507     \textcolor{keyword}{static} std::string \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1memory_a52030dfbbe34ad633726a465a3f049cf}{cluster\_mem}}(std::string base)\{}
+\DoxyCodeLine{508         \textcolor{keywordflow}{return} base + std::string(\textcolor{stringliteral}{"{}\_\_cmem\_\_"{}});}
+\DoxyCodeLine{509     \} }
+\DoxyCodeLine{510 \}; \textcolor{comment}{// end of memory}}
+\DoxyCodeLine{511 }
+\DoxyCodeLine{516 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1local}{local}}\{}
+\DoxyCodeLine{517 \textcolor{keyword}{public}:}
+\DoxyCodeLine{525     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1local_a9c4aa32b62d43f69789aac4da148eecc}{step}}(std::string mem\_id, std::string main\_id)\{}
+\DoxyCodeLine{526         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{527         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__group__level__step__node}{pso\_group\_level\_step\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{528         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.memory\_id = mem\_id;}
+\DoxyCodeLine{529         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.main\_cnt\_id = main\_id;}
+\DoxyCodeLine{530         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{531         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{532         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{533     \}}
+\DoxyCodeLine{534 \}; \textcolor{comment}{// end of group level}}
+\DoxyCodeLine{535 }
+\DoxyCodeLine{540 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1global}{global}}\{}
+\DoxyCodeLine{541 \textcolor{keyword}{public}:}
+\DoxyCodeLine{549     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1pso_1_1global_a87e2d7edbd0770aa24636d4786794fc5}{step}}(std::string mem\_id, std::string main\_id)\{}
+\DoxyCodeLine{550         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{551         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1pso__cluster__level__step__node}{pso\_cluster\_level\_step\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{552         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.memory\_id = mem\_id;}
+\DoxyCodeLine{553         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.main\_cnt\_id = main\_id;}
+\DoxyCodeLine{554         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{555         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{556         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{557     \}}
+\DoxyCodeLine{558 \}; \textcolor{comment}{// end of group level}}
+\DoxyCodeLine{559 }
+\DoxyCodeLine{560 \}; \textcolor{comment}{// end of pso}}
+\DoxyCodeLine{561 }
+\DoxyCodeLine{562 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1mutate}{mutate}}\{}
+\DoxyCodeLine{563 \textcolor{keyword}{public}:}
+\DoxyCodeLine{573     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1mutate_a40e1487a23fd5b8266e63449943be48a}{gaussian}}(std::string \textcolor{keywordtype}{id}, \textcolor{keywordtype}{int} dims=1, \textcolor{keywordtype}{float} mu=0.0, \textcolor{keywordtype}{float} sigma=1.0)\{}
+\DoxyCodeLine{574         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{575         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1mutate__gaussian__node}{mutate\_gaussian\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{576         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{577         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.dims = dims;}
+\DoxyCodeLine{578         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.mu = mu;}
+\DoxyCodeLine{579         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.sigma = sigma;}
+\DoxyCodeLine{580         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{581         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{582         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{583     \}}
+\DoxyCodeLine{584 }
+\DoxyCodeLine{585 \}; \textcolor{comment}{// end of mutate}}
+\DoxyCodeLine{586 }
+\DoxyCodeLine{587 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1crossover}{crossover}}\{}
+\DoxyCodeLine{588 \textcolor{keyword}{public}:}
+\DoxyCodeLine{596     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1crossover_a8d7461ae3ac8104fe8d94ca3d6deca61}{multipoint}}(std::string \textcolor{keywordtype}{id}, \textcolor{keywordtype}{int} dims=1)\{}
+\DoxyCodeLine{597         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{598         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__multipoint__node}{crossover\_multipoint\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{599         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{600         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.dims = dims;}
+\DoxyCodeLine{601         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{602         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{603         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{604     \}}
+\DoxyCodeLine{613     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1crossover_ab05604cd7fab8e4df0c64b24e692830e}{differential\_evolution}}(std::string \textcolor{keywordtype}{id}, \textcolor{keywordtype}{float} cr=0.9, \textcolor{keywordtype}{float} dw=0.9)\{}
+\DoxyCodeLine{614         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{615         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__differential__evolution__node}{crossover\_differential\_evolution\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{616         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{617         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.crossover\_prob = cr;}
+\DoxyCodeLine{618         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.differential\_weight = dw;}
+\DoxyCodeLine{619         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{620         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{621         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{622     \}}
+\DoxyCodeLine{623     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} segment(std::string \textcolor{keywordtype}{id}, \textcolor{keywordtype}{int} segment\_length)\{}
+\DoxyCodeLine{624         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{625         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1crossover__segment__node}{crossover\_segment\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{626         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{627         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.segment\_length = segment\_length;}
+\DoxyCodeLine{628         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{629         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{630         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{631     \}}
+\DoxyCodeLine{632 }
+\DoxyCodeLine{633 \}; \textcolor{comment}{// end of mutate}}
+\DoxyCodeLine{634 }
+\DoxyCodeLine{639 \textcolor{keyword}{namespace }eda\{}
+\DoxyCodeLine{644 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1eda_1_1mvn}{mvn}}\{}
+\DoxyCodeLine{645 \textcolor{keyword}{public}:}
+\DoxyCodeLine{653     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1eda_1_1mvn_a9c26a8ba55b693a8360e34b7fc6f9d43}{full\_cov}}(std::string \textcolor{keywordtype}{id})\{}
+\DoxyCodeLine{654         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{655         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1eda__mvn__fullcov__node}{eda\_mvn\_fullcov\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{656         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.id = id;}
+\DoxyCodeLine{657         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{658         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{659         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{660     \}}
+\DoxyCodeLine{661 \}; \textcolor{comment}{// end of mvn}}
+\DoxyCodeLine{662 \}; \textcolor{comment}{// end of eda}}
+\DoxyCodeLine{663 }
+\DoxyCodeLine{668 \textcolor{keyword}{namespace }analyze\{}
+\DoxyCodeLine{669 }
+\DoxyCodeLine{674 \textcolor{keyword}{class }\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1analyze_1_1plot}{plot}}\{}
+\DoxyCodeLine{675 \textcolor{keyword}{public}:}
+\DoxyCodeLine{684     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1analyze_1_1plot_a06a78761a6072e8d0b0aa5e34e6f83f1}{heatmap}}(std::string label, \textcolor{keywordtype}{int} width, \textcolor{keywordtype}{int} height)\{}
+\DoxyCodeLine{685         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} f;}
+\DoxyCodeLine{686         \mbox{\hyperlink{structrocky_1_1zagros_1_1dena_1_1plot__heatmap__node}{plot\_heatmap\_node}} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}};}
+\DoxyCodeLine{687         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.label = label;}
+\DoxyCodeLine{688         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.width = width;}
+\DoxyCodeLine{689         \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}}.height = height;}
+\DoxyCodeLine{690         \textcolor{keyword}{auto} node\_tag = node::register\_node<>(\mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1node}{node}});}
+\DoxyCodeLine{691         f.procedure.push\_back(node\_tag);}
+\DoxyCodeLine{692         \textcolor{keywordflow}{return} f;}
+\DoxyCodeLine{693     \}}
+\DoxyCodeLine{694     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} heatmap(std::string label, \textcolor{keywordtype}{int} width)\{}
+\DoxyCodeLine{695         \textcolor{keywordflow}{return} heatmap(label, width, width);}
+\DoxyCodeLine{696     \}}
+\DoxyCodeLine{697     \textcolor{keyword}{static} \mbox{\hyperlink{classrocky_1_1zagros_1_1dena_1_1flow}{flow}} heatmap(std::string label)\{}
+\DoxyCodeLine{698         \textcolor{keywordflow}{return} heatmap(label, 500);}
+\DoxyCodeLine{699     \}}
+\DoxyCodeLine{700     \textcolor{keyword}{static} flow heatmap()\{}
+\DoxyCodeLine{701         \textcolor{keywordflow}{return} heatmap(std::string(\textcolor{stringliteral}{"{}heatmap"{}}));}
+\DoxyCodeLine{702     \}}
+\DoxyCodeLine{703 \}; \textcolor{comment}{// end of plot}}
+\DoxyCodeLine{704 }
+\DoxyCodeLine{705 \}; \textcolor{comment}{// end of analysis}}
+\DoxyCodeLine{706 }
+\DoxyCodeLine{707 \}; \textcolor{comment}{// end of dena}}
+\DoxyCodeLine{708 \}; \textcolor{comment}{// end of zagros}}
+\DoxyCodeLine{709 \}; \textcolor{comment}{// end of rocky}}
+\DoxyCodeLine{710 \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}
