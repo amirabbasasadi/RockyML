@@ -1,6 +1,7 @@
 <p><img align="center" src="/logo/rockyml-poster-white-2500.png"></p>
 <p align="center">
   <img src="https://img.shields.io/badge/C%2B%2B-17-blueviolet?style=flat">
+  <a href="https://amirabbasasadi.github.io/RockyML" target="_blank"><img src="https://img.shields.io/badge/view-Documentation-red?"></a>
   <img src="http://img.shields.io/github/actions/workflow/status/amirabbasasadi/RockyML/ctest.yml?branch=main">
   <img src="https://img.shields.io/github/commit-activity/m/amirabbasasadi/RockyML">
   <img src="https://img.shields.io/github/license/amirabbasasadi/RockyML">
