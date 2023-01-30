@@ -6,6 +6,7 @@ on:
     paths:
       - include/**
       - docs/**
+      - .github/workflows
   pull_request:
     branches: [ "main" ]
     
@@ -23,6 +24,3 @@ jobs:
     steps:
     - name: Doxygen Generation
       uses: mattnotmitt/doxygen-action@1.9.5
-      
-      with:
-        doxyfile-path: './DoxygenConfig'
