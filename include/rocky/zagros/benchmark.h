@@ -45,9 +45,33 @@ public:
 };
 
 /**
- * @brief Rastrigin function
+ * @brief Rosenbrock function
  * 
  */
+template<typename T_e>
+class rosenbrock: public rocky::zagros::system<T_e>{
+protected:
+    int dim_;
+
+public:
+    rosenbrock(int dim=2){
+        dim_ = dim;
+    }
+    virtual T_e objective(T_e* x){
+        T_e S = 0;
+        for(size_t i=0; i<dim_-1; i++)
+            S += 100.0 * pow(x[i+1] - pow(x[i], 2), 2) + pow(1 - x[i], 2);
+        return S;
+    }
+    virtual T_e lower_bound(){ return -10.0; }
+    virtual T_e upper_bound(){ return 10.0; }
+    virtual std::string to_string(){
+        std::stringstream name;
+        name << "Rosenbrock(dim=" << dim_ << ")";
+        return name.str();
+    }
+};
+
 template<typename T_e>
 class rastrigin: public rocky::zagros::system<T_e>{
 protected:
