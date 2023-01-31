@@ -10,6 +10,8 @@
 #include <rocky/zagros/strategies/genetic.h>
 #include <rocky/zagros/strategies/eda.h>
 #include <rocky/zagros/strategies/differential_evolution.h>
+#include <rocky/zagros/strategies/container_manipulation.h>
+
 #include <rocky/zagros/benchmark.h>
 
 
@@ -39,6 +41,15 @@ TEST_CASE("strategy", "[strategy][zagros][rocky]"){
     init_str.apply();
     container.evaluate_and_update(&problem);
 
+    SECTION("container manipulation"){
+        candidates.values[2] = -1.0;
+        zagros::select_from_strategy<container_type, dim> str(&container, &candidates);
+        BENCHMARK("gaussian mutation"){
+            str.apply();
+        };
+        REQUIRE(container.best_min() == -1.0);
+    };
+    
     SECTION("gaussian mutation"){
         int affected_dims = 8;
         zagros::gaussian_mutation<container_type, dim> str(&problem, &container, &candidates, affected_dims, 1.0, 0.5);

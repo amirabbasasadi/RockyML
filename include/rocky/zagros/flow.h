@@ -14,6 +14,7 @@
 #include<rocky/zagros/strategies/differential_evolution.h>
 #include<rocky/zagros/strategies/eda.h>
 #include<rocky/zagros/strategies/blocked_descent.h>
+#include<rocky/zagros/strategies/container_manipulation.h>
 #include<rocky/zagros/dena.h>
 
 
@@ -179,6 +180,7 @@ struct allocation_visitor{
     void operator()(dena::container_create_node node){
         main_storage->allocate_container(node.id, node.n_particles, node.group_size);
     }
+    void operator()(dena::container_select_from_node node){}
     void operator()(dena::pso_memory_create_node node){
         // allocate required solution containers for particle swarm
         auto main_cnt = main_storage->container(node.main_cnt_id);
@@ -312,6 +314,12 @@ struct assigning_visitor{
         path_stack->push(node.sub_procedure.front());
     }
     void operator()(dena::container_create_node node){}
+    void operator()(dena::container_select_from_node node){
+        auto des_cnt = main_storage->container(node.des);
+        auto src_cnt = main_storage->container(node.src);
+        auto str = std::make_unique<select_from_strategy<T_e, T_block_dim>>(des_cnt, src_cnt);
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
     void operator()(dena::pso_memory_create_node node){}
     void operator()(dena::pso_group_level_step_node node){
         // get memory containers

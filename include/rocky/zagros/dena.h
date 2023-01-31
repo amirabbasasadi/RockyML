@@ -38,6 +38,10 @@ struct container_create_node: public container_node{
     int n_particles;
     int group_size;
 };
+struct container_select_from_node: public container_node{
+    std::string des;
+    std::string src;
+};
 
 struct init_node: public flow_node{};
 struct init_uniform: public init_node{
@@ -141,6 +145,7 @@ typedef std::variant<log_local_best_node,
                     init_uniform,
                     init_normal,
                     container_create_node,
+                    container_select_from_node,
                     pso_memory_create_node,
                     pso_group_level_step_node,
                     pso_cluster_level_step_node,
@@ -210,6 +215,21 @@ public:
         node.id = id;
         node.n_particles = n_particles;
         node.group_size = group_size;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+    static flow create(std::string id, int n_particles){
+        return create(id, n_particles, n_particles);
+    }
+    static flow create(std::string id){
+        return create(id, 1, 1);
+    }
+    static flow select_from(std::string des, std::string src){
+        flow f;
+        container_select_from_node node;
+        node.des = des;
+        node.src = src;
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
         return f;
