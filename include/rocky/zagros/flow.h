@@ -126,11 +126,9 @@ public:
         for(int i=0; i<T_block_dim; i++)
             blocked_state->particles[0][bcd_mask[i]] = partial_best->particles[0][i];
         // replace the old partial solution in thread-specific states
-        int i=0;
-        for(auto& th_state: th_blocked_states){
-            th_state[bcd_mask[i]] = partial_best->particles[0][i];
-            i++;
-        }
+        for(auto& th_state: th_blocked_states)
+            for(int i=0; i<T_block_dim; i++)
+                th_state[bcd_mask[i]] = partial_best->particles[0][i];
     }
     // reset all solution containers
     void reset(){
