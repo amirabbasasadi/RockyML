@@ -179,6 +179,7 @@ struct allocation_visitor{
         main_storage->allocate_container(node.id, node.n_particles, node.group_size);
     }
     void operator()(dena::container_select_from_node node){}
+    void operator()(dena::container_eval_node node){}
     void operator()(dena::pso_memory_create_node node){
         // allocate required solution containers for particle swarm
         auto main_cnt = main_storage->container(node.main_cnt_id);
@@ -316,6 +317,11 @@ struct assigning_visitor{
         auto des_cnt = main_storage->container(node.des);
         auto src_cnt = main_storage->container(node.src);
         auto str = std::make_unique<select_from_strategy<T_e, T_block_dim>>(des_cnt, src_cnt);
+        main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
+    void operator()(dena::container_eval_node node){
+        auto cnt = main_storage->container(node.id);
+        auto str = std::make_unique<eval_strategy<T_e, T_block_dim>>(problem, cnt);
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
     void operator()(dena::pso_memory_create_node node){}

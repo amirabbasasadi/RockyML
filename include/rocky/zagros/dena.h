@@ -42,6 +42,9 @@ struct container_select_from_node: public container_node{
     std::string des;
     std::string src;
 };
+struct container_eval_node: public container_node{
+    std::string id;
+};
 
 struct init_node: public flow_node{};
 struct init_uniform: public init_node{
@@ -146,6 +149,7 @@ typedef std::variant<log_local_best_node,
                     init_normal,
                     container_create_node,
                     container_select_from_node,
+                    container_eval_node,
                     pso_memory_create_node,
                     pso_group_level_step_node,
                     pso_cluster_level_step_node,
@@ -225,11 +229,33 @@ public:
     static flow create(std::string id){
         return create(id, 1, 1);
     }
-    static flow select_from(std::string des, std::string src){
+    /**
+     * @brief take best solutions from another container
+     * only if any of the solutions in source was better than any solution in the destination
+     * 
+     * @param des destination container
+     * @param src source container
+     * @return * flow 
+     */
+    static flow take_best(std::string des, std::string src){
         flow f;
         container_select_from_node node;
         node.des = des;
         node.src = src;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    }
+    /**
+     * @brief evaluate all solutions in a container
+     * 
+     * @param id target container
+     * @return * flow 
+     */
+    static flow eval(std::string id){
+        flow f;
+        container_eval_node node;
+        node.id = id;
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
         return f;

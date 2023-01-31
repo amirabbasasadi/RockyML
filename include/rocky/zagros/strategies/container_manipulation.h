@@ -41,6 +41,27 @@ public:
     }
 };
 
+/**
+ * @brief evaluate the solutions in a container and update the values
+ * 
+ */
+template<typename T_e, int T_dim>
+class eval_strategy: public container_strategy<T_e, T_dim>{
+protected:
+    // problem
+    system<T_e>* problem_;
+    // destination container
+    basic_scontainer<T_e, T_dim>* container_;
+public:
+    eval_strategy(system<T_e>* problem, basic_scontainer<T_e, T_dim>* cnt){
+        problem_ = problem;
+        container_ = cnt;
+    }
+    virtual void apply(){
+        container_->evaluate_and_update(problem_);
+    }
+};
+
 };
 };
 
