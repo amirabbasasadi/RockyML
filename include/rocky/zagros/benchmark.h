@@ -6,11 +6,21 @@
 #define ROCKY_BENCHMARK_GUARD
 #define _USE_MATH_DEFINES
 
-#include<rocky/zagros/system.h>
 #include<string>
 #include<sstream>
 #include<cmath>
+#include<random>
+#include<algorithm>
+#include<numeric>
 #include<fstream>
+
+#include<tbb/tbb.h>
+#include<Eigen/Core>
+#include<Eigen/QR>
+
+
+#include<rocky/zagros/system.h>
+#include<rocky/utils.h>
 
 namespace rocky{
 namespace zagros
@@ -95,6 +105,90 @@ public:
         name << "Rastrigin(dim=" << dim_ << ")";
         return name.str();
     }
+};
+
+template<typename T_e>
+class ackley: public rocky::zagros::system<T_e>{
+protected:
+    int dim_;
+
+public:
+    ackley(int dim=2){
+        dim_ = dim;
+    }
+    virtual T_e objective(T_e* x){
+        T_e S = 20.0 + exp(1.0);
+        T_e S_c = 0;
+        T_e S_s = 0;
+        for(size_t i=0; i<dim_; i++){
+            S_s += pow(x[i], 2);
+            S_c += cos(2*M_PI * x[i]);
+        }
+        S_s /= dim_;
+        S_c /= dim_;
+        S_s = -0.20 * sqrt(S_s);
+        S_s = -20.0 * exp(S_s);
+        S_c = -exp(S_c);
+        
+        S += S_s + S_c;
+        return S;
+    }
+    virtual T_e lower_bound(){ return -5.0; }
+    virtual T_e upper_bound(){ return 5.0; }
+    virtual std::string to_string(){
+        std::stringstream name;
+        name << "Rastrigin(dim=" << dim_ << ")";
+        return name.str();
+    }
+};
+
+
+
+template<typename T_e>
+struct thread_safe_least_squares{
+public:
+    std::vector<T_e> A_;
+    std::vector<T_e> b_;
+
+    thread_safe_least_squares(int m,  int n){
+        std::mt19937 local_rng(0);        
+        A_.resize(m * n);
+        b_.resize(m);
+        std::uniform_real_distribution<T_e> dist(-10.0, 10.0);
+        for(int i=0; i<m; i++)
+            b_[i] = dist(local_rng);
+
+        for(int i=0; i<m*n; i++)
+            A_[i] = dist(local_rng);
+    }
+};
+
+template<typename T_e>
+class least_squares: public rocky::zagros::system<T_e>{
+protected:
+    int m_;
+    int n_;
+    tbb::enumerable_thread_specific<thread_safe_least_squares<T_e>> problem_;
+
+public:
+    least_squares(int m, int n): problem_(m, n){
+        m_ = m;
+        n_ = n;
+    }
+    virtual T_e objective(T_e* x_){
+        T_e* A_ = problem_.local().A_.data();
+        T_e* b_ = problem_.local().b_.data();
+     
+        Eigen::Map<Eigen::Matrix<T_e, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> A(A_, m_, n_);
+        Eigen::Map<Eigen::Matrix<T_e, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> b(b_, m_, 1);
+        Eigen::Map<Eigen::Matrix<T_e, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>> x(x_, n_, 1);
+        
+        auto error = (A*x - b).norm();
+
+        return error;
+    }
+    virtual T_e lower_bound(){ return -20.0; }
+    virtual T_e upper_bound(){ return 20.0; }
 };
 
 }; // namespace benchmark
