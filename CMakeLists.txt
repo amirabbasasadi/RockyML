@@ -12,20 +12,21 @@ include_directories(include/)
 find_package(TBB CONFIG REQUIRED)
 find_package(Eigen3 CONFIG REQUIRED)
 find_package(spdlog CONFIG REQUIRED)
+find_package(nlohmann_json CONFIG REQUIRED)
 find_package(cpr CONFIG REQUIRED)
 find_package(Catch2 CONFIG REQUIRED)
 
 set(ROCKY_SRC src/rocky/utils.cc src/rocky/zagros/dena.cc)
 add_library(rockyml STATIC ${ROCKY_SRC})
-target_link_libraries(rockyml PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog)
+target_link_libraries(rockyml PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog nlohmann_json::nlohmann_json)
 
 
 add_executable(tests tests/catch_main.cc tests/scontainer.cc tests/flow.cc tests/strategy.cc)
-target_link_libraries(tests PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog rockyml)
+target_link_libraries(tests PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog nlohmann_json::nlohmann_json rockyml)
 
 if(ROCKY_BUILD_MPI_TESTS)
 # tests that require MPI
-add_executable(mpi_tests tests/mpi/basic_strategy.cc)
+add_executable(mpi_tests tests/mpi/basic_mpi.cc)
 target_link_libraries(mpi_tests TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog rockyml)
 endif()
 

@@ -31,7 +31,7 @@ jobs:
       run: |
         git clone https://github.com/Microsoft/vcpkg.git
         ./vcpkg/bootstrap-vcpkg.sh
-        ./vcpkg/vcpkg install tbb eigen3 cpr spdlog catch2
+        ./vcpkg/vcpkg install tbb eigen3 cpr spdlog nlohmann-json catch2
     
     - name: Configure CMake
       # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
