@@ -15,16 +15,56 @@
 
 
 ## Zagros
-<p align="center"><img src="/logo/zagros-transparent-300.png"></p>  
-
 Design Goals:
-- CPU-friendly: targeting multi-core systems and clusters
+- Providing a language called Dena for designing arbitrary complex optimizers by combining 
+  - Modular and parallel search strategies: Genetic, PSO, EDA, ...
+  - Communication strategies for distributed optimization on top of MPI
+  - Analyzer strategies for analyzing objective functions
+  - Blocking strategies for block optimization
+  - Logging strategies for tracking optimization experiments on local system or a remote server
 - Hybrid parallelism: multi-threading in each node and message passing across nodes (MPI)
-- Handling large number of variables using block coordinate descent
-- Design arbitrary complex optimizers by combining modular search/communication strategies
+- ‌Block optimization for using memory-intensive optimizers for large number of variables
+
+```cpp
+#include <mpi.h>
+#include <rocky/zagros/benchmark.h>
+#include <rocky/zagros/flow.h>
+
+using namespace rocky::zagros;
+using namespace rocky::zagros::dena;
+
+int main(int argc, char* argv[]){
+    MPI_Init(&argc, &argv);
+    
+    // define the optimization problem
+    const int dim = 100;
+    benchmark::rastrigin<float> problem(dim);
+
+    // recording the result of optimization
+    local_log_handler log_handler("result.csv");
+
+    // define the optimizer
+    auto optimizer = container::create("A", 300)
+                    >> init::uniform("A") 
+                    >> run::n_times(500,
+                            mutate::gaussian("A")
+                            >> run::with_probability(0.2,
+                                crossover::differential_evolution("A")
+                            )
+                            >> log::local::best("A", log_handler)
+                        );
+
+    // create a runtime for executing the optimizer 
+    basic_runtime<float, dim> runtime(&problem);
+    runtime.run(optimizer);
+
+    MPI_Finalize();
+    return 0;
+}
+```
 
 
-## Etna
+## Etna (Work in progress)
 Building blocks for designing non-differentiable neural networks
 
 - Fast, low overhead, and thread-safe 
@@ -34,63 +74,3 @@ Building blocks for designing non-differentiable neural networks
   - Combinatorial layers
   - Stochastic layers
   - Dynamic layers
-  
-## Guide
-### Quick Start (Linux)
-Before buiding RockyML make sure you have installed the required dependencies:
-#### Dependencies
-- A C++ compiler supporting C++17, GCC is tested
-- CMake
-- [Eigen](https://eigen.tuxfamily.org), latest stable version
-- A BLAS/LAPACK implementation, OpenBLAS is tested
-- Intel Threading Building Blocks ([oneTBB](https://github.com/oneapi-src/oneTBB))
-- An MPI implementation, OpenMPI is recommended  
-- [Cpr](https://github.com/libcpr/cpr)
-- [Spdlog](https://github.com/gabime/spdlog)
-
-First install Open MPI and OpenBLAS:
-```
-apt install libopenblas-dev openmpi-bin openmpi-common libopenmpi-dev
-```
-You can install the other dependencies as you like. For example using [vcpkg](https://vcpkg.io/):
-```
-vcpkg install tbb eigen3 cpr spdlog catch2
-```
-#### Bulding on Linux
-Build the source code using CMake. To do so, create a build directory inside the source code and run cmake. you should add MPI flags for compiling, or you can simply use `mpic++` for compiling the source.  
-**Note** : if you've used vcpkg to install requirements, make sure that you set the `CMAKE_TOOLCHAIN_FILE`.
-
-```shell
-cmake .. -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_TOOLCHAIN_FILE=<path-to-vcpkg.cmake>
-```
-```
-make
-```
-If building was successful, you should be able to find `librockyml.a`. you need to link this static library to your program.
-#### Using with CMake
-Here is a minimal CMakeLists.txt example for using RockyML:  
-```cmake
-cmake_minimum_required(VERSION 3.2)
-project(Example LANGUAGES CXX)
-
-# make sure your compiler supports c++17
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -O3 -ffast-math -march=native")
-
-include_directories(<rockyml-headers-directory>)
-
-# find requirements
-find_package(TBB CONFIG REQUIRED)
-find_package(Eigen3 CONFIG REQUIRED)
-find_package(spdlog CONFIG REQUIRED)
-find_package(cpr CONFIG REQUIRED)
-find_package(Catch2 CONFIG REQUIRED)
-
-# find the library which you've built in the previous step 
-find_library(RockyML NAMES rockyml librockyml HINTS "<path-to-rockyml-static-library>")
-
-# linking the requirements
-add_executable(app <path-to-source-of-your-program>)
-target_link_libraries(app PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog RockyML)
-
-```
