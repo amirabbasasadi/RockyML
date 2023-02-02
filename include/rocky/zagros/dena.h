@@ -55,11 +55,11 @@ struct init_normal: public init_node{};
 struct log_node: public flow_node{};
 struct log_local_best_node: public log_node{
     std::string id;
-    local_optimization_log* handler;
+    local_log_handler* handler;
 };
 struct log_comet_best_node: public log_node{
     std::string id;
-    comet_optimization_log* handler;
+    comet_log_handler* handler;
 };
 
 struct comm_node: public flow_node{};
@@ -166,20 +166,28 @@ typedef std::variant<log_local_best_node,
 
 class node{
 public:
-    static std::vector<flow_node_variant> nodes;
-    static std::map<int, int> next_node;
+    // static std::vector<flow_node_variant> nodes;
+    // static std::map<int, int> next_node;
+    static std::vector<flow_node_variant>& nodes(){
+        static std::vector<flow_node_variant> nodes_;
+        return nodes_;
+    }
+    static std::map<int, int>& next_node(){
+        static std::map<int, int> next_node_;
+        return next_node_;
+    }
     template<typename T_n>
-    static int register_node(T_n node){ 
-        node.tag = nodes.size();
-        nodes.push_back(node);
-        next_node[node.tag] = -1;
-        return node.tag;
+    static int register_node(T_n flow_node){ 
+        flow_node.tag = node::nodes().size();
+        node::nodes().push_back(flow_node);
+        next_node()[flow_node.tag] = -1;
+        return flow_node.tag;
     }
     static void register_link(int s, int e){
-        next_node[s] = e;
+        node::next_node()[s] = e;
     }
     static int next(int tag){
-        return next_node[tag];
+        return node::next_node()[tag];
     }
 };
 
@@ -313,7 +321,7 @@ public:
      * 
      * @return * flow 
      */
-    static flow best(std::string id, local_optimization_log& handler){
+    static flow best(std::string id, local_log_handler& handler){
         flow f;
         log_local_best_node node;
         node.id = id;
@@ -323,7 +331,7 @@ public:
         return f;
     }
     // an overload of the best function which selects the best continer automatically
-    static flow best(local_optimization_log& handler){
+    static flow best(local_log_handler& handler){
         return best("__best__", handler);
     }
 }; // end of local
@@ -335,7 +343,7 @@ public:
      * 
      * @return * flow 
      */
-    static flow best(std::string id, comet_optimization_log& handler){
+    static flow best(std::string id, comet_log_handler& handler){
         flow f;
         log_comet_best_node node;
         node.id = id;
@@ -345,7 +353,7 @@ public:
         return f;
     }
     // an overload of the best function which selects the best continer automatically
-    static flow best(comet_optimization_log& handler){
+    static flow best(comet_log_handler& handler){
         return best(std::string("__best__"), handler);
     }
 }; // end of comet

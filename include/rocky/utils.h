@@ -36,11 +36,11 @@ public:
 
 class random{
 public:
-    static tbb::enumerable_thread_specific<thread_safe_prng> thread_prng;
-    // generate a uniform random variable
-    static inline std::mt19937& prng(){
+    static std::mt19937& prng(){
+        static tbb::enumerable_thread_specific<thread_safe_prng> thread_prng;
         return thread_prng.local().prng();
     }
+    // generate a uniform random variable
     template<typename T_e>
     static T_e uniform(float a=0.0, float b=1.0){
         static std::uniform_real_distribution<T_e> dist(a, b);

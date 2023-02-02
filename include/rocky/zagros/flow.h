@@ -560,7 +560,7 @@ public:
             it = path.top();
             // remove the visited node
             path.pop();
-            auto current = dena::node::nodes[it];
+            auto current = dena::node::nodes()[it];
             // push the next node into the stack if it's not null
             it = dena::node::next(it);
             if(it > -1)
@@ -588,7 +588,7 @@ public:
             it = path.top();
             // remove the visited node
             path.pop();
-            auto current = dena::node::nodes[it];
+            auto current = dena::node::nodes()[it];
             // push the next node into the stack if it's not null
             it = dena::node::next(it);
             if(it > -1)
@@ -603,7 +603,7 @@ public:
         // visitor
         running_visitor<T_e, T_dim, T_block_dim, decltype(traverse_run_rec)> run_visitor {problem, storage, &traverse_run_rec}; 
         // iterate until there is no node left in the stack
-        auto node = dena::node::nodes[root];
+        auto node = dena::node::nodes()[root];
         std::visit(run_visitor, node);
         traverse_run_rec(dena::node::next(root), problem, storage);
     }
