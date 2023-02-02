@@ -47,10 +47,10 @@ struct container_eval_node: public container_node{
 };
 
 struct init_node: public flow_node{};
-struct init_uniform: public init_node{
+struct init_uniform_node: public init_node{
     std::string id;
 };
-struct init_normal: public init_node{};
+struct init_normal_node: public init_node{};
 
 struct log_node: public flow_node{};
 struct log_local_best_node: public log_node{
@@ -63,7 +63,7 @@ struct log_comet_best_node: public log_node{
 };
 
 struct comm_node: public flow_node{};
-struct comm_cluster_prop_best: public comm_node{
+struct comm_cluster_prop_best_node: public comm_node{
     std::string id;
 };
 
@@ -144,9 +144,9 @@ struct run_every_n_steps_node: public run_node{
 typedef std::variant<log_local_best_node,
                     log_comet_best_node,
                     bcd_mask_node,
-                    comm_cluster_prop_best,
-                    init_uniform,
-                    init_normal,
+                    comm_cluster_prop_best_node,
+                    init_uniform_node,
+                    init_normal_node,
                     container_create_node,
                     container_select_from_node,
                     container_eval_node,
@@ -305,7 +305,7 @@ public:
      */
     static flow uniform(std::string id){
         flow f;
-        init_uniform node;
+        init_uniform_node node;
         node.id = id;
         auto node_tag = node::register_node<>(node);
         f.procedure.push_back(node_tag);
@@ -389,7 +389,7 @@ public:
  */
 static flow best(std::string id){
     flow f;
-    comm_cluster_prop_best node;
+    comm_cluster_prop_best_node node;
     node.id = id;
     auto node_tag = node::register_node<>(node);
     f.procedure.push_back(node_tag);

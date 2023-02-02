@@ -24,14 +24,13 @@ namespace zagros{
 template<typename T_e, int T_dim>
 class logging_strategy: public basic_strategy<T_e, T_dim>{};
 
-struct local_optimization_log{
+struct local_log_handler{
     std::string filename;
     bool log_groups;
-    std::fstream* log_output;
+    std::fstream log_output;
     size_t step;
-    local_optimization_log(std::fstream& log_output, std::string filename,  bool log_groups=false){
+    local_log_handler(std::string filename,  bool log_groups=false){
         this->filename = filename;
-        this->log_output = &log_output;
         this->step = 0;
         this->log_groups = log_groups;
         // openning the log file
@@ -45,10 +44,10 @@ struct local_optimization_log{
         MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
         std::string process_spc_filename = fmt::format("proc_{}_{}", mpi_rank, filename);
         // initialize the output file
-        log_output->open(process_spc_filename, std::fstream::out);
+        log_output.open(process_spc_filename, std::fstream::out);
     }
     std::fstream& stream(){
-        return *log_output;
+        return log_output;
     }
     void write_header(){
         if (this->log_groups)
@@ -57,11 +56,10 @@ struct local_optimization_log{
             this->stream() << "step,best" << std::endl;
     }
     virtual void save(){
-        this->stream() << "---" << std::endl;
-        if(this->log_output->is_open())
-            this->log_output->close();
+        if(this->log_output.is_open())
+            this->log_output.close();
     }
-    virtual ~local_optimization_log(){
+    virtual ~local_log_handler(){
         this->save();
     }
 };
@@ -75,10 +73,10 @@ class local_log_best: public logging_strategy<T_e, T_dim>{
 protected:
     system<T_e>* problem_;
     basic_scontainer<T_e, T_dim>* container_;
-    local_optimization_log* handler_;
+    local_log_handler* handler_;
 
 public:
-    local_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, local_optimization_log* handler){
+    local_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, local_log_handler* handler){
         this->problem_ = problem;
         this->container_ = container;
         this->handler_ = handler;
@@ -98,7 +96,7 @@ public:
     };
 };
 
-struct comet_optimization_log{
+struct comet_log_handler{
     std::string comet_api_key_;
     std::string workspace_;
     std::string project_;
@@ -107,7 +105,7 @@ struct comet_optimization_log{
     std::string experiment_link_;
     std::string experiment_key_;
 
-    comet_optimization_log(std::string comet_api_key, std::string workspace, std::string project, std::string metric_name){
+    comet_log_handler(std::string comet_api_key, std::string workspace, std::string project, std::string metric_name){
         this->comet_api_key_ = comet_api_key;
         this->workspace_ = workspace;
         this->project_ = project;
@@ -182,10 +180,10 @@ class comet_log_best: public comet_strategy<T_e, T_dim>{
 protected:
     system<T_e>* problem_;
     basic_scontainer<T_e, T_dim>* container_;
-    comet_optimization_log* handler_;
+    comet_log_handler* handler_;
 
 public:
-    comet_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, comet_optimization_log* handler){
+    comet_log_best(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, comet_log_handler* handler){
         this->problem_ = problem;
         this->container_ = container;
         this->handler_ = handler;
@@ -197,15 +195,13 @@ public:
         nlohmann::json metric_data = {{"experimentKey", handler_->experiment_key_},
                                       {"metricName", handler_->get_metric_name()},
                                       {"metricValue", best}};
-        // send metric data using an async call
-        auto req_future = std::async([this, &metric_data](){
-            cpr::Response r = cpr::Post(cpr::Url{"https://www.comet.com/api/rest/v2/write/experiment/metric"},
-                                cpr::Header{{"Authorization", this->handler_->comet_api_key_},
-                                            {"Content-type", "application/json"},
-                                            {"Accept", "application/json"}},
-                                cpr::Body{metric_data.dump()});
-            this->handler_->connection_warning(r.status_code);
-        });
+
+        cpr::Response r = cpr::Post(cpr::Url{"https://www.comet.com/api/rest/v2/write/experiment/metric"},
+                            cpr::Header{{"Authorization", this->handler_->comet_api_key_},
+                                        {"Content-type", "application/json"},
+                                        {"Accept", "application/json"}},
+                            cpr::Body{metric_data.dump()});
+        this->handler_->connection_warning(r.status_code);
         
     };
 };

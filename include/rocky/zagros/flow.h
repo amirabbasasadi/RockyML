@@ -158,9 +158,9 @@ struct allocation_visitor{
     void operator()(dena::bcd_mask_node node){}
     void operator()(dena::log_local_best_node node){}
     void operator()(dena::log_comet_best_node node){}
-    void operator()(dena::comm_cluster_prop_best node){}
-    void operator()(dena::init_uniform node){}
-    void operator()(dena::init_normal node){}
+    void operator()(dena::comm_cluster_prop_best_node node){}
+    void operator()(dena::init_uniform_node node){}
+    void operator()(dena::init_normal_node node){}
     void operator()(dena::run_n_times_node node){
         path_stack->push(node.sub_procedure.front());
     }
@@ -283,7 +283,7 @@ struct assigning_visitor{
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
-    void operator()(dena::comm_cluster_prop_best node){
+    void operator()(dena::comm_cluster_prop_best_node node){
         // retrieve the target container
         auto target_cnt = main_storage->container(node.id);
         // create and configure the strategy
@@ -291,7 +291,7 @@ struct assigning_visitor{
         // register the strategy
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
-    void operator()(dena::init_uniform node){
+    void operator()(dena::init_uniform_node node){
         // get the target container
         auto target_cnt = main_storage->container(node.id);
         // reserve the strategy
@@ -299,7 +299,7 @@ struct assigning_visitor{
         // add the strategy to the container
         main_storage->str_storage[node.tag].push_back(std::move(str));
     }
-    void operator()(dena::init_normal node){}
+    void operator()(dena::init_normal_node node){}
     void operator()(dena::run_n_times_node node){
         path_stack->push(node.sub_procedure.front());
     }
