@@ -58,6 +58,7 @@ public:
                 this->tweak(p, dim);
             }
         });
+        candidates_->evaluate_and_update(problem_);
         target_container_->replace_with(candidates_);
     }
 }; 
