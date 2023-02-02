@@ -46,7 +46,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classrocky_1_1zagros_1_1multipoint__crossover.html#a75641de6b3043db028afdddb187cd1b1"
+"classrocky_1_1zagros_1_1gaussian__mutation.html#aa73d800caab6e76f26634823543e3bfc",
+"structrocky_1_1zagros_1_1dena_1_1eda__node.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

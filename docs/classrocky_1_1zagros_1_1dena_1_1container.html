@@ -110,6 +110,18 @@ Static Public Member Functions</h2></td></tr>
 <tr class="memitem:a4e35d0e45a4074d6db51ef53501dc19b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classrocky_1_1zagros_1_1dena_1_1flow.html">flow</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1dena_1_1container.html#a4e35d0e45a4074d6db51ef53501dc19b">create</a> (std::string id, int n_particles, int group_size)</td></tr>
 <tr class="memdesc:a4e35d0e45a4074d6db51ef53501dc19b"><td class="mdescLeft">&#160;</td><td class="mdescRight">create a solution  <a href="classrocky_1_1zagros_1_1dena_1_1container.html#a4e35d0e45a4074d6db51ef53501dc19b">More...</a><br /></td></tr>
 <tr class="separator:a4e35d0e45a4074d6db51ef53501dc19b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37a5b8a670cfa02b5a77e02bbec90b68"><td class="memItemLeft" align="right" valign="top"><a id="a37a5b8a670cfa02b5a77e02bbec90b68"></a>
+static <a class="el" href="classrocky_1_1zagros_1_1dena_1_1flow.html">flow</a>&#160;</td><td class="memItemRight" valign="bottom"><b>create</b> (std::string id, int n_particles)</td></tr>
+<tr class="separator:a37a5b8a670cfa02b5a77e02bbec90b68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9687a0ff52a7ba6748dabce7f765f0cd"><td class="memItemLeft" align="right" valign="top"><a id="a9687a0ff52a7ba6748dabce7f765f0cd"></a>
+static <a class="el" href="classrocky_1_1zagros_1_1dena_1_1flow.html">flow</a>&#160;</td><td class="memItemRight" valign="bottom"><b>create</b> (std::string id)</td></tr>
+<tr class="separator:a9687a0ff52a7ba6748dabce7f765f0cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe2eb49f74291d7ddff138504488c05b"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classrocky_1_1zagros_1_1dena_1_1flow.html">flow</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1dena_1_1container.html#abe2eb49f74291d7ddff138504488c05b">take_best</a> (std::string des, std::string src)</td></tr>
+<tr class="memdesc:abe2eb49f74291d7ddff138504488c05b"><td class="mdescLeft">&#160;</td><td class="mdescRight">take best solutions from another container only if any of the solutions in source was better than any solution in the destination  <a href="classrocky_1_1zagros_1_1dena_1_1container.html#abe2eb49f74291d7ddff138504488c05b">More...</a><br /></td></tr>
+<tr class="separator:abe2eb49f74291d7ddff138504488c05b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32dd5ff2586ae4f664bcb20123692b0e"><td class="memItemLeft" align="right" valign="top">static <a class="el" href="classrocky_1_1zagros_1_1dena_1_1flow.html">flow</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1zagros_1_1dena_1_1container.html#a32dd5ff2586ae4f664bcb20123692b0e">eval</a> (std::string id)</td></tr>
+<tr class="memdesc:a32dd5ff2586ae4f664bcb20123692b0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">evaluate all solutions in a container  <a href="classrocky_1_1zagros_1_1dena_1_1container.html#a32dd5ff2586ae4f664bcb20123692b0e">More...</a><br /></td></tr>
+<tr class="separator:a32dd5ff2586ae4f664bcb20123692b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>factories for soultion containers </p>
@@ -160,6 +172,87 @@ Static Public Member Functions</h2></td></tr>
     <tr><td class="paramname">id</td><td>std::string container's id </td></tr>
     <tr><td class="paramname">n_particles</td><td>int number of particles </td></tr>
     <tr><td class="paramname">group_size</td><td>int size of each group </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>* flow </dd></dl>
+
+</div>
+</div>
+<a id="a32dd5ff2586ae4f664bcb20123692b0e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32dd5ff2586ae4f664bcb20123692b0e">&#9670;&nbsp;</a></span>eval()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classrocky_1_1zagros_1_1dena_1_1flow.html">flow</a> rocky::zagros::dena::container::eval </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>id</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>evaluate all solutions in a container </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">id</td><td>target container </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>* flow </dd></dl>
+
+</div>
+</div>
+<a id="abe2eb49f74291d7ddff138504488c05b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe2eb49f74291d7ddff138504488c05b">&#9670;&nbsp;</a></span>take_best()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">static <a class="el" href="classrocky_1_1zagros_1_1dena_1_1flow.html">flow</a> rocky::zagros::dena::container::take_best </td>
+          <td>(</td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>des</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::string&#160;</td>
+          <td class="paramname"><em>src</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>take best solutions from another container only if any of the solutions in source was better than any solution in the destination </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">des</td><td>destination container </td></tr>
+    <tr><td class="paramname">src</td><td>source container </td></tr>
   </table>
   </dd>
 </dl>

@@ -1,0 +1,6 @@
+<map id="rocky::zagros::sync_bcd_mask&lt; T_e, T_dim &gt;" name="rocky::zagros::sync_bcd_mask&lt; T_e, T_dim &gt;">
+<area shape="rect" id="node1" title="A Communication strategy for broadcasting bcd mask." alt="" coords="5,273,183,315"/>
+<area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1mpi__strategy.html" title="base class for all strategies who need MPI communication" alt="" coords="12,184,176,225"/>
+<area shape="rect" id="node3" href="$classrocky_1_1zagros_1_1comm__strategy.html" title="Interface for communication strategies." alt="" coords="12,95,176,136"/>
+<area shape="rect" id="node4" href="$classrocky_1_1zagros_1_1basic__strategy.html" title="Interface for all strategies." alt="" coords="12,5,176,47"/>
+</map>

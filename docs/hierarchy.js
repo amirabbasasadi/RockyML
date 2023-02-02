@@ -14,7 +14,16 @@ var hierarchy =
         ] ],
         [ "rocky::zagros::bcd_sync_strategy< T_e, T_dim >", "classrocky_1_1zagros_1_1bcd__sync__strategy.html", null ]
       ] ],
-      [ "rocky::zagros::comm_strategy< T_e, T_dim >", "classrocky_1_1zagros_1_1comm__strategy.html", null ],
+      [ "rocky::zagros::comm_strategy< T_e, T_dim >", "classrocky_1_1zagros_1_1comm__strategy.html", [
+        [ "rocky::zagros::mpi_strategy< T_e, T_dim >", "classrocky_1_1zagros_1_1mpi__strategy.html", [
+          [ "rocky::zagros::sync_bcd_mask< T_e, T_dim >", "classrocky_1_1zagros_1_1sync__bcd__mask.html", null ],
+          [ "rocky::zagros::sync_broadcast_best< T_e, T_dim >", "classrocky_1_1zagros_1_1sync__broadcast__best.html", null ]
+        ] ]
+      ] ],
+      [ "rocky::zagros::container_strategy< T_e, T_dim >", "classrocky_1_1zagros_1_1container__strategy.html", [
+        [ "rocky::zagros::eval_strategy< T_e, T_dim >", "classrocky_1_1zagros_1_1eval__strategy.html", null ],
+        [ "rocky::zagros::select_from_strategy< T_e, T_dim >", "classrocky_1_1zagros_1_1select__from__strategy.html", null ]
+      ] ],
       [ "rocky::zagros::crossover_strategy< T_e, T_dim >", "classrocky_1_1zagros_1_1crossover__strategy.html", [
         [ "rocky::zagros::multipoint_crossover< T_e, T_dim >", "classrocky_1_1zagros_1_1multipoint__crossover.html", null ],
         [ "rocky::zagros::static_segment_crossover< T_e, T_dim >", "classrocky_1_1zagros_1_1static__segment__crossover.html", null ]
@@ -47,12 +56,9 @@ var hierarchy =
     ] ],
     [ "rocky::zagros::dena::propagate::cluster", "classrocky_1_1zagros_1_1dena_1_1propagate_1_1cluster.html", null ],
     [ "rocky::zagros::dena::log::comet", "classrocky_1_1zagros_1_1dena_1_1log_1_1comet.html", null ],
-    [ "rocky::zagros::comet_optimization_log", "structrocky_1_1zagros_1_1comet__optimization__log.html", null ],
+    [ "rocky::zagros::comet_log_handler", "structrocky_1_1zagros_1_1comet__log__handler.html", null ],
     [ "rocky::zagros::dena::container", "classrocky_1_1zagros_1_1dena_1_1container.html", null ],
     [ "rocky::zagros::dena::crossover", "classrocky_1_1zagros_1_1dena_1_1crossover.html", null ],
-    [ "exception", null, [
-      [ "rocky::basic_rocky_error", "classrocky_1_1basic__rocky__error.html", null ]
-    ] ],
     [ "rocky::zagros::dena::flow", "classrocky_1_1zagros_1_1dena_1_1flow.html", null ],
     [ "rocky::zagros::dena::flow_node", "structrocky_1_1zagros_1_1dena_1_1flow__node.html", [
       [ "rocky::zagros::dena::analysis_node", "structrocky_1_1zagros_1_1dena_1_1analysis__node.html", [
@@ -64,10 +70,12 @@ var hierarchy =
         [ "rocky::zagros::dena::bcd_mask_node", "structrocky_1_1zagros_1_1dena_1_1bcd__mask__node.html", null ]
       ] ],
       [ "rocky::zagros::dena::comm_node", "structrocky_1_1zagros_1_1dena_1_1comm__node.html", [
-        [ "rocky::zagros::dena::comm_cluster_prop_best", "structrocky_1_1zagros_1_1dena_1_1comm__cluster__prop__best.html", null ]
+        [ "rocky::zagros::dena::comm_cluster_prop_best_node", "structrocky_1_1zagros_1_1dena_1_1comm__cluster__prop__best__node.html", null ]
       ] ],
       [ "rocky::zagros::dena::container_node", "structrocky_1_1zagros_1_1dena_1_1container__node.html", [
-        [ "rocky::zagros::dena::container_create_node", "structrocky_1_1zagros_1_1dena_1_1container__create__node.html", null ]
+        [ "rocky::zagros::dena::container_create_node", "structrocky_1_1zagros_1_1dena_1_1container__create__node.html", null ],
+        [ "rocky::zagros::dena::container_eval_node", "structrocky_1_1zagros_1_1dena_1_1container__eval__node.html", null ],
+        [ "rocky::zagros::dena::container_select_from_node", "structrocky_1_1zagros_1_1dena_1_1container__select__from__node.html", null ]
       ] ],
       [ "rocky::zagros::dena::crossover_node", "structrocky_1_1zagros_1_1dena_1_1crossover__node.html", [
         [ "rocky::zagros::dena::crossover_differential_evolution_node", "structrocky_1_1zagros_1_1dena_1_1crossover__differential__evolution__node.html", null ],
@@ -80,8 +88,8 @@ var hierarchy =
         ] ]
       ] ],
       [ "rocky::zagros::dena::init_node", "structrocky_1_1zagros_1_1dena_1_1init__node.html", [
-        [ "rocky::zagros::dena::init_normal", "structrocky_1_1zagros_1_1dena_1_1init__normal.html", null ],
-        [ "rocky::zagros::dena::init_uniform", "structrocky_1_1zagros_1_1dena_1_1init__uniform.html", null ]
+        [ "rocky::zagros::dena::init_normal_node", "structrocky_1_1zagros_1_1dena_1_1init__normal__node.html", null ],
+        [ "rocky::zagros::dena::init_uniform_node", "structrocky_1_1zagros_1_1dena_1_1init__uniform__node.html", null ]
       ] ],
       [ "rocky::zagros::dena::log_node", "structrocky_1_1zagros_1_1dena_1_1log__node.html", [
         [ "rocky::zagros::dena::log_comet_best_node", "structrocky_1_1zagros_1_1dena_1_1log__comet__best__node.html", null ],
@@ -110,7 +118,7 @@ var hierarchy =
     [ "rocky::etna::linear< T_e, T_in_num, T_in_dim, T_out_dim, T_opt_bias >", "classrocky_1_1etna_1_1linear.html", null ],
     [ "rocky::zagros::dena::log::local", "classrocky_1_1zagros_1_1dena_1_1log_1_1local.html", null ],
     [ "rocky::zagros::dena::pso::local", "classrocky_1_1zagros_1_1dena_1_1pso_1_1local.html", null ],
-    [ "rocky::zagros::local_optimization_log", "structrocky_1_1zagros_1_1local__optimization__log.html", null ],
+    [ "rocky::zagros::local_log_handler", "structrocky_1_1zagros_1_1local__log__handler.html", null ],
     [ "rocky::zagros::dena::pso::memory", "classrocky_1_1zagros_1_1dena_1_1pso_1_1memory.html", null ],
     [ "rocky::etna::mlp< T_e, T_layers_num, T_in_num, T_in_dim, T_out_dim, T_hidden_dim, T_opt_bias >", "classrocky_1_1etna_1_1mlp.html", null ],
     [ "rocky::zagros::dena::mutate", "classrocky_1_1zagros_1_1dena_1_1mutate.html", null ],
@@ -123,10 +131,15 @@ var hierarchy =
     [ "rocky::zagros::runtime_storage< T_e, T_dim, T_block_dim >", "classrocky_1_1zagros_1_1runtime__storage.html", null ],
     [ "rocky::zagros::runtime_storage< T_e, T_dim, T_dim >", "classrocky_1_1zagros_1_1runtime__storage.html", null ],
     [ "rocky::zagros::system< T_e >", "classrocky_1_1zagros_1_1system.html", [
+      [ "rocky::zagros::benchmark::ackley< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1ackley.html", null ],
+      [ "rocky::zagros::benchmark::least_squares< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1least__squares.html", null ],
       [ "rocky::zagros::benchmark::rastrigin< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1rastrigin.html", null ],
+      [ "rocky::zagros::benchmark::rastrigin_parallel< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1rastrigin__parallel.html", null ],
+      [ "rocky::zagros::benchmark::rosenbrock< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1rosenbrock.html", null ],
       [ "rocky::zagros::benchmark::sphere< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1sphere.html", null ],
       [ "rocky::zagros::blocked_system< T_e >", "classrocky_1_1zagros_1_1blocked__system.html", null ]
     ] ],
+    [ "rocky::zagros::benchmark::thread_safe_least_squares< T_e >", "structrocky_1_1zagros_1_1benchmark_1_1thread__safe__least__squares.html", null ],
     [ "rocky::utils::thread_safe_prng", "classrocky_1_1utils_1_1thread__safe__prng.html", null ],
     [ "rocky::zagros::dena::blocked_descent::uniform", "classrocky_1_1zagros_1_1dena_1_1blocked__descent_1_1uniform.html", null ],
     [ "rocky::zagros::dena::utils", "classrocky_1_1zagros_1_1dena_1_1utils.html", null ]

@@ -1,0 +1,6 @@
+<map id="rocky::zagros::container_strategy&lt; T_e, T_dim &gt;" name="rocky::zagros::container_strategy&lt; T_e, T_dim &gt;">
+<area shape="rect" id="node1" title="base class for strategies for container manipulation" alt="" coords="217,43,381,84"/>
+<area shape="rect" id="node3" href="$classrocky_1_1zagros_1_1eval__strategy.html" title="evaluate the solutions in a container and update the values" alt="" coords="429,5,593,47"/>
+<area shape="rect" id="node4" href="$classrocky_1_1zagros_1_1select__from__strategy.html" title="replace worst solutions in a container with the best solutions of another" alt="" coords="438,71,585,127"/>
+<area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1basic__strategy.html" title="Interface for all strategies." alt="" coords="5,43,169,84"/>
+</map>

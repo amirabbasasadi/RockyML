@@ -156,9 +156,9 @@ $(document).ready(function(){initNavTree('analysis_8h_source.html',''); initResi
 <div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        l_width_ = (x_max_ - x_min_) / delta_x_ ;</div>
 <div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        l_height_ = (y_max_ - y_min_) / delta_y_;</div>
 <div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        <span class="comment">// allocate memory for the mesh</span></div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        z.resize(l_height_);</div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> y=0; y&lt;l_height_; y++)</div>
-<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            z[y].resize(l_width_);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        z.resize(l_width_);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x=0; x&lt;l_width_; x++)</div>
+<div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;            z[x].resize(l_height_);        </div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160;    }</div>
 <div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;    <span class="keywordtype">void</span> save_mesh(){</div>
 <div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;        std::string path = fmt::format(<span class="stringliteral">&quot;zagros_{}_{}.data&quot;</span>, label_, step_);</div>
@@ -168,9 +168,9 @@ $(document).ready(function(){initNavTree('analysis_8h_source.html',''); initResi
 <div class="line"><a name="l00080"></a><span class="lineno">   80</span>&#160;        handler &lt;&lt; fmt::format(<span class="stringliteral">&quot;{} {} {} {}&quot;</span>, x_min_, y_min_, x_max_, y_max_) &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00081"></a><span class="lineno">   81</span>&#160;        handler &lt;&lt; fmt::format(<span class="stringliteral">&quot;{} {}&quot;</span>, l_height_, l_width_) &lt;&lt; std::endl;</div>
 <div class="line"><a name="l00082"></a><span class="lineno">   82</span>&#160;        <span class="comment">// writing the mesh values</span></div>
-<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> y=0; y&lt;l_height_; y++)</div>
-<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x=0; x&lt;l_width_; x++)</div>
-<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                handler &lt;&lt; z[y][x] &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
+<div class="line"><a name="l00083"></a><span class="lineno">   83</span>&#160;        <span class="keywordflow">for</span>(<span class="keywordtype">int</span> x=0; x&lt;l_width_; x++)</div>
+<div class="line"><a name="l00084"></a><span class="lineno">   84</span>&#160;            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> y=0; y&lt;l_height_; y++)</div>
+<div class="line"><a name="l00085"></a><span class="lineno">   85</span>&#160;                handler &lt;&lt; z[x][y] &lt;&lt; <span class="stringliteral">&quot; &quot;</span>;</div>
 <div class="line"><a name="l00086"></a><span class="lineno">   86</span>&#160;        handler.close();</div>
 <div class="line"><a name="l00087"></a><span class="lineno">   87</span>&#160;    }</div>
 <div class="line"><a name="l00088"></a><span class="lineno">   88</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> apply(){</div>
@@ -180,19 +180,18 @@ $(document).ready(function(){initNavTree('analysis_8h_source.html',''); initResi
 <div class="line"><a name="l00092"></a><span class="lineno">   92</span>&#160;                T_e thread_point[2];</div>
 <div class="line"><a name="l00093"></a><span class="lineno">   93</span>&#160;                thread_point[0] = x * this-&gt;delta_x_ + this-&gt;x_min_;</div>
 <div class="line"><a name="l00094"></a><span class="lineno">   94</span>&#160;                thread_point[1] = y * this-&gt;delta_y_ + this-&gt;y_min_;</div>
-<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                this-&gt;z[y][x] = this-&gt;problem_-&gt;objective(thread_point);</div>
+<div class="line"><a name="l00095"></a><span class="lineno">   95</span>&#160;                this-&gt;z[x][y] = this-&gt;problem_-&gt;objective(thread_point);</div>
 <div class="line"><a name="l00096"></a><span class="lineno">   96</span>&#160;            });</div>
 <div class="line"><a name="l00097"></a><span class="lineno">   97</span>&#160;        });</div>
-<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160; </div>
-<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        save_mesh();</div>
-<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;        step_++;</div>
-<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;    }</div>
-<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160;};</div>
-<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160; </div>
+<div class="line"><a name="l00098"></a><span class="lineno">   98</span>&#160;        save_mesh();</div>
+<div class="line"><a name="l00099"></a><span class="lineno">   99</span>&#160;        step_++;</div>
+<div class="line"><a name="l00100"></a><span class="lineno">  100</span>&#160;    }</div>
+<div class="line"><a name="l00101"></a><span class="lineno">  101</span>&#160;};</div>
+<div class="line"><a name="l00102"></a><span class="lineno">  102</span>&#160; </div>
+<div class="line"><a name="l00103"></a><span class="lineno">  103</span>&#160;};</div>
 <div class="line"><a name="l00104"></a><span class="lineno">  104</span>&#160;};</div>
-<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160;};</div>
-<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160; </div>
-<div class="line"><a name="l00107"></a><span class="lineno">  107</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00105"></a><span class="lineno">  105</span>&#160; </div>
+<div class="line"><a name="l00106"></a><span class="lineno">  106</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassrocky_1_1zagros_1_1analysis__strategy_html"><div class="ttname"><a href="classrocky_1_1zagros_1_1analysis__strategy.html">rocky::zagros::analysis_strategy</a></div><div class="ttdoc">base class for strategies for analysing loss functions</div><div class="ttdef"><b>Definition:</b> analysis.h:22</div></div>

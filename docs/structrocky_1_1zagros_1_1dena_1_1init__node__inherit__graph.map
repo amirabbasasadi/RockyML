@@ -1,6 +1,6 @@
 <map id="rocky::zagros::dena::init_node" name="rocky::zagros::dena::init_node">
 <area shape="rect" id="node1" title=" " alt="" coords="85,95,223,136"/>
-<area shape="rect" id="node3" href="$structrocky_1_1zagros_1_1dena_1_1init__normal.html" title=" " alt="" coords="5,184,143,225"/>
-<area shape="rect" id="node4" href="$structrocky_1_1zagros_1_1dena_1_1init__uniform.html" title=" " alt="" coords="167,184,304,225"/>
+<area shape="rect" id="node3" href="$structrocky_1_1zagros_1_1dena_1_1init__normal__node.html" title=" " alt="" coords="5,184,143,225"/>
+<area shape="rect" id="node4" href="$structrocky_1_1zagros_1_1dena_1_1init__uniform__node.html" title=" " alt="" coords="167,184,304,225"/>
 <area shape="rect" id="node2" href="$structrocky_1_1zagros_1_1dena_1_1flow__node.html" title="abstract flow node" alt="" coords="85,5,223,47"/>
 </map>

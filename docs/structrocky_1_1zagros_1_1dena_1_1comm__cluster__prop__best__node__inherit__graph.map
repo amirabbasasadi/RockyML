@@ -1,0 +1,5 @@
+<map id="rocky::zagros::dena::comm_cluster_prop_best_node" name="rocky::zagros::dena::comm_cluster_prop_best_node">
+<area shape="rect" id="node1" title=" " alt="" coords="5,184,149,240"/>
+<area shape="rect" id="node2" href="$structrocky_1_1zagros_1_1dena_1_1comm__node.html" title=" " alt="" coords="9,95,146,136"/>
+<area shape="rect" id="node3" href="$structrocky_1_1zagros_1_1dena_1_1flow__node.html" title="abstract flow node" alt="" coords="9,5,146,47"/>
+</map>

@@ -1,4 +1,7 @@
 <map id="rocky::zagros::comm_strategy&lt; T_e, T_dim &gt;" name="rocky::zagros::comm_strategy&lt; T_e, T_dim &gt;">
-<area shape="rect" id="node1" title="Interface for communication strategies." alt="" coords="5,95,169,136"/>
-<area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1basic__strategy.html" title="Interface for all strategies." alt="" coords="5,5,169,47"/>
+<area shape="rect" id="node1" title="Interface for communication strategies." alt="" coords="217,43,381,84"/>
+<area shape="rect" id="node3" href="$classrocky_1_1zagros_1_1mpi__strategy.html" title="base class for all strategies who need MPI communication" alt="" coords="429,43,593,84"/>
+<area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1basic__strategy.html" title="Interface for all strategies." alt="" coords="5,43,169,84"/>
+<area shape="rect" id="node4" href="$classrocky_1_1zagros_1_1sync__bcd__mask.html" title="A Communication strategy for broadcasting bcd mask." alt="" coords="641,5,819,47"/>
+<area shape="rect" id="node5" href="$classrocky_1_1zagros_1_1sync__broadcast__best.html" title="A Communication strategy for broadcasting best solution." alt="" coords="653,71,807,127"/>
 </map>

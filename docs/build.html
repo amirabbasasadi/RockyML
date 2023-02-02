@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RockyML: Building and linking using CMake</title>
+<title>RockyML: Using RockyML with CMake</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -93,34 +93,28 @@ $(document).ready(function(){initNavTree('build.html',''); initResizable(); });
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Building and linking using CMake </div>  </div>
+<div class="title">Using RockyML with CMake </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md0"></a>
-Building on Linux</h1>
-<p>Before buiding RockyML make sure you have installed the required dependencies: </p>
-<h2><a class="anchor" id="autotoc_md1"></a>
-Dependencies</h2>
+<div class="textblock"><p>RockyML is a <b>header-only</b> library. So you just need to include it in your project. But first make sure you have installed the required dependencies: </p>
+<h1><a class="anchor" id="autotoc_md0"></a>
+Dependencies</h1>
 <ul>
 <li>A C++ compiler supporting C++17, GCC is tested</li>
 <li>CMake</li>
 <li><a href="https://eigen.tuxfamily.org">Eigen</a>, latest stable version</li>
 <li>A BLAS/LAPACK implementation, OpenBLAS is tested</li>
 <li>Intel Threading Building Blocks (<a href="https://github.com/oneapi-src/oneTBB">oneTBB</a>)</li>
-<li>An MPI implementation, OpenMPI is recommended <br  />
+<li>An MPI implementation, OpenMPI is recommended</li>
+<li><a href="https://github.com/nlohmann/json">nlohmann/json</a> <br  />
 </li>
 <li><a href="https://github.com/libcpr/cpr">Cpr</a></li>
 <li><a href="https://github.com/gabime/spdlog">Spdlog</a></li>
 </ul>
 <p>First install Open MPI and OpenBLAS: </p><div class="fragment"><div class="line">apt install libopenblas-dev openmpi-bin openmpi-common libopenmpi-dev</div>
-</div><!-- fragment --><p>You can install the other dependencies as you like. For example using <a href="https://vcpkg.io/">vcpkg</a>: </p><div class="fragment"><div class="line">vcpkg install tbb eigen3 cpr spdlog catch2</div>
-</div><!-- fragment --><p>Build the source code using CMake. To do so, create a build directory inside the source code and run cmake. you should add MPI flags for compiling, or you can simply use <code>mpic++</code> for compiling the source. <br  />
- <b>Note</b> : if you've used vcpkg to install requirements, make sure that you set the <code>CMAKE_TOOLCHAIN_FILE</code>.</p>
-<div class="fragment"><div class="line">cmake .. -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_TOOLCHAIN_FILE=&lt;path-to-vcpkg.cmake&gt;</div>
-</div><!-- fragment --><div class="fragment"><div class="line">make</div>
-</div><!-- fragment --><p>If building was successful, you should be able to find <code>librockyml.a</code>. you need to link this static library to your program. </p>
-<h2><a class="anchor" id="autotoc_md2"></a>
-Using with CMake</h2>
+</div><!-- fragment --><p>It is highly recommended to install the other dependencies using a package manager like <a href="https://vcpkg.io/">vcpkg</a>: </p><div class="fragment"><div class="line">vcpkg install tbb eigen3 cpr spdlog nlohmann-json catch2</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md1"></a>
+A minimal CMake example</h1>
 <p>Here is a minimal CMakeLists.txt example for using RockyML: <br  />
  </p><div class="fragment"><div class="line">cmake_minimum_required(VERSION 3.2)</div>
 <div class="line">project(Example LANGUAGES CXX)</div>
@@ -129,21 +123,21 @@ Using with CMake</h2>
 <div class="line">set(CMAKE_CXX_STANDARD 17)</div>
 <div class="line">set(CMAKE_CXX_FLAGS &quot;${CMAKE_CXX_FLAGS} -O3 -ffast-math -march=native&quot;)</div>
 <div class="line"> </div>
-<div class="line">include_directories(&lt;rockyml-headers-directory&gt;)</div>
+<div class="line">include_directories(&lt;path_to_rockyml_include_folder&gt;)</div>
 <div class="line"> </div>
 <div class="line"># find requirements</div>
 <div class="line">find_package(TBB CONFIG REQUIRED)</div>
 <div class="line">find_package(Eigen3 CONFIG REQUIRED)</div>
 <div class="line">find_package(spdlog CONFIG REQUIRED)</div>
+<div class="line">find_package(nlohmann_json CONFIG REQUIRED)</div>
 <div class="line">find_package(cpr CONFIG REQUIRED)</div>
-<div class="line">find_package(Catch2 CONFIG REQUIRED)</div>
-<div class="line"> </div>
-<div class="line"># find the library which you&#39;ve built in the previous step </div>
-<div class="line">find_library(RockyML NAMES rockyml librockyml HINTS &quot;&lt;path-to-rockyml-static-library&gt;&quot;)</div>
 <div class="line"> </div>
 <div class="line"># linking the requirements</div>
-<div class="line">add_executable(app &lt;path-to-source-of-your-program&gt;)</div>
-<div class="line">target_link_libraries(app PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog RockyML)</div>
+<div class="line">add_executable(app main.cc)</div>
+<div class="line">target_link_libraries(app PRIVATE TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog lohmann_json::nlohmann_json)</div>
+</div><!-- fragment --><p><b>Note</b> : if you've used vcpkg to install requirements, make sure that you set the <code>CMAKE_TOOLCHAIN_FILE</code>.</p>
+<div class="fragment"><div class="line">cmake .. -DCMAKE_CXX_COMPILER=mpic++ -DCMAKE_TOOLCHAIN_FILE=&lt;path-to-vcpkg.cmake&gt;</div>
+</div><!-- fragment --><p>Finally you can build your project: </p><div class="fragment"><div class="line">make</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

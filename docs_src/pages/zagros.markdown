@@ -1,4 +1,6 @@
-# Zagros{#zagros}
+# Zagros | An Optimization Framework for HPC Clusters{#zagros}
 
-@subpage dena  
-@subpage landscapes
+* @subpage zagros_concepts 
+* @subpage zagros_minimal 
+* @subpage dena  
+* @subpage landscapes

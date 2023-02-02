@@ -137,35 +137,39 @@ $(document).ready(function(){initNavTree('differential__evolution_8h_source.html
 <div class="line"><a name="l00044"></a><span class="lineno">   44</span>&#160;    }    </div>
 <div class="line"><a name="l00045"></a><span class="lineno">   45</span>&#160;    <span class="comment">// apply differential evolution within groups in parallel</span></div>
 <div class="line"><a name="l00046"></a><span class="lineno">   46</span>&#160;    <span class="keyword">virtual</span> <span class="keywordtype">void</span> apply(){</div>
-<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        tbb::parallel_for(0, n_crossovers_, [<span class="keyword">this</span>](<span class="keywordtype">int</span> p){</div>
-<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            <span class="keywordtype">int</span> parents[4];</div>
-<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            this-&gt;container_-&gt;<a class="code" href="classrocky_1_1zagros_1_1basic__scontainer.html#a06c313144e43da64b42cb2d891d2859c">sample_n_particles</a>(parents, 4);</div>
-<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;            <span class="keyword">auto</span>&amp; [x, a, b, c] = parents;</div>
-<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;            <span class="comment">// making a copy of x</span></div>
-<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            std::copy(this-&gt;container_-&gt;<a class="code" href="classrocky_1_1zagros_1_1basic__scontainer.html#a671a440bf46d3c9cd05645e1dad1b56d">particle</a>(x),</div>
-<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;                      this-&gt;container_-&gt;particle(x) + T_dim,</div>
-<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;                      this-&gt;candidates_-&gt;particle(p));</div>
-<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> d=0; d&lt;T_dim; d++){</div>
-<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;                <span class="comment">// perform crossover based on the crossover probability CR</span></div>
-<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                <span class="keywordflow">if</span>(this-&gt;<a class="code" href="classrocky_1_1zagros_1_1basic__differential__evolution.html#aa81ea909f882cf8373309ee31b44c275">rand_uniform</a>() &gt; this-&gt;CR_)</div>
-<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                    <span class="keywordflow">continue</span>;</div>
-<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;                <span class="comment">// apply crossover</span></div>
-<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                this-&gt;candidates_-&gt;particles[p][d] = this-&gt;container_-&gt;particles[a][d] +</div>
-<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                                                     this-&gt;DW_ * (this-&gt;container_-&gt;particles[b][d] -</div>
-<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                                                                  this-&gt;container_-&gt;particles[c][d]);            </div>
-<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;            }</div>
-<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;        });</div>
-<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;        <span class="comment">// replace improved solutions</span></div>
-<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;        candidates_-&gt;<a class="code" href="classrocky_1_1zagros_1_1basic__scontainer.html#a8566e2a8a6419f5c5ba60986855b5c0d">evaluate_and_update</a>(problem_);</div>
-<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;        container_-&gt;<a class="code" href="classrocky_1_1zagros_1_1basic__scontainer.html#abfd37df0ae67d344d0f0640b196e0f03">replace_with</a>(candidates_);</div>
-<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;    }</div>
-<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;};</div>
-<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160; </div>
-<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160; </div>
-<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;};</div>
+<div class="line"><a name="l00047"></a><span class="lineno">   47</span>&#160;        <span class="keywordflow">if</span>(container_-&gt;n_particles() &lt; 4){</div>
+<div class="line"><a name="l00048"></a><span class="lineno">   48</span>&#160;            spdlog::warn(<span class="stringliteral">&quot;For using differential evolution the number of particles must be at least 4!&quot;</span>);</div>
+<div class="line"><a name="l00049"></a><span class="lineno">   49</span>&#160;            <span class="keywordflow">return</span>;</div>
+<div class="line"><a name="l00050"></a><span class="lineno">   50</span>&#160;        }</div>
+<div class="line"><a name="l00051"></a><span class="lineno">   51</span>&#160;        tbb::parallel_for(0, n_crossovers_, [<span class="keyword">this</span>](<span class="keywordtype">int</span> p){</div>
+<div class="line"><a name="l00052"></a><span class="lineno">   52</span>&#160;            <span class="keywordtype">int</span> parents[4];</div>
+<div class="line"><a name="l00053"></a><span class="lineno">   53</span>&#160;            this-&gt;container_-&gt;<a class="code" href="classrocky_1_1zagros_1_1basic__scontainer.html#a06c313144e43da64b42cb2d891d2859c">sample_n_particles</a>(parents, 4);</div>
+<div class="line"><a name="l00054"></a><span class="lineno">   54</span>&#160;            <span class="keyword">auto</span>&amp; [x, a, b, c] = parents;</div>
+<div class="line"><a name="l00055"></a><span class="lineno">   55</span>&#160;            <span class="comment">// making a copy of x</span></div>
+<div class="line"><a name="l00056"></a><span class="lineno">   56</span>&#160;            std::copy(this-&gt;container_-&gt;<a class="code" href="classrocky_1_1zagros_1_1basic__scontainer.html#a671a440bf46d3c9cd05645e1dad1b56d">particle</a>(x),</div>
+<div class="line"><a name="l00057"></a><span class="lineno">   57</span>&#160;                      this-&gt;container_-&gt;particle(x) + T_dim,</div>
+<div class="line"><a name="l00058"></a><span class="lineno">   58</span>&#160;                      this-&gt;candidates_-&gt;particle(p));</div>
+<div class="line"><a name="l00059"></a><span class="lineno">   59</span>&#160;            <span class="keywordflow">for</span>(<span class="keywordtype">int</span> d=0; d&lt;T_dim; d++){</div>
+<div class="line"><a name="l00060"></a><span class="lineno">   60</span>&#160;                <span class="comment">// perform crossover based on the crossover probability CR</span></div>
+<div class="line"><a name="l00061"></a><span class="lineno">   61</span>&#160;                <span class="keywordflow">if</span>(this-&gt;<a class="code" href="classrocky_1_1zagros_1_1basic__differential__evolution.html#aa81ea909f882cf8373309ee31b44c275">rand_uniform</a>() &gt; this-&gt;CR_)</div>
+<div class="line"><a name="l00062"></a><span class="lineno">   62</span>&#160;                    <span class="keywordflow">continue</span>;</div>
+<div class="line"><a name="l00063"></a><span class="lineno">   63</span>&#160;                <span class="comment">// apply crossover</span></div>
+<div class="line"><a name="l00064"></a><span class="lineno">   64</span>&#160;                this-&gt;candidates_-&gt;particles[p][d] = this-&gt;container_-&gt;particles[a][d] +</div>
+<div class="line"><a name="l00065"></a><span class="lineno">   65</span>&#160;                                                     this-&gt;DW_ * (this-&gt;container_-&gt;particles[b][d] -</div>
+<div class="line"><a name="l00066"></a><span class="lineno">   66</span>&#160;                                                                  this-&gt;container_-&gt;particles[c][d]);            </div>
+<div class="line"><a name="l00067"></a><span class="lineno">   67</span>&#160;            }</div>
+<div class="line"><a name="l00068"></a><span class="lineno">   68</span>&#160;        });</div>
+<div class="line"><a name="l00069"></a><span class="lineno">   69</span>&#160;        <span class="comment">// replace improved solutions</span></div>
+<div class="line"><a name="l00070"></a><span class="lineno">   70</span>&#160;        candidates_-&gt;<a class="code" href="classrocky_1_1zagros_1_1basic__scontainer.html#a8566e2a8a6419f5c5ba60986855b5c0d">evaluate_and_update</a>(problem_);</div>
+<div class="line"><a name="l00071"></a><span class="lineno">   71</span>&#160;        container_-&gt;<a class="code" href="classrocky_1_1zagros_1_1basic__scontainer.html#abfd37df0ae67d344d0f0640b196e0f03">replace_with</a>(candidates_);</div>
+<div class="line"><a name="l00072"></a><span class="lineno">   72</span>&#160;    }</div>
 <div class="line"><a name="l00073"></a><span class="lineno">   73</span>&#160;};</div>
 <div class="line"><a name="l00074"></a><span class="lineno">   74</span>&#160; </div>
-<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160;<span class="preprocessor">#endif</span></div>
+<div class="line"><a name="l00075"></a><span class="lineno">   75</span>&#160; </div>
+<div class="line"><a name="l00076"></a><span class="lineno">   76</span>&#160;};</div>
+<div class="line"><a name="l00077"></a><span class="lineno">   77</span>&#160;};</div>
+<div class="line"><a name="l00078"></a><span class="lineno">   78</span>&#160; </div>
+<div class="line"><a name="l00079"></a><span class="lineno">   79</span>&#160;<span class="preprocessor">#endif</span></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <div class="ttc" id="aclassrocky_1_1zagros_1_1search__strategy_html"><div class="ttname"><a href="classrocky_1_1zagros_1_1search__strategy.html">rocky::zagros::search_strategy</a></div><div class="ttdoc">Interface for evolution strategies.</div><div class="ttdef"><b>Definition:</b> strategy.h:42</div></div>

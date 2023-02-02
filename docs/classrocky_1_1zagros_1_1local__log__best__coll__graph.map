@@ -1,6 +1,6 @@
 <map id="rocky::zagros::local_log_best&lt; T_e, T_dim &gt;" name="rocky::zagros::local_log_best&lt; T_e, T_dim &gt;">
-<area shape="rect" id="node1" title="Log the best solution in the container in a csv file." alt="" coords="484,53,651,95"/>
-<area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1logging__strategy.html" title="Interface for logging strategies." alt="" coords="219,5,383,47"/>
+<area shape="rect" id="node1" title="Log the best solution in the container in a csv file." alt="" coords="91,200,257,241"/>
+<area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1logging__strategy.html" title="Interface for logging strategies." alt="" coords="5,96,169,137"/>
 <area shape="rect" id="node3" href="$classrocky_1_1zagros_1_1basic__strategy.html" title="Interface for all strategies." alt="" coords="5,5,169,47"/>
-<area shape="rect" id="node4" href="$structrocky_1_1zagros_1_1local__optimization__log.html" title=" " alt="" coords="233,71,369,112"/>
+<area shape="rect" id="node4" href="$structrocky_1_1zagros_1_1local__log__handler.html" title=" " alt="" coords="194,96,330,137"/>
 </map>
