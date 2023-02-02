@@ -24,7 +24,6 @@ public:
 };
 
 
-#ifdef ROCKY_USE_MPI
 /**
  * @brief base class for all strategies who need MPI communication
  * 
@@ -118,7 +117,6 @@ public:
         MPI_Bcast(this->bcd_mask_, T_dim, MPI_INT, 0, MPI_COMM_WORLD);
     }
 };
-#endif
 
 };
 };
