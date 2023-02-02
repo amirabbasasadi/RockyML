@@ -166,8 +166,6 @@ typedef std::variant<log_local_best_node,
 
 class node{
 public:
-    // static std::vector<flow_node_variant> nodes;
-    // static std::map<int, int> next_node;
     static std::vector<flow_node_variant>& nodes(){
         static std::vector<flow_node_variant> nodes_;
         return nodes_;
@@ -190,7 +188,6 @@ public:
         return node::next_node()[tag];
     }
 };
-
 
 class flow{
 public:

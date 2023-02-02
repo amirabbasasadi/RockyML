@@ -223,7 +223,7 @@ struct allocation_visitor{
         // allocate required solution container
         auto main_cnt = main_storage->container(node.id);
         int n_particles = main_cnt->n_particles();
-        int temp_size = T_dim;
+        int temp_size = T_block_dim;
         if(n_particles < temp_size){
             temp_size = n_particles;
             spdlog::warn("For using EDA it is recommended to choose number of particles larger than BCD block");
@@ -509,6 +509,7 @@ public:
         this->problem = problem;
         storage.partial_best = std::make_unique<basic_scontainer<T_e, T_block_dim>>(1, 1);
         storage.partial_best->allocate();
+    
         if (blocked()){
             storage.bcd_mask.resize(T_block_dim);
             std::iota(storage.bcd_mask.begin(), storage.bcd_mask.end(), 0);

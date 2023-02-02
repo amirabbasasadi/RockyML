@@ -88,6 +88,12 @@ protected:
     int dim_;
     T_e shift_;
 public:
+    /**
+     * @brief Construct a new rastrigin object
+     * 
+     * @param dim dimension of rastrigin function
+     * @param shift the shift applied to global minimum
+     */
     rastrigin(int dim=2, T_e shift=0.0){
         dim_ = dim;
         shift_ = shift;
@@ -103,6 +109,40 @@ public:
     virtual std::string to_string(){
         std::stringstream name;
         name << "Rastrigin(dim=" << dim_ << ")";
+        return name.str();
+    }
+};
+
+template<typename T_e>
+class rastrigin_parallel: public rocky::zagros::system<T_e>{
+protected:
+    int dim_;
+    T_e shift_;
+public:
+    /**
+     * @brief Construct a new rastrigin object
+     * 
+     * @param dim dimension of rastrigin function
+     * @param shift the shift applied to global minimum
+     */
+    rastrigin_parallel(int dim=2, T_e shift=0.0){
+        dim_ = dim;
+        shift_ = shift;
+    }
+    virtual T_e objective(T_e* x){
+        T_e S = 10.0 * dim_;
+        tbb::combinable<T_e> partial_sums{0.0};
+        tbb::parallel_for(0, dim_, [&](auto i){
+            partial_sums.local() += (x[i]-shift_) * (x[i]-shift_) - 10.0*cos(2*M_PI * (x[i]-shift_));
+        });       
+        S += partial_sums.combine([](auto x, auto y){ return x+y; });
+        return S;
+    }
+    virtual T_e lower_bound(){ return -5.12; }
+    virtual T_e upper_bound(){ return 5.12; }
+    virtual std::string to_string(){
+        std::stringstream name;
+        name << "Parallel Rastrigin(dim=" << dim_ << ")";
         return name.str();
     }
 };
@@ -137,7 +177,7 @@ public:
     virtual T_e upper_bound(){ return 5.0; }
     virtual std::string to_string(){
         std::stringstream name;
-        name << "Rastrigin(dim=" << dim_ << ")";
+        name << "Ackley(dim=" << dim_ << ")";
         return name.str();
     }
 };

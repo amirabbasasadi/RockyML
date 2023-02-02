@@ -44,6 +44,10 @@ public:
     }    
     // apply differential evolution within groups in parallel
     virtual void apply(){
+        if(container_->n_particles() < 4){
+            spdlog::warn("For using differential evolution the number of particles must be at least 4!");
+            return;
+        }
         tbb::parallel_for(0, n_crossovers_, [this](int p){
             int parents[4];
             this->container_->sample_n_particles(parents, 4);

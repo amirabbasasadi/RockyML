@@ -68,9 +68,9 @@ public:
         l_width_ = (x_max_ - x_min_) / delta_x_ ;
         l_height_ = (y_max_ - y_min_) / delta_y_;
         // allocate memory for the mesh
-        z.resize(l_height_);
-        for(int y=0; y<l_height_; y++)
-            z[y].resize(l_width_);
+        z.resize(l_width_);
+        for(int x=0; x<l_width_; x++)
+            z[x].resize(l_height_);        
     }
     void save_mesh(){
         std::string path = fmt::format("zagros_{}_{}.data", label_, step_);
@@ -80,9 +80,9 @@ public:
         handler << fmt::format("{} {} {} {}", x_min_, y_min_, x_max_, y_max_) << std::endl;
         handler << fmt::format("{} {}", l_height_, l_width_) << std::endl;
         // writing the mesh values
-        for(int y=0; y<l_height_; y++)
-            for(int x=0; x<l_width_; x++)
-                handler << z[y][x] << " ";
+        for(int x=0; x<l_width_; x++)
+            for(int y=0; y<l_height_; y++)
+                handler << z[x][y] << " ";
         handler.close();
     }
     virtual void apply(){
@@ -92,10 +92,9 @@ public:
                 T_e thread_point[2];
                 thread_point[0] = x * this->delta_x_ + this->x_min_;
                 thread_point[1] = y * this->delta_y_ + this->y_min_;
-                this->z[y][x] = this->problem_->objective(thread_point);
+                this->z[x][y] = this->problem_->objective(thread_point);
             });
         });
-
         save_mesh();
         step_++;
     }
