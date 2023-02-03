@@ -9,16 +9,16 @@
    xmlns="http://www.w3.org/2000/svg"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="800"
-   height="700"
-   viewBox="0 0 211.66666 185.20834"
+   width="750"
+   height="400"
+   viewBox="0 0 198.43749 105.83333"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="rockyml-poster.svg"
-   inkscape:export-filename="/media/amirabbas/3F25FB4E23F92FF1/CPP/projects/RockyML/logo/rockyml-poster-white-2500.png"
-   inkscape:export-xdpi="300"
-   inkscape:export-ydpi="300">
+   inkscape:export-filename="/media/amirabbas/3F25FB4E23F92FF1/CPP/projects/RockyML/logo/zagros-poster-white-1200.png"
+   inkscape:export-xdpi="153.60001"
+   inkscape:export-ydpi="153.60001">
   <defs
      id="defs2">
     <clipPath
@@ -92,9 +92,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.24748738"
-     inkscape:cx="250.18357"
-     inkscape:cy="520.2146"
+     inkscape:zoom="0.70000002"
+     inkscape:cx="292.42036"
+     inkscape:cy="178.12883"
      inkscape:document-units="mm"
      inkscape:current-layer="layer6"
      showgrid="false"
@@ -121,21 +121,21 @@
      inkscape:groupmode="layer"
      id="layer6"
      inkscape:label="Layer 2"
-     transform="translate(0,39.6875)">
+     transform="translate(0,-39.687501)">
     <rect
        style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:0.36183229;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="rect5290"
        width="293.65222"
        height="242.26779"
-       x="-30.986586"
-       y="-76.69883"
+       x="-71.611565"
+       y="-8.8123713"
        ry="2.1112084" />
   </g>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
-     transform="translate(0,-111.79164)">
+     transform="translate(0,-191.16665)">
     <g
        inkscape:groupmode="layer"
        id="layer2"
@@ -144,7 +144,7 @@
        xml:space="preserve"
        id="flowRoot853"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#2d1650;fill-opacity:1;stroke:none"
-       transform="matrix(0.65690626,0,0,0.65690626,-30.939119,104.35131)"
+       transform="matrix(0.65690626,0,0,0.65690626,-248.4965,65.864499)"
        inkscape:export-xdpi="28.472803"
        inkscape:export-ydpi="28.472803"><flowRegion
          id="flowRegion855"
@@ -162,7 +162,7 @@
        xml:space="preserve"
        id="flowRoot853-3"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#170b28;fill-opacity:1;stroke:none"
-       transform="matrix(0.73643334,0,0,0.73643334,-79.949645,121.01583)"><flowRegion
+       transform="matrix(0.73643334,0,0,0.73643334,-297.50703,82.529019)"><flowRegion
          id="flowRegion855-6"
          style="fill:#170b28"><rect
            id="rect857-7"
@@ -174,7 +174,7 @@
          id="flowPara859-5"
          style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold';fill:#170b28">A High-Performance Scientific Computing Framework</flowPara></flowRoot>    <g
        id="g970"
-       transform="translate(0.80908978,-65.517909)"
+       transform="translate(-216.74829,-104.00472)"
        inkscape:export-xdpi="28.472803"
        inkscape:export-ydpi="28.472803">
       <path
@@ -232,7 +232,7 @@
     </g>
     <g
        id="g5287"
-       transform="translate(2.5839828,77.565705)">
+       transform="translate(-4.0306005,80.343731)">
       <rect
          ry="2.3185222"
          y="114.40026"
@@ -240,7 +240,7 @@
          height="98.67865"
          width="192.38988"
          id="rect4930"
-         style="opacity:1;fill:#f2f2f2;fill-opacity:1;stroke:none;stroke-width:0.42323941;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
+         style="opacity:1;fill:#f9f9f9;fill-opacity:1;stroke:none;stroke-width:0.42323941;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
       <rect
          ry="1.403165"
          y="114.40026"
@@ -394,9 +394,9 @@
              width="306.88434"
              id="rect857-7-2" /></flowRegion><flowPara
            style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold';fill:#ffffff"
-           id="flowPara859-5-6"><flowSpan
-   id="flowSpan4974"
-   style="font-style:normal;font-variant:normal;font-weight:800;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:'Cantarell Ultra-Bold';fill:#ffffff">Zagros</flowSpan> | A Parallel and Distributed Optimization Framework for HPC Clusters</flowPara></flowRoot>      <flowRoot
+           id="flowPara859-5-6">Zagros <flowSpan
+   style="fill:#f9f9f9"
+   id="flowSpan4830">| A Parallel and Distributed Optimization Framework for HPC Clusters</flowSpan></flowPara></flowRoot>      <flowRoot
          transform="matrix(0.50611872,0,0,0.50611872,-53.639461,148.76468)"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#0b0b28;fill-opacity:1;stroke:none"
          id="flowRoot853-3-0-8"
@@ -430,7 +430,7 @@
              width="251.66689"
              id="rect857-7-2-9-5" /></flowRegion><flowPara
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#0b0b28;fill-opacity:1"
-           id="flowPara859-5-6-2-9">Enjoy hybrid parallelism : Threading + Message Passing</flowPara></flowRoot>      <circle
+           id="flowPara859-5-6-2-9">Enjoy hybrid parallelism : Multi-Threading + Message Passing</flowPara></flowRoot>      <circle
          r="2.9399648"
          cy="177.89105"
          cx="15.777487"
@@ -476,7 +476,7 @@
              width="279.29898"
              id="rect857-7-2-9-5-9" /></flowRegion><flowPara
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;fill:#0b0b28;fill-opacity:1"
-           id="flowPara859-5-6-2-9-3">Run memory-intensive optimizers using Blocked Coordinate Descent</flowPara></flowRoot>      <flowRoot
+           id="flowPara859-5-6-2-9-3">Block optimization for memory-intensive optimization methods</flowPara></flowRoot>      <flowRoot
          transform="matrix(0.50611873,0,0,0.50611873,-19.820342,108.13268)"
          style="font-style:normal;font-weight:normal;font-size:40px;line-height:0.2;font-family:sans-serif;text-align:start;letter-spacing:0px;word-spacing:0px;text-anchor:start;fill:#0b0b28;fill-opacity:1;stroke:none"
          id="flowRoot853-3-0-8-8-5"
@@ -490,7 +490,9 @@
              width="264.87793"
              id="rect857-7-2-9-7-2" /></flowRegion><flowPara
            style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.62264061px;font-family:Cantarell;-inkscape-font-specification:Cantarell;text-align:start;text-anchor:start;fill:#0b0b28;fill-opacity:1"
-           id="flowPara859-5-6-2-3-9">Zagros is a black-box optimization framework designed for HPC clusters. Unlike common optimization tools, Instead of providing a limited number of optimization algorithms, Zagros lets users express their own search algorithm in terms of a language called Dena. After designing the algorithm you can run it on HPC clusters while leveraging hybrid parallelism.</flowPara></flowRoot>    </g>
+           id="flowPara859-5-6-2-3-9">Zagros is a black-box optimization framework designed for HPC clusters. It lets users express their own search algorithm in terms of a language called <flowSpan
+   style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Cantarell;-inkscape-font-specification:'Cantarell Bold'"
+   id="flowSpan4822">Dena</flowSpan>. After designing the search algorithm you can execute it on HPC clusters while leveraging hybrid parallelism. Dena provides various components for designing custom optimizers in an efficient way.</flowPara></flowRoot>    </g>
     <g
        id="g4892-8"
        transform="matrix(0.76287265,0,0,0.76287265,32.553326,224.32099)">
