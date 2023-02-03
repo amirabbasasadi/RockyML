@@ -357,13 +357,13 @@ public:
 
 }; // end of log
 
-namespace blocked_descent{
+namespace block{
 /**
  * @brief factories for uniform BCD strategy * 
  */
 class uniform{
 public:
-    static flow step(){
+    static flow select(){
         flow f;
         bcd_mask_node node;
         node.generator = bcd_mask_generator::uniform;
