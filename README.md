@@ -6,15 +6,21 @@
   <img src="https://img.shields.io/github/commit-activity/m/amirabbasasadi/RockyML">
   <img src="https://img.shields.io/github/license/amirabbasasadi/RockyML">
 </p>  
+<br>
+<br>
+<p align="center">📔 Documentation : <a target="_blank" href="https://amirabbasasadi.github.io/RockyML">amirabbasasadi.github.io/RockyML</a> </p>
 
-**Work in Progress!! Wait until a stable release!**
+## Tutorials
 
-- **Zagros** : A parallel and distributed optimization engine
-  - **Dena** : A language for designing search strategies
-- **Etna** : Building blocks for designing fast non-differentiable neural networks
+### Zagros Tutorials
+- [Using with CMake](https://amirabbasasadi.github.io/RockyML/build.html)
+- [Create your first optimizer with Dena and Zagros](https://amirabbasasadi.github.io/RockyML/zagros_minimal.html)
+- [Define a custom optimization problem in Zagros](https://amirabbasasadi.github.io/RockyML/zagros_system.html)
+- [Block optimization for large problems](https://amirabbasasadi.github.io/RockyML/block_optimization.html)
 
 
-## Zagros
+## Components
+### Zagros
 Design Goals:
 - Providing a language called Dena for designing arbitrary complex optimizers by combining 
   - Modular and parallel search strategies: Genetic, PSO, EDA, ...
@@ -64,7 +70,7 @@ int main(int argc, char* argv[]){
 ```
 
 
-## Etna (Work in progress)
+### Etna (Work in progress)
 Building blocks for designing non-differentiable neural networks
 
 - Fast, low overhead, and thread-safe 
