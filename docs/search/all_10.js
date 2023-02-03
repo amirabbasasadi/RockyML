@@ -1,7 +1,7 @@
 var searchData=
 [
   ['using_20rockyml_20with_20cmake_157',['Using RockyML with CMake',['../build.html',1,'getting_started']]],
-  ['uniform_158',['uniform',['../classrocky_1_1zagros_1_1dena_1_1blocked__descent_1_1uniform.html',1,'rocky::zagros::dena::blocked_descent::uniform'],['../classrocky_1_1zagros_1_1dena_1_1init.html#a5ba672657504454a994586320fb3d789',1,'rocky::zagros::dena::init::uniform()']]],
+  ['uniform_158',['uniform',['../classrocky_1_1zagros_1_1dena_1_1block_1_1uniform.html',1,'rocky::zagros::dena::block::uniform'],['../classrocky_1_1zagros_1_1dena_1_1init.html#a5ba672657504454a994586320fb3d789',1,'rocky::zagros::dena::init::uniform()']]],
   ['uniform_5finit_5fstrategy_159',['uniform_init_strategy',['../classrocky_1_1zagros_1_1uniform__init__strategy.html',1,'rocky::zagros']]],
   ['update_5fparticles_5fv_160',['update_particles_v',['../classrocky_1_1zagros_1_1basic__pso.html#a820a1a499534cf1eaa8982aaef5807a0',1,'rocky::zagros::basic_pso::update_particles_v()'],['../classrocky_1_1zagros_1_1pso__l1__strategy.html#af3609304937935cd66076d5cab991ac4',1,'rocky::zagros::pso_l1_strategy::update_particles_v()'],['../classrocky_1_1zagros_1_1pso__l2__strategy.html#a41b97482f0cec16806bc5324e466b8d9',1,'rocky::zagros::pso_l2_strategy::update_particles_v()'],['../classrocky_1_1zagros_1_1pso__l3__strategy.html#a13fbb7bfa94ad76c45c1d6ed6c4b71bd',1,'rocky::zagros::pso_l3_strategy::update_particles_v()']]],
   ['update_5fparticles_5fx_161',['update_particles_x',['../classrocky_1_1zagros_1_1basic__pso.html#adb0a4c922600c3f2abbad609d6adde3a',1,'rocky::zagros::basic_pso']]],

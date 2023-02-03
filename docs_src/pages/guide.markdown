@@ -6,7 +6,9 @@ Table of Contents:
 * @subpage zagros
     * @ref zagros_concepts  
     * @ref zagros_minimal
+    * @ref zagros_system
     * @ref dena
+    * @ref block_optimization
     * @ref landscapes
 * @subpage etna
 

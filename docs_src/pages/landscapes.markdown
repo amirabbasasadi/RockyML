@@ -1,4 +1,4 @@
-# Landscapes{#landscapes}
+# Landscapes, Test problems for optimization{#landscapes}
  <table>
   <tr>
     <th>Function</th>

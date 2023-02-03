@@ -96,7 +96,140 @@ $(document).ready(function(){initNavTree('dena.html',''); initResizable(); });
 <div class="title">Designing Search Algorithms with Dena </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>todo </p>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md3"></a>
+Flow control</h1>
+<table class="doxtable">
+<tr>
+<th style="width:300px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>run::n_times(n, f)</code> </td><td>Execute the flow <code>f</code> for <code>n</code> times </td><td></td></tr>
+<tr>
+<td><code>run::with_probability(p, f)</code> </td><td>Execute the flow <code>f</code> with probability <code>p</code> </td><td></td></tr>
+<tr>
+<td><code>run::every_n_steps(n, f)</code> </td><td>Execute the flow <code>f</code> every <code>n</code> steps </td><td></td></tr>
+<tr>
+<td><code>run::while_improve(cnt, w, f)</code> </td><td>Repeat the flow <code>f</code> if there has been any improvement in the container <code>cnt</code>. Terminates the flow execution if after waiting <code>w</code> steps observes no improvements.  </td><td>Also can be use like without passing a container id that is <code>run::while_improve(w, f)</code>, in this case will track the best solution in the node.  </td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md4"></a>
+Container manipulation strategies</h1>
+<table class="doxtable">
+<tr>
+<th style="width:450px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>container::create(id, n_particles, group_size)</code> </td><td>Allocates a solution container for <code>n_particles</code> divided to groups with size of <code>group_size</code>. </td><td></td></tr>
+<tr>
+<td><code>container::take_best(destination, source)</code> </td><td>If there exists any solution in the <code>source</code> container that is better than a solution in the <code>destination</code>, then it will replace that solution. </td><td></td></tr>
+<tr>
+<td><code>container::eval(id)</code> </td><td>Evaluates all solution in a container and update the values. </td><td>Dena search strategies will do this automatically. you may need this only if you have manually applied a change to a solution container  </td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md5"></a>
+Initialization strategies</h1>
+<p>Used for initializing the solutions in a solution container. </p><table class="doxtable">
+<tr>
+<th style="width:250px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>init::uniform(id)</code> </td><td>intializes a solution container using a real uniform distribution </td><td>This strategy will not evaluate the solutions after initialization.  </td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md6"></a>
+Search strategies</h1>
+<h2><a class="anchor" id="autotoc_md7"></a>
+Estimation of Distribution Algorithms</h2>
+<table class="doxtable">
+<tr>
+<th style="width:250px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>eda::mvn::full_cov(cnt)</code> </td><td>EDA using a Multivariate Normal with a full covariance matrix </td><td>The size of solution container must be larger than the size of runtime's block.  </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md8"></a>
+Genetic Algorithms</h2>
+<table class="doxtable">
+<tr>
+<th style="width:400px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>mutation::gaussian(cnt, d, mu, sigma)</code> </td><td>Adds a gaussian noise to every solution in a container <code>cnt</code> and keeps the improved solutions. <code>d</code> is the number of affected dimensions. <code>mu</code> ad <code>sigma</code> are respectively the mean and std of the additive noise </td><td></td></tr>
+<tr>
+<td><code>crossover::segment(cnt, segment_len)</code> </td><td>Performs segment crossover and keeps the improved children. <code>segment_len</code> is length of the segment. </td><td><code>segment_len</code> should be less than the runtime block dimension  </td></tr>
+<tr>
+<td><code>crossover::multipoint(cnt, dims)</code> </td><td>Performs a multi-point crossover and keeps the improved children. <code>dims</code> is the number of dimensions. </td><td><code>dims</code> should be less than the runtime block dimension  </td></tr>
+</table>
+<h3><a class="anchor" id="autotoc_md9"></a>
+References</h3>
+<ul>
+<li>Simon, D., 2013. Evolutionary optimization algorithms. John Wiley &amp; Sons.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md10"></a>
+Differential Evolution</h2>
+<table class="doxtable">
+<tr>
+<th style="width:450px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>crossover::differential_evolution(cnt, cr, dw)</code> </td><td>Differential evolution on container <code>cnt</code>. <code>cr</code> is the crossover probability and <code>dw</code> is differential weight </td><td>The size of the target solution container must be at least 4  </td></tr>
+</table>
+<h2><a class="anchor" id="autotoc_md11"></a>
+Particle Swarm Optimization</h2>
+<p>Dena supports a multi-level implementation of Particle Swarm Optimization, impemented based on Tribe-PSO. PSO supports container grouping so you can devide a solution container into groups. for grouping you can specify the size of groups while creating a solution container: </p><div class="fragment"><div class="line"><span class="comment">// create a solution container with 100 particles divided to 5 groups</span></div>
+<div class="line">container::create(<span class="stringliteral">&quot;X&quot;</span>, 100, 20)</div>
+</div><!-- fragment --><p>Also note PSO needs a set of auxiliary solution containers to use as particles memory. These containers can be created using: </p><div class="fragment"><div class="line">pso::memory::create(<span class="stringliteral">&quot;memory_name&quot;</span>, <span class="stringliteral">&quot;target_container&quot;</span>)</div>
+</div><!-- fragment --><table class="doxtable">
+<tr>
+<th style="width:350px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>pso::local::step(mem_cnt, cnt)</code> </td><td>Performs local PSO. That is particles within a group will take one step toward the particle in the group. </td><td>If you applied this on a container with a single group, it would be equivalent to the standard PSO.  </td></tr>
+<tr>
+<td><code>pso::global::step(mem_cnt, cnt)</code> </td><td>Performs global PSO. That is all particles will take a step toward the best solution. </td><td>Using communication strategies provided by Dena, you can propagate the best found solution across cluster nodes in a distributed runtime.  </td></tr>
+<tr>
+<td><code>pso::memory::create(mem_cnt, cnt)</code> </td><td>Creates PSO auxiliary solution containers. <code>mem_cnt</code> is the name of created memory and <code>cnt</code> is the name of target solution container. </td><td></td></tr>
+<tr>
+<td><code>pso::memory::particles_mem(mem_id)</code> </td><td>Retrieve the name of the particles memory container given a mmeory id. This container contains the best observations of each particle. </td><td></td></tr>
+<tr>
+<td><code>pso::memory::groups_mem(mem_id)</code> </td><td>Retrieve the name of the groups memory container given a mmeory id This container contains the best observations of each group. </td><td></td></tr>
+<tr>
+<td><code>pso::memory::node_mem(mem_id)</code> </td><td>Retrieve the name of the node memory container given a mmeory id. This container contains the best observation in the node. </td><td></td></tr>
+<tr>
+<td><code>pso::memory::cluster_mem(mem_id)</code> </td><td>Retrieve the name of the cluster memory container given a mmeory id. This container contains the best observation in the cluster. </td><td></td></tr>
+<tr>
+<td><code>pso::memory::particles_vel(mem_id)</code> </td><td>Retrieve the name of velocity container given a mmeory id. This container contains the velocity of particles </td><td></td></tr>
+</table>
+<h3><a class="anchor" id="autotoc_md12"></a>
+References</h3>
+<ul>
+<li>Chen, K., Li, T. and Cao, T., 2006. Tribe-PSO: A novel global optimization algorithm and its application in molecular docking. Chemometrics and intelligent laboratory systems, 82(1-2), pp.248-259.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md13"></a>
+Blocking strategies</h1>
+<p>The following strategies can be use for block optimization. It means instead of all variable only a subset of vaiables will be optimized at each step. Thus block optimization is useful for applying memory-intensive search methods on large problems. Each block strategies select the subset of variables to be optimized in a different way. <br  />
+ <b>Note</b> : In a distributed runtime, the selected subset of variables (a mask) will be synchronized across all nodes so it's a collective call and can become a performance bottleneck. </p><table class="doxtable">
+<tr>
+<th style="width:350px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>block::uniform::select()</code> </td><td>Randomly select a subset of variables and synchronize them acorss all nodes if the runtime is distributed </td><td></td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md14"></a>
+Communication strategies</h1>
+<p>Communication strategies are designed for distributed optimization. Currently they run on top of MPI. They can propagate the best found solutions in the cluster. </p><table class="doxtable">
+<tr>
+<th style="width:350px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>propagate::cluster::best(id)</code> </td><td>Find the best solution in each node and broadcast it for all nodes </td><td>The size of the container <code>id</code> should be 1. Also note this is a synchronized and blocking call so if we don't use it carefully, it can cause a deadlock.  </td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md15"></a>
+Logging strategies</h1>
+<p>Logging strategies can be helpful for recording the result of an optimization experiment. You can save the result on local file system or a remote server which is useful for distributed optimization. </p><table class="doxtable">
+<tr>
+<th style="width:350px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>log::local::best(id, log_handler)</code> </td><td>Stores the value of the best solution in container <code>id</code> in a local file. To create the <code>log_handler</code> see <a class="el" href="structrocky_1_1zagros_1_1local__log__handler.html">rocky::zagros::local_log_handler</a> </td><td></td></tr>
+<tr>
+<td><code>log::comet::best(id, log_handler)</code> </td><td>Stores the value of the best solution in container <code>id</code> on <a href="https://www.comet.ml/">Comet</a> server. You need to specify your Comet access token in <code>log_handler</code>. To create <code>log_handler</code> see <a class="el" href="structrocky_1_1zagros_1_1comet__log__handler.html">rocky::zagros::comet_log_handler</a> </td><td></td></tr>
+</table>
+<h1><a class="anchor" id="autotoc_md16"></a>
+Analyzing strategies</h1>
+<p>A set of helper strategies which can be useful for analyzing the objective function and optimizers. </p><table class="doxtable">
+<tr>
+<th style="width:350px">Name </th><th>Description </th><th>Notes  </th></tr>
+<tr>
+<td><code>analyze::heatmap(filename)</code> </td><td>Stores the 2D mesh of the objective function is a file wich can be used to plot the surface or the contour lines of the objective function. </td><td>The size of block in a blocked runtime should be 2 for using this strategy  </td></tr>
+</table>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=9"/>
 <meta name="generator" content="Doxygen 1.8.17"/>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>RockyML: Concepts and Basic Definitions</title>
+<title>RockyML: What is Zagros?</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <script type="text/javascript" src="jquery.js"></script>
 <script type="text/javascript" src="dynsections.js"></script>
@@ -93,12 +93,12 @@ $(document).ready(function(){initNavTree('zagros_concepts.html',''); initResizab
 
 <div class="PageDoc"><div class="header">
   <div class="headertitle">
-<div class="title">Concepts and Basic Definitions </div>  </div>
+<div class="title">What is Zagros? </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md4"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md19"></a>
 Design Goals</h1>
-<p>Design Goals:</p><ul>
+<ul>
 <li>Providing a language called Dena for designing arbitrary complex optimizers by combining<ul>
 <li>Modular and parallel search strategies: Genetic, PSO, EDA, ...</li>
 <li>Communication strategies for distributed optimization on top of MPI</li>
@@ -108,31 +108,7 @@ Design Goals</h1>
 </ul>
 </li>
 <li>Hybrid parallelism: multi-threading in each node and message passing across nodes (MPI)</li>
-<li>‌Block optimization for using memory-intensive optimizers for large number of variables</li>
-</ul>
-<h1><a class="anchor" id="autotoc_md5"></a>
-Concept and Components</h1>
-<h2><a class="anchor" id="autotoc_md6"></a>
-System</h2>
-<p>In Zagros a <em>system</em> defines an optimization problem. A system esentially provides a thread-safe way to evaluate the objective function. Moreover a system can optionally provide the followings: <br  />
-</p><ul>
-<li>Search region</li>
-<li>Problem constraints</li>
-<li>Hints for generating feasible soltuions or evolving the existing ones</li>
-</ul>
-<h2><a class="anchor" id="autotoc_md7"></a>
-Solution Containers</h2>
-<p>Most meta-huristic search algorithms such as Genetic algorithms, PSO, differential evoultion and ... are based on iteratively tweaking a set of solutions to obtain a satisfying result. In Zagros it's called <em>Solution Container</em> or simply <em>scontainer</em> while in context of GA and PSO is known respectively as <em>population</em> and <em>swarm</em>. Whatever we call it, It represents the set of potential solutions. Since Zagros is a large-scale optimizer, It distributes the solutions across multiple nodes. We call each memeber of this population a <em>particle</em>.</p>
-<h3><a class="anchor" id="autotoc_md8"></a>
-Groups</h3>
-<p>To increase exploration, Some meta-huristic approaches divide the swarm into specific subsets. For instance <em>TribesPSO</em> splits the swarm in groups called <em>Tribe</em>. Note in Zagros, all particles of a <em>group</em> must reside on the same node. Although this division is often hierd to avoid being trapped in local minimums and increasing exploration, Zagros orginizes particles in groups to achieve thread-safety.</p>
-<h2><a class="anchor" id="autotoc_md9"></a>
-Strategies</h2>
-<p>A <em>strategy</em> is any procedure that changes the current swarm. In Zagros many optimization sub-routines are defined as strategies. For example:</p><ul>
-<li>Initialization strategies : responsible to generate an initial swarm</li>
-<li>Search strategies: represent the logic of an specific optimization algorithm. For example a mutation strategy may add a random value to a particle. <br  />
-</li>
-<li>Communication strategies: particles on differenti nodes can communicate to share their solutions or other information of search space though patterns specified by communication strategies. Such patterns can be local or global across the whole cluster. </li>
+<li>‌Block optimization for using memory-intensive optimizers for large number of variables </li>
 </ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->

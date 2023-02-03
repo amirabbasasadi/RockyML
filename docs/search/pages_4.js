@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['landscapes_343',['Landscapes',['../landscapes.html',1,'zagros']]]
+  ['getting_20started_340',['Getting Started',['../getting_started.html',1,'guide']]],
+  ['guide_341',['Guide',['../guide.html',1,'']]]
 ];

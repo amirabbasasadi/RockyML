@@ -1,8 +1,7 @@
 var searchData=
 [
-  ['analyze_119',['analyze',['../namespacerocky_1_1zagros_1_1dena_1_1analyze.html',1,'rocky::zagros::dena']]],
-  ['eda_120',['eda',['../namespacerocky_1_1zagros_1_1dena_1_1eda.html',1,'rocky::zagros::dena']]],
-  ['rockyml_20core_121',['RockyML Core',['../group__group__rocky.html',1,'']]],
+  ['analyze_120',['analyze',['../namespacerocky_1_1zagros_1_1dena_1_1analyze.html',1,'rocky::zagros::dena']]],
+  ['eda_121',['eda',['../namespacerocky_1_1zagros_1_1dena_1_1eda.html',1,'rocky::zagros::dena']]],
   ['rand_5funiform_122',['rand_uniform',['../classrocky_1_1zagros_1_1basic__differential__evolution.html#aa81ea909f882cf8373309ee31b44c275',1,'rocky::zagros::basic_differential_evolution']]],
   ['random_123',['random',['../classrocky_1_1utils_1_1random.html',1,'rocky::utils']]],
   ['rastrigin_124',['rastrigin',['../classrocky_1_1zagros_1_1benchmark_1_1rastrigin.html',1,'rocky::zagros::benchmark::rastrigin&lt; T_e &gt;'],['../classrocky_1_1zagros_1_1benchmark_1_1rastrigin.html#a9b72d0e52feb01d42f5e0f4586a81e93',1,'rocky::zagros::benchmark::rastrigin::rastrigin()']]],

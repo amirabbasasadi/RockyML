@@ -1,4 +1,4 @@
-# Etna | Non-differentiable Neural Networks{#etna}
+# Etna | Non-differentiable Neural Networks (WIP){#etna}
 
 ## Design Goals
 The main gloal of Etna is to provide fast and thread-safe implementations of non-different deep learning components including:

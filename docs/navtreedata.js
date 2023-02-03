@@ -24,7 +24,6 @@ var NAVTREE =
 [
   [ "RockyML", "index.html", [
     [ "Guide", "guide.html", "guide" ],
-    [ "Modules", "modules.html", "modules" ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ]
     ] ],
@@ -46,8 +45,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classrocky_1_1zagros_1_1gaussian__mutation.html#aa73d800caab6e76f26634823543e3bfc",
-"structrocky_1_1zagros_1_1dena_1_1eda__node.html"
+"classrocky_1_1zagros_1_1gaussian__mutation.html#a6c469449b0d060b729e763c22ac3fcdc",
+"structrocky_1_1zagros_1_1dena_1_1crossover__differential__evolution__node.html#aeecdb9fc945c0e4e4e0b257a918a705f"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

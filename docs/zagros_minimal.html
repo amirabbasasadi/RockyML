@@ -111,7 +111,7 @@ $(document).ready(function(){initNavTree('zagros_minimal.html',''); initResizabl
 <div class="line">    MPI_Finalize();</div>
 <div class="line">    <span class="keywordflow">return</span> 0;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md10"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md20"></a>
 Problem Definition</h1>
 <p>We are going to minimize the Rastrigin function defined as: <br  />
  </p><p class="formulaDsp">
@@ -129,7 +129,7 @@ Problem Definition</h1>
 <div class="line"><span class="keyword">const</span> <span class="keywordtype">int</span> n = 100;</div>
 <div class="line"><span class="comment">// define rastrigin function</span></div>
 <div class="line">benchmark::rastrigin&lt;float&gt; objective(n);</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md11"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md21"></a>
 A simple optimizer</h1>
 <p>Next we need to describe our optimizer. Dena is a language for specifying optimization algorithms. Using Dena, you can focus on the optimization procedure and leave the execution to Zagros runtime. There are many search methods for black-box optimization, you can freely combine them in various ways. To illustrate how this works, we begin with a very simple optimizer then slightly evolve it to a complex algorithm for optimization.</p>
 <p>In Zagros, a <em>solution container</em> holds a set of potential solutions to an optimization problem. An optimizer essentially acts on the containers to improve their solutions gradually. Thus the first step is to create a solution container: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> optimizer = container::create(<span class="stringliteral">&quot;A&quot;</span>);</div>
@@ -190,7 +190,7 @@ A simple optimizer</h1>
 <img src="tutorials_SHC.png" alt=""/>
 </div>
 <p> Hmmm, not so bad. It seems we trapped in one of those local minimums. Perhaps we should run this algorithms multiple times. So why not run them in parallel?</p>
-<h1><a class="anchor" id="autotoc_md12"></a>
+<h1><a class="anchor" id="autotoc_md22"></a>
 A parallel optimizer</h1>
 <p>In the previous example <code>container::create("A")</code> created a single solution (particle) for us. To construct a parallel variant of stochastic hill climbing we can simply create a container with more solutions. </p><div class="fragment"><div class="line">container::create(<span class="stringliteral">&quot;A&quot;</span>, 300)</div>
 </div><!-- fragment --><p>So now we have: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> optimizer = container::create(<span class="stringliteral">&quot;A&quot;</span>, 300)</div>
@@ -232,7 +232,7 @@ A parallel optimizer</h1>
 <p> We should stop since there is no honor in just stacking a few search algorithm on top of each other. But the point is, using Dena we can freely combine various algorithms in a unified way. The search strategies in Dena have parallel implementation so we should expect a speedup on CPUs with multiple cores: </p><div class="image">
 <img src="performance.png" alt=""/>
 </div>
- <h1><a class="anchor" id="autotoc_md13"></a>
+ <h1><a class="anchor" id="autotoc_md23"></a>
 Conclusion</h1>
 <p>So far we have designed a single node optimizer. Zagros also provides facilities for distributed optimization like solution propagation in addition to other utilities for using optimizers on large-scale problems which will be covered in another tutorial. </p>
 </div></div><!-- contents -->

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['designing_20search_20algorithms_20with_20dena_339',['Designing Search Algorithms with Dena',['../dena.html',1,'zagros']]]
+  ['create_20your_20first_20optimizer_20with_20dena_20and_20zagros_336',['Create your first optimizer with Dena and Zagros',['../zagros_minimal.html',1,'zagros']]]
 ];

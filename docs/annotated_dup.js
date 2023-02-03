@@ -21,8 +21,8 @@ var annotated_dup =
         ] ],
         [ "dena", null, [
           [ "analyze", "namespacerocky_1_1zagros_1_1dena_1_1analyze.html", "namespacerocky_1_1zagros_1_1dena_1_1analyze" ],
-          [ "blocked_descent", null, [
-            [ "uniform", "classrocky_1_1zagros_1_1dena_1_1blocked__descent_1_1uniform.html", null ]
+          [ "block", null, [
+            [ "uniform", "classrocky_1_1zagros_1_1dena_1_1block_1_1uniform.html", null ]
           ] ],
           [ "eda", "namespacerocky_1_1zagros_1_1dena_1_1eda.html", "namespacerocky_1_1zagros_1_1dena_1_1eda" ],
           [ "log", null, [

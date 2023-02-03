@@ -141,6 +141,6 @@ var hierarchy =
     ] ],
     [ "rocky::zagros::benchmark::thread_safe_least_squares< T_e >", "structrocky_1_1zagros_1_1benchmark_1_1thread__safe__least__squares.html", null ],
     [ "rocky::utils::thread_safe_prng", "classrocky_1_1utils_1_1thread__safe__prng.html", null ],
-    [ "rocky::zagros::dena::blocked_descent::uniform", "classrocky_1_1zagros_1_1dena_1_1blocked__descent_1_1uniform.html", null ],
+    [ "rocky::zagros::dena::block::uniform", "classrocky_1_1zagros_1_1dena_1_1block_1_1uniform.html", null ],
     [ "rocky::zagros::dena::utils", "classrocky_1_1zagros_1_1dena_1_1utils.html", null ]
 ];
