@@ -5,6 +5,7 @@
   <img src="http://img.shields.io/github/actions/workflow/status/amirabbasasadi/RockyML/ctest.yml?branch=main">
   <img src="https://img.shields.io/github/commit-activity/m/amirabbasasadi/RockyML">
   <img src="https://img.shields.io/github/license/amirabbasasadi/RockyML">
+  <a href="https://zenodo.org/badge/latestdoi/569471513"><img src="https://zenodo.org/badge/569471513.svg" alt="DOI"></a>
 </p>  
 <br>
 <br>
@@ -85,12 +86,12 @@ Building blocks for designing non-differentiable neural networks
 ## About
 If you use RockyML in your research, please cite it as follows:
 ```bib
-@software{Asadi_RockyML,
+@software{RockyML,
   author = {Asadi, Amirabbas},
+  doi = {10.5281/zenodo.7612838},
   month = {2},
   title = {{RockyML, A Scientific Computing Framework for Non-smooth Machine Learning Problems}},
   url = {https://github.com/amirabbasasadi/RockyML},
-  version = {0.0.1},
   year = {2023}
 }
 ```

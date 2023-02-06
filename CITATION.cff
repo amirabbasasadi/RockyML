@@ -6,5 +6,6 @@ authors:
   orcid: "https://orcid.org/0000-0002-7421-1420"
 title: "RockyML, A Scientific Computing Framework for Non-smooth Machine Learning Problems"
 version: 0.0.1
+doi: 10.5281/zenodo.7612838
 date-released: 2023-02-04
 url: "https://github.com/amirabbasasadi/RockyML"
