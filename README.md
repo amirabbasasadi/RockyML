@@ -80,3 +80,17 @@ Building blocks for designing non-differentiable neural networks
   - Combinatorial layers
   - Stochastic layers
   - Dynamic layers
+
+
+## About
+If you use RockyML in your research, please cite it as follows:
+```bib
+@software{Asadi_RockyML,
+  author = {Asadi, Amirabbas},
+  month = {2},
+  title = {{RockyML, A Scientific Computing Framework for Non-smooth Machine Learning Problems}},
+  url = {https://github.com/amirabbasasadi/RockyML},
+  version = {0.0.1},
+  year = {2023}
+}
+```
