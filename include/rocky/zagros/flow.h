@@ -237,6 +237,7 @@ struct allocation_visitor{
         main_storage->allocate_container(dena::utils::temp_name(node.tag), n_particles, n_particles);
     }
     void operator()(dena::plot_heatmap_node node){}
+    void operator()(dena::container_recorder_node node){}
 };
 /**
  * @brief Assigning visitor
@@ -402,6 +403,11 @@ struct assigning_visitor{
 
         auto str = std::make_unique<loss_projection_2d<T_e, T_block_dim>>(problem, node.label, node.width, node.height, x_min, y_min, x_max, y_max);
         main_storage->str_storage[node.tag].push_back(std::move(str));
+    }
+    void operator()(dena::container_recorder_node node){
+        auto main_cnt = main_storage->container(node.id);
+        auto str = std::make_unique<container_position_recorder<T_e, T_block_dim>>(problem, main_cnt, node.handler);
+        main_storage->str_storage[node.tag].push_back(std::move(str));  
     }
 };
 

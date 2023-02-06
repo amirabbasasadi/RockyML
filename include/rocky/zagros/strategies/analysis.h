@@ -6,6 +6,7 @@
 #define ROCKY_ZAGROS_ANALYSIS
 
 #include <fstream>
+#include<sstream>
 
 #include <rocky/zagros/strategies/strategy.h>
 
@@ -99,6 +100,82 @@ public:
         step_++;
     }
 };
+
+struct container_analysis_handler{
+    std::string filename;
+    std::fstream log_output;
+    size_t step;
+    int dims;
+    bool initialized;
+
+    container_analysis_handler(std::string filename){
+        this->filename = filename;
+        this->step = 0;
+        this->dims = -1;
+        this->initialized = false;
+        // openning the log file
+        this->open();
+        // write the headers
+        this->write_header();
+    }
+    void open(){
+        // create a specific filename for this rank
+        int mpi_rank;
+        MPI_Comm_rank(MPI_COMM_WORLD, &mpi_rank);
+        std::string process_spc_filename = fmt::format("proc_{}_{}", mpi_rank, filename);
+        // initialize the output file
+        log_output.open(process_spc_filename, std::fstream::out);
+    }
+    std::fstream& stream(){
+        return log_output;
+    }
+    void write_header(){
+        this->stream() << "particle";
+        for(int i=0; i<dims; i++)
+            this->stream() << ",x" << std::to_string(i);
+        this->stream() << std::endl;
+        this->initialized = true;
+    }
+    virtual void save(){
+        if(this->log_output.is_open())
+            this->log_output.close();
+    }
+    virtual ~container_analysis_handler(){
+        this->save();
+    }
+};
+
+template<typename T_e, int T_dim>
+class container_position_recorder: public analysis_strategy<T_e, T_dim>{
+protected:
+    system<T_e>* problem_;
+    basic_scontainer<T_e, T_dim>* container_;
+    container_analysis_handler* handler_;
+
+public:
+    container_position_recorder(system<T_e>* problem, basic_scontainer<T_e, T_dim>* container, container_analysis_handler* handler){
+        this->problem_ = problem;
+        this->container_ = container;
+        this->handler_ = handler;
+    }
+    virtual void apply(){
+        if (!(this->handler_->initialized)){
+            this->handler_->dims = T_dim;
+            this->handler_->write_header();
+        }
+        std::stringstream buffer;
+        for(int p=0; p<this->container_->n_particles(); p++){
+            buffer << p;
+            for(int d=0; d<T_dim; d++)
+                buffer << "," << this->container_->particles[p][d];
+            buffer << "\n";
+        } 
+        this->handler_->stream() << buffer.str();
+        this->handler_->step++;
+    };
+};
+
+
 
 };
 };

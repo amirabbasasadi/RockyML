@@ -115,6 +115,10 @@ struct plot_heatmap_node: public plot_node{
     int height;
     std::string label;
 };
+struct container_recorder_node: public analysis_node{
+    std::string id;
+    container_analysis_handler* handler;
+};
 
 struct bcd_node: public flow_node{};
 enum bcd_mask_generator { uniform };
@@ -159,6 +163,7 @@ typedef std::variant<log_local_best_node,
                     crossover_segment_node,
                     eda_mvn_fullcov_node,
                     plot_heatmap_node,
+                    container_recorder_node,
                     run_with_probability_node,
                     run_n_times_node,
                     run_every_n_steps_node,
@@ -751,6 +756,22 @@ public:
     static flow heatmap(){
         return heatmap(std::string("heatmap"));
     }
+    /**
+     * @brief record the position of particles at each step
+     * 
+     * @param id target container
+     * @param handler output handler
+     * @return * flow 
+     */
+    static flow container(std::string id, container_analysis_handler& handler){
+        flow f;
+        container_recorder_node node;
+        node.id = id;
+        node.handler = &handler;
+        auto node_tag = node::register_node<>(node);
+        f.procedure.push_back(node_tag);
+        return f;
+    } 
 }; // end of plot
 
 }; // end of analysis
