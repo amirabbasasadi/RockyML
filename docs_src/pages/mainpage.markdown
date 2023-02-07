@@ -24,3 +24,6 @@ RockyML is a scientific computing framework that tries to provide high-performan
     * @ref landscapes
 * @ref etna
 * @subpage about
+
+## Source Code
+The source code is hosted on [RockyML GitHub repository](https://github.com/amirabbasasadi/RockyML).

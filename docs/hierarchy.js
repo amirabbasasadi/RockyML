@@ -119,8 +119,8 @@ var hierarchy =
     [ "rocky::zagros::dena::pso::global", "classrocky_1_1zagros_1_1dena_1_1pso_1_1global.html", null ],
     [ "rocky::zagros::dena::init", "classrocky_1_1zagros_1_1dena_1_1init.html", null ],
     [ "rocky::etna::linear< T_e, T_in_num, T_in_dim, T_out_dim, T_opt_bias >", "classrocky_1_1etna_1_1linear.html", null ],
-    [ "rocky::zagros::dena::log::local", "classrocky_1_1zagros_1_1dena_1_1log_1_1local.html", null ],
     [ "rocky::zagros::dena::pso::local", "classrocky_1_1zagros_1_1dena_1_1pso_1_1local.html", null ],
+    [ "rocky::zagros::dena::log::local", "classrocky_1_1zagros_1_1dena_1_1log_1_1local.html", null ],
     [ "rocky::zagros::local_log_handler", "structrocky_1_1zagros_1_1local__log__handler.html", null ],
     [ "rocky::zagros::dena::pso::memory", "classrocky_1_1zagros_1_1dena_1_1pso_1_1memory.html", null ],
     [ "rocky::etna::mlp< T_e, T_layers_num, T_in_num, T_in_dim, T_out_dim, T_hidden_dim, T_opt_bias >", "classrocky_1_1etna_1_1mlp.html", null ],
@@ -135,6 +135,8 @@ var hierarchy =
     [ "rocky::zagros::runtime_storage< T_e, T_dim, T_dim >", "classrocky_1_1zagros_1_1runtime__storage.html", null ],
     [ "rocky::zagros::system< T_e >", "classrocky_1_1zagros_1_1system.html", [
       [ "rocky::zagros::benchmark::ackley< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1ackley.html", null ],
+      [ "rocky::zagros::benchmark::dropwave< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1dropwave.html", null ],
+      [ "rocky::zagros::benchmark::griewank< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1griewank.html", null ],
       [ "rocky::zagros::benchmark::least_squares< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1least__squares.html", null ],
       [ "rocky::zagros::benchmark::rastrigin< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1rastrigin.html", null ],
       [ "rocky::zagros::benchmark::rastrigin_parallel< T_e >", "classrocky_1_1zagros_1_1benchmark_1_1rastrigin__parallel.html", null ],

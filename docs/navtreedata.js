@@ -23,11 +23,12 @@ for the JavaScript code in this file
 var NAVTREE =
 [
   [ "RockyML", "index.html", [
-    [ "RockyML", "index.html#autotoc_md18", [
-      [ "📔 Table of Contents", "index.html#autotoc_md19", null ]
+    [ "RockyML", "index.html#autotoc_md19", [
+      [ "📔 Table of Contents", "index.html#autotoc_md20", null ],
+      [ "Source Code", "index.html#autotoc_md21", null ]
     ] ],
     [ "About", "about.html", [
-      [ "Publications", "about.html#autotoc_md20", null ]
+      [ "Publications", "about.html#autotoc_md22", null ]
     ] ],
     [ "Guide", "guide.html", "guide" ],
     [ "Namespaces", "namespaces.html", [
@@ -51,8 +52,8 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 ".html",
-"classrocky_1_1zagros_1_1gaussian__mutation.html#a101d07eeb7c232352f46d8a65e9d3379",
-"structrocky_1_1zagros_1_1dena_1_1bcd__mask__node.html"
+"classrocky_1_1zagros_1_1eda__mutivariate__normal.html#a2cdbb4694e79fb8a79d6a1cd62299062",
+"structrocky_1_1zagros_1_1comet__log__handler.html#a7144e84584161154eb0b6a07047746e4"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

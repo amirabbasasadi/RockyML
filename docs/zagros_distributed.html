@@ -96,7 +96,7 @@ $(document).ready(function(){initNavTree('zagros_distributed.html',''); initResi
 <div class="title">Distributed optimization, Basic example </div>  </div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p>This is a basic example of using Zagros and Dena for distributed optimization. Currently Zagros uses MPI as the backend for communication so MPI should be properly initialized in your code:</p>
+<div class="textblock"><center></center><center><img src="distributed.png" alt="" class="inline"/></center><center></center><p>This is a basic example of using Zagros and Dena for distributed optimization. Currently Zagros uses MPI as the backend for communication so MPI should be properly initialized in your code:</p>
 <div class="fragment"><div class="line"><span class="preprocessor">#include &lt;mpi.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;rocky/zagros/benchmark.h&gt;</span></div>
 <div class="line"><span class="preprocessor">#include &lt;rocky/zagros/flow.h&gt;</span></div>
@@ -128,7 +128,7 @@ $(document).ready(function(){initNavTree('zagros_distributed.html',''); initResi
 </div><!-- fragment --><p>The above command will execute the optimizer with a single process. for execution with 2 processes we can just change the <code>-np</code> parameter: </p><div class="fragment"><div class="line">mpirun -np 2 ./app</div>
 </div><!-- fragment --><p>Also don't forget to assign the proper resources to your processes. for example maybe you like to assign 2 CPU threads to each process: </p><div class="fragment"><div class="line">mpirun --use-hwthread-cpus -np 2 --map-by socket:PE=2 ./app</div>
 </div><!-- fragment --><p>Read more about <a href="https://www.ibm.com/docs/en/smpi/10.2?topic=administering-managing-process-placement-affinity">process affinity</a> in the documentation of your MPI implementation. </p>
-<h1><a class="anchor" id="autotoc_md22"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 Solution propagation</h1>
 <p>So far if we execute the app, two processes will run simultaniously, however they are independent and don't exchange any information. Dena provides utilities for sharing the information between optimizer so one optimizer can inform the other nodes in the cluster. Let's create another solution container called <code>best</code> for holding the best solution in a node: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> optimizer = container::create(<span class="stringliteral">&quot;A&quot;</span>, 1000)</div>
 <div class="line">                    &gt;&gt; container::create(<span class="stringliteral">&quot;best&quot;</span>)</div>
@@ -153,14 +153,14 @@ Solution propagation</h1>
 <div class="line">    propagate::cluster::best(<span class="stringliteral">&quot;best&quot;</span>)</div>
 <div class="line">    &gt;&gt; container::take_best(<span class="stringliteral">&quot;A&quot;</span>, <span class="stringliteral">&quot;best&quot;</span>)</div>
 <div class="line">)</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md23"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md25"></a>
 Tracking the result using Comet</h1>
 <p>Suppose you have many nodes and you want to track the best found solution in all of them. In addition to local logging, Dena supports logging the result on <a href="https://comet.ml/">Comet</a>. First you need to create a <code>comet_log_handler</code> object: </p><div class="fragment"><div class="line">comet_log_handler log_handler(<span class="stringliteral">&quot;YOUR_COMET_API_KEY&quot;</span>, <span class="stringliteral">&quot;workspace&quot;</span>, <span class="stringliteral">&quot;project&quot;</span>, <span class="stringliteral">&quot;best_solution&quot;</span>);</div>
 </div><!-- fragment --><p>Now using <code>log::comet::best(cnt, log_handler)</code>, we can log the best solution in container <code>cnt</code> at each step. Do the possible latency for sending the result to Comet server, we can perform this operation with a certain probability: </p><div class="fragment"><div class="line">run::with_probability(0.1,</div>
 <div class="line">    log::comet::best(<span class="stringliteral">&quot;best&quot;</span>, log_handler)</div>
 <div class="line">)</div>
 </div><!-- fragment --><p>Now the result be available in your Comet dashbord. </p>
-<h1><a class="anchor" id="autotoc_md24"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 Conclusion</h1>
 <p>In this tutorial we saw a basic example of designing a distributed optimizer: </p><div class="fragment"><div class="line"><span class="keyword">auto</span> optimizer = container::create(<span class="stringliteral">&quot;A&quot;</span>, 1000)</div>
 <div class="line">                    &gt;&gt; container::create(<span class="stringliteral">&quot;best&quot;</span>)</div>

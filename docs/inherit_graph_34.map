@@ -1,10 +1,12 @@
 <map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
-<area shape="rect" id="node1" href="$classrocky_1_1zagros_1_1system.html" title=" " alt="" coords="5,201,157,243"/>
+<area shape="rect" id="node1" href="$classrocky_1_1zagros_1_1system.html" title=" " alt="" coords="5,267,157,308"/>
 <area shape="rect" id="node2" href="$classrocky_1_1zagros_1_1benchmark_1_1ackley.html" title=" " alt="" coords="205,5,379,47"/>
-<area shape="rect" id="node3" href="$classrocky_1_1zagros_1_1benchmark_1_1least__squares.html" title=" " alt="" coords="205,71,379,112"/>
-<area shape="rect" id="node4" href="$classrocky_1_1zagros_1_1benchmark_1_1rastrigin.html" title=" " alt="" coords="205,136,379,177"/>
-<area shape="rect" id="node5" href="$classrocky_1_1zagros_1_1benchmark_1_1rastrigin__parallel.html" title=" " alt="" coords="205,201,379,243"/>
-<area shape="rect" id="node6" href="$classrocky_1_1zagros_1_1benchmark_1_1rosenbrock.html" title="Rosenbrock function." alt="" coords="205,267,379,308"/>
-<area shape="rect" id="node7" href="$classrocky_1_1zagros_1_1benchmark_1_1sphere.html" title="Sphere function." alt="" coords="205,332,379,373"/>
-<area shape="rect" id="node8" href="$classrocky_1_1zagros_1_1blocked__system.html" title="a virtual system to implement blocked coordinate descent" alt="" coords="215,397,369,439"/>
+<area shape="rect" id="node3" href="$classrocky_1_1zagros_1_1benchmark_1_1dropwave.html" title="Dropwave function referenc : https://www.sfu.ca/~ssurjano/drop.html." alt="" coords="205,71,379,112"/>
+<area shape="rect" id="node4" href="$classrocky_1_1zagros_1_1benchmark_1_1griewank.html" title="Griewank function reference: https://www.sfu.ca/~ssurjano/griewank.html." alt="" coords="205,136,379,177"/>
+<area shape="rect" id="node5" href="$classrocky_1_1zagros_1_1benchmark_1_1least__squares.html" title=" " alt="" coords="205,201,379,243"/>
+<area shape="rect" id="node6" href="$classrocky_1_1zagros_1_1benchmark_1_1rastrigin.html" title=" " alt="" coords="205,267,379,308"/>
+<area shape="rect" id="node7" href="$classrocky_1_1zagros_1_1benchmark_1_1rastrigin__parallel.html" title=" " alt="" coords="205,332,379,373"/>
+<area shape="rect" id="node8" href="$classrocky_1_1zagros_1_1benchmark_1_1rosenbrock.html" title="Rosenbrock function." alt="" coords="205,397,379,439"/>
+<area shape="rect" id="node9" href="$classrocky_1_1zagros_1_1benchmark_1_1sphere.html" title="Sphere function." alt="" coords="205,463,379,504"/>
+<area shape="rect" id="node10" href="$classrocky_1_1zagros_1_1blocked__system.html" title="a virtual system to implement blocked coordinate descent" alt="" coords="215,528,369,569"/>
 </map>

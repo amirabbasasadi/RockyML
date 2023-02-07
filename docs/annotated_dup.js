@@ -12,6 +12,8 @@ var annotated_dup =
       [ "zagros", null, [
         [ "benchmark", null, [
           [ "ackley", "classrocky_1_1zagros_1_1benchmark_1_1ackley.html", "classrocky_1_1zagros_1_1benchmark_1_1ackley" ],
+          [ "dropwave", "classrocky_1_1zagros_1_1benchmark_1_1dropwave.html", "classrocky_1_1zagros_1_1benchmark_1_1dropwave" ],
+          [ "griewank", "classrocky_1_1zagros_1_1benchmark_1_1griewank.html", "classrocky_1_1zagros_1_1benchmark_1_1griewank" ],
           [ "least_squares", "classrocky_1_1zagros_1_1benchmark_1_1least__squares.html", "classrocky_1_1zagros_1_1benchmark_1_1least__squares" ],
           [ "rastrigin", "classrocky_1_1zagros_1_1benchmark_1_1rastrigin.html", "classrocky_1_1zagros_1_1benchmark_1_1rastrigin" ],
           [ "rastrigin_parallel", "classrocky_1_1zagros_1_1benchmark_1_1rastrigin__parallel.html", "classrocky_1_1zagros_1_1benchmark_1_1rastrigin__parallel" ],

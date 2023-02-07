@@ -1,4 +1,4 @@
-# Designing Search Algorithms with Dena{#dena}
+# Designing search algorithms with Dena{#dena}
 
 
 ## Flow control

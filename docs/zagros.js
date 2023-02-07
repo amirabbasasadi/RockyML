@@ -1,16 +1,16 @@
 var zagros =
 [
     [ "What is Zagros?", "zagros_concepts.html", [
-      [ "Design Goals", "zagros_concepts.html#autotoc_md21", null ]
+      [ "Design Goals", "zagros_concepts.html#autotoc_md23", null ]
     ] ],
     [ "Create your first optimizer with Dena and Zagros", "zagros_minimal.html", [
-      [ "Problem Definition", "zagros_minimal.html#autotoc_md25", null ],
-      [ "A simple optimizer", "zagros_minimal.html#autotoc_md26", null ],
-      [ "A parallel optimizer", "zagros_minimal.html#autotoc_md27", null ],
-      [ "Conclusion", "zagros_minimal.html#autotoc_md28", null ]
+      [ "Problem Definition", "zagros_minimal.html#autotoc_md27", null ],
+      [ "A simple optimizer", "zagros_minimal.html#autotoc_md28", null ],
+      [ "A parallel optimizer", "zagros_minimal.html#autotoc_md29", null ],
+      [ "Conclusion", "zagros_minimal.html#autotoc_md30", null ]
     ] ],
     [ "Define a custom optimization problem in Zagros", "zagros_system.html", null ],
-    [ "Designing Search Algorithms with Dena", "dena.html", [
+    [ "Designing search algorithms with Dena", "dena.html", [
       [ "Flow control", "dena.html#autotoc_md3", null ],
       [ "Container manipulation strategies", "dena.html#autotoc_md4", null ],
       [ "Initialization strategies", "dena.html#autotoc_md5", null ],
@@ -33,9 +33,11 @@ var zagros =
       [ "Example", "block_optimization.html#autotoc_md0", null ]
     ] ],
     [ "Distributed optimization, Basic example", "zagros_distributed.html", [
-      [ "Solution propagation", "zagros_distributed.html#autotoc_md22", null ],
-      [ "Tracking the result using Comet", "zagros_distributed.html#autotoc_md23", null ],
-      [ "Conclusion", "zagros_distributed.html#autotoc_md24", null ]
+      [ "Solution propagation", "zagros_distributed.html#autotoc_md24", null ],
+      [ "Tracking the result using Comet", "zagros_distributed.html#autotoc_md25", null ],
+      [ "Conclusion", "zagros_distributed.html#autotoc_md26", null ]
     ] ],
-    [ "Landscapes, Test problems for optimization", "landscapes.html", null ]
+    [ "Landscapes, Test problems for optimization", "landscapes.html", [
+      [ "References", "landscapes.html#autotoc_md18", null ]
+    ] ]
 ];

@@ -1,4 +1,6 @@
 # Distributed optimization, Basic example{#zagros_distributed}
+<center><p><img src="distributed.png"></p></center>
+
 This is a basic example of using Zagros and Dena for distributed optimization. Currently Zagros uses MPI as the backend for communication so MPI should be properly initialized in your code:
 
 ```cpp

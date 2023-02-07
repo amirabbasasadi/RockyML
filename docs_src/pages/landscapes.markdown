@@ -21,6 +21,20 @@
     <td><img src="zagros_rastrigin_0_surface.png" width="250px"></td>
   </tr>
   <tr>
+    <td>@link rocky::zagros::benchmark::dropwave Dropwave Function</td>
+    <td>\f$ f(\mathbf {x} )= -\frac{1 + \cos(12\sqrt{\sum_{i=1}^{n}x_{i}^{2})}}{0.5\left[\sum_{i=1}^{n}x_{i}^{2}\right] + 2} \f$<br>
+    <br>Global minimum at \f$ \mathbf{x} = 0 \f$</td>
+    <td><img src="zagros_dropwave_0_heatmap.png" width="250px"></td>
+    <td><img src="zagros_dropwave_0_surface.png" width="250px"></td>
+  </tr>
+  <tr>
+    <td>@link rocky::zagros::benchmark::griewank Griewank Function</td>
+    <td>\f$ f(\mathbf {x} )=1 + \sum _{i=1}^{n}\frac{x_{i}^{2}}{4000} - \prod _{i=1}^{n}\cos{\frac{x_{i}}{\sqrt{i}}} \f$<br>
+    <br>Global minimum at \f$ \mathbf{x} = 0 \f$</td>
+    <td><img src="zagros_griewank_0_heatmap.png" width="250px"></td>
+    <td><img src="zagros_griewank_0_surface.png" width="250px"></td>
+  </tr>
+  <tr>
     <td>@link rocky::zagros::benchmark::sphere Sphere Function</td>
     <td>\f$ f(\mathbf {x} )=\sum _{i=1}^{n}x_{i}^{2} \f$<br>
     <br>Global minimum at \f$ \mathbf{x} = 0 \f$</td>
@@ -35,3 +49,7 @@
     <td><img src="zagros_rosenbrock_0_surface.png" width="250px"></td>
   </tr>
 </table> 
+
+## References
+- https://www.sfu.ca/~ssurjano/griewank.html
+- https://www.sfu.ca/~ssurjano/drop.html
