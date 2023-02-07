@@ -182,6 +182,87 @@ public:
     }
 };
 
+/**
+ * @brief Griewank function
+ * reference: https://www.sfu.ca/~ssurjano/griewank.html
+ */
+template<typename T_e>
+class griewank: public rocky::zagros::system<T_e>{
+protected:
+    int dim_;
+    T_e lb_;
+    T_e ub_;
+
+public:
+    /**
+     * @brief Construct a new griewank object
+     * 
+     * @param dim dimension
+     * @param lb lower bound
+     * @param ub upper bound
+     */
+    griewank(int dim=2, T_e lb=-20.0, T_e ub=20.0){
+        dim_ = dim;
+        lb_ = lb;
+        ub_ = ub;
+    }
+    virtual T_e objective(T_e* x){
+        T_e S = 1;
+        T_e S_p = 0;
+        T_e P_c = 1.0;
+        for(size_t i=0; i<dim_; i++){
+            S_p += pow(x[i], 2)/4000.0;
+            P_c *= cos(x[i]/sqrt(i+1));
+        }
+        S += S_p - P_c;
+        return S;
+    }
+    virtual T_e lower_bound(){ return lb_; }
+    virtual T_e upper_bound(){ return ub_; }
+    virtual std::string to_string(){
+        std::stringstream name;
+        name << "griewank(dim=" << dim_ << ")";
+        return name.str();
+    }
+};
+
+/**
+ * @brief Dropwave function
+* referenc : https://www.sfu.ca/~ssurjano/drop.html
+ * 
+ */
+template<typename T_e>
+class dropwave: public rocky::zagros::system<T_e>{
+protected:
+    int dim_;
+    T_e lb_;
+    T_e ub_;
+
+public:
+    /**
+     * @brief Construct a new dropwave problem
+     * 
+     * @param dim dimension
+     */
+    dropwave(int dim=2){
+        dim_ = dim;
+    }
+    virtual T_e objective(T_e* x){
+        T_e S_s = 0;
+        for(size_t i=0; i<dim_; i++)
+            S_s += pow(x[i], 2);
+        T_e value = -(1 + cos(12.0 * sqrt(S_s)))/(0.5 * S_s + 1);
+        return value;
+    }
+    virtual T_e lower_bound(){ return -5.12; }
+    virtual T_e upper_bound(){ return 5.12; }
+    virtual std::string to_string(){
+        std::stringstream name;
+        name << "dropwave(dim=" << dim_ << ")";
+        return name.str();
+    }
+};
+
 
 
 template<typename T_e>
