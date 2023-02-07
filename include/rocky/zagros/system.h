@@ -49,6 +49,16 @@ public:
     virtual std::string to_string(){
         return "optimization problem";
     }
+    /**
+     * @brief optimize objective calculation for a block
+     * for each new bcd mask this function will be calles
+     * so we can optimize objective computation based on the mask
+     * 
+     * @param block_mask coordinae descent mask
+     * @param block_dim block dim for block optimization
+     * @return * void 
+     */
+    virtual void optimize_for_block(int* block_mask, int block_dim){}
 };
 
 /**
@@ -120,6 +130,13 @@ public:
      * @return ** T_e 
      */
     virtual T_e upper_bound(int p_index){ return this->main_system_->upper_bound(bcd_mask_[p_index]);}
+    /**
+     * @brief optimize the wrapped system for block runtime
+     * 
+     */
+    virtual void optimization_for_block(){
+        this->main_system_->optimize_for_block(this->bcd_mask_, this->block_dim_);
+    }
 };
 
 }; // end of zagros namespace

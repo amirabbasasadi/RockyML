@@ -473,6 +473,8 @@ struct running_visitor{
             main_storage->str_storage[node.tag][0]->apply();
             // synchronize the generated mask
             main_storage->str_storage[node.tag][1]->apply();
+            // optimize the system for block optimization
+            (dynamic_cast<blocked_system<T_e>*>(problem))->optimization_for_block();
             // reset all solution containers
             main_storage->reset();
             return;
@@ -534,7 +536,8 @@ public:
             sync_bcd_state_str.apply();
             storage.th_blocked_states = tbb::enumerable_thread_specific<std::vector<T_e>>(storage.blocked_state->particles[0]);
             this->blocked_problem->set_solution_state(&(storage.th_blocked_states));
-            
+            // optimize the system for block optimization
+            this->blocked_problem->optimization_for_block();            
         } 
     }
     void run(const dena::flow& fl){
