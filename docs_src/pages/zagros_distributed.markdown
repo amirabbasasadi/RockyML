@@ -52,7 +52,7 @@ mpirun --use-hwthread-cpus -np 2 --map-by socket:PE=2 ./app
 ```
 Read more about [process affinity](https://www.ibm.com/docs/en/smpi/10.2?topic=administering-managing-process-placement-affinity) in the documentation of your MPI implementation. 
 ## Solution propagation
-So far if we execute the app, two processes will run simultaniously, however they are independent and don't exchange any information. Dena provides utilities for sharing the information between optimizer so one optimizer can inform the other nodes in the cluster. Let's create another solution container called `best` for holding the best solution in a node:
+So far if we execute the app, two processes will run simultaniously, however they are independent and don't exchange any information. Dena provides utilities for sharing the information among optimizers so all of them can use the best solution in cluster. Let's create another solution container called `best` for holding the best solution in a node:
 ```cpp
 auto optimizer = container::create("A", 1000)
                     >> container::create("best")
@@ -62,7 +62,7 @@ auto optimizer = container::create("A", 1000)
                         >> crossover::segment("A", 4)
                     );
 ```
-To update the `best` we can use `container::take_best(dest, src)` syntax. This command takes the name of two containers as input namely a "destination" container and a "source". if the best solution in "source" is better than the worst solution in "destination", the solution in "source" will be replaced by that solution. Thus to ensure it contains the best solution we can take the best solutions from `A` at each step:
+To update the `best` we can use `container::take_best(dest, src)` syntax. This command takes the name of two containers as input namely a "destination" container and a "source". if the best solution in the source is better than the worst solution in the destination, the solution in the source will be replaced. To ensure it contains the best solution we can update it at each step:
 ```cpp
 auto optimizer = container::create("A", 1000)
                     >> container::create("best")
@@ -83,7 +83,7 @@ run::ever_n_steps(100,
     propagate::cluster::best("best")
 )
 ```
-Now we need to make sure the  retreived solution will be available in `A` so the mutation and EDA algorithms can use it.
+Now we need to make sure the retreived solution will be available in `A` so the mutation and EDA algorithms can use it.
 ```cpp
 run::ever_n_steps(100,
     propagate::cluster::best("best")
@@ -101,9 +101,9 @@ run::with_probability(0.1,
     log::comet::best("best", log_handler)
 )
 ```
-Now the result be available in your Comet dashbord.
+Now the result are available in your Comet dashbord.
 ## Conclusion
-In this tutorial we saw a basic example of designing a distributed optimizer:
+In this tutorial we saw a basic example of designing a distributed optimizer, basic syntax for solution propagation, and tracking the experiment using Comet.
 ```cpp
 auto optimizer = container::create("A", 1000)
                     >> container::create("best")
@@ -121,3 +121,4 @@ auto optimizer = container::create("A", 1000)
                         )
                     );
 ```
+The complete source code for this example is available [here](https://github.com/amirabbasasadi/RockyML/tree/main/examples/zagros_distributed).
