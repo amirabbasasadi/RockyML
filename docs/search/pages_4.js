@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['getting_20started_340',['Getting Started',['../getting_started.html',1,'guide']]],
-  ['guide_341',['Guide',['../guide.html',1,'']]]
+  ['etna_20_7c_20non_2ddifferentiable_20neural_20networks_20_28wip_29_349',['Etna | Non-differentiable Neural Networks (WIP)',['../etna.html',1,'guide']]]
 ];

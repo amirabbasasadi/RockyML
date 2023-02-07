@@ -246,7 +246,7 @@ A set of helper strategies which can be useful for analyzing the objective funct
     <th>Notes</th>
   </tr>
   <tr>
-    <td>`analyze::heatmap(filename)`</td>
+    <td>`analyze::plot::heatmap(filename)`</td>
     <td>Stores the 2D mesh of the objective function is a file wich can be used to plot the surface or the contour lines of the objective function.</td>
     <td>The size of block in a blocked runtime should be 2 for using this strategy</td>
   </tr>

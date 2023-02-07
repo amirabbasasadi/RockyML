@@ -1,6 +1,7 @@
 <map id="rocky::zagros::dena::analysis_node" name="rocky::zagros::dena::analysis_node">
-<area shape="rect" id="node1" title=" " alt="" coords="8,95,145,136"/>
-<area shape="rect" id="node3" href="$structrocky_1_1zagros_1_1dena_1_1plot__node.html" title=" " alt="" coords="8,184,145,225"/>
-<area shape="rect" id="node2" href="$structrocky_1_1zagros_1_1dena_1_1flow__node.html" title="abstract flow node" alt="" coords="8,5,145,47"/>
-<area shape="rect" id="node4" href="$structrocky_1_1zagros_1_1dena_1_1plot__heatmap__node.html" title=" " alt="" coords="5,273,148,315"/>
+<area shape="rect" id="node1" title=" " alt="" coords="112,95,249,136"/>
+<area shape="rect" id="node3" href="$structrocky_1_1zagros_1_1dena_1_1container__recorder__node.html" title=" " alt="" coords="5,184,177,225"/>
+<area shape="rect" id="node4" href="$structrocky_1_1zagros_1_1dena_1_1plot__node.html" title=" " alt="" coords="201,184,339,225"/>
+<area shape="rect" id="node2" href="$structrocky_1_1zagros_1_1dena_1_1flow__node.html" title="abstract flow node" alt="" coords="112,5,249,47"/>
+<area shape="rect" id="node5" href="$structrocky_1_1zagros_1_1dena_1_1plot__heatmap__node.html" title=" " alt="" coords="199,273,341,315"/>
 </map>

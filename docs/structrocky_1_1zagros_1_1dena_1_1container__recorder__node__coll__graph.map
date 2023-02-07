@@ -1,0 +1,6 @@
+<map id="rocky::zagros::dena::container_recorder_node" name="rocky::zagros::dena::container_recorder_node">
+<area shape="rect" id="node1" title=" " alt="" coords="75,200,247,241"/>
+<area shape="rect" id="node2" href="$structrocky_1_1zagros_1_1dena_1_1analysis__node.html" title=" " alt="" coords="5,96,143,137"/>
+<area shape="rect" id="node3" href="$structrocky_1_1zagros_1_1dena_1_1flow__node.html" title="abstract flow node" alt="" coords="5,5,143,47"/>
+<area shape="rect" id="node4" href="$structrocky_1_1zagros_1_1container__analysis__handler.html" title=" " alt="" coords="167,96,330,137"/>
+</map>

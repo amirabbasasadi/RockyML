@@ -18,7 +18,9 @@
 - [Create your first optimizer with Dena and Zagros](https://amirabbasasadi.github.io/RockyML/zagros_minimal.html)
 - [Define a custom optimization problem in Zagros](https://amirabbasasadi.github.io/RockyML/zagros_system.html)
 - [Block optimization for large problems](https://amirabbasasadi.github.io/RockyML/block_optimization.html)
-
+- [Distributed optimization](https://amirabbasasadi.github.io/RockyML/zagros_distributed.html)
+- [Designing search algorithms using Dena](https://amirabbasasadi.github.io/RockyML/dena.html)
+- [Test problems for benchmarking optimizers](https://amirabbasasadi.github.io/RockyML/landscapes.html)
 
 ## Components
 ### Zagros
@@ -84,6 +86,7 @@ Building blocks for designing non-differentiable neural networks
 
 
 ## About
+### Publications
 If you use RockyML in your research, please cite it as follows:
 ```bib
 @software{RockyML,

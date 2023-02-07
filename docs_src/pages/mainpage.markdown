@@ -1,5 +1,5 @@
-# RockyML
 @mainpage
+# RockyML
 <center><p><img width="800px" src="rockyml-poster.png"></p></center>
 <center><p align="center">
   <img src="https://img.shields.io/badge/C%2B%2B-17-blueviolet?style=flat">
@@ -9,8 +9,9 @@
   <img src="https://img.shields.io/github/license/amirabbasasadi/RockyML">
 </p></center>
 
+RockyML is a scientific computing framework that tries to provide high-performance solutions to non-smooth machine learning problems. 
 
-📔 Table of Contents:
+## 📔 Table of Contents
 * @ref getting_started
     * @ref build
 * @ref zagros
@@ -19,5 +20,7 @@
     * @ref zagros_system
     * @ref dena
     * @ref block_optimization
+    * @ref zagros_distributed
     * @ref landscapes
 * @ref etna
+* @subpage about

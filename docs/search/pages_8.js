@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['zagros_20_7c_20an_20optimization_20framework_20for_20hpc_20clusters_345',['Zagros | An Optimization Framework for HPC Clusters',['../zagros.html',1,'guide']]]
+  ['what_20is_20zagros_3f_354',['What is Zagros?',['../zagros_concepts.html',1,'zagros']]]
 ];

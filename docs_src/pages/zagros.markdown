@@ -7,4 +7,5 @@
 * @subpage zagros_system
 * @subpage dena  
 * @subpage block_optimization  
+* @subpage zagros_distributed
 * @subpage landscapes

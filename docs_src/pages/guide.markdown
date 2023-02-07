@@ -9,6 +9,7 @@ Table of Contents:
     * @ref zagros_system
     * @ref dena
     * @ref block_optimization
+    * @ref zagros_distributed
     * @ref landscapes
 * @subpage etna
 

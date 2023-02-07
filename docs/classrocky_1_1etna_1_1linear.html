@@ -94,6 +94,7 @@ $(document).ready(function(){initNavTree('classrocky_1_1etna_1_1linear.html','')
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="classrocky_1_1etna_1_1linear-members.html">List of all members</a>  </div>
   <div class="headertitle">
 <div class="title">rocky::etna::linear&lt; T_e, T_in_num, T_in_dim, T_out_dim, T_opt_bias &gt; Class Template Reference</div>  </div>
@@ -103,24 +104,27 @@ $(document).ready(function(){initNavTree('classrocky_1_1etna_1_1linear.html','')
 <p>base class for static layers  
  <a href="classrocky_1_1etna_1_1linear.html#details">More...</a></p>
 
-<p><code>#include &lt;<a class="el" href="blocks_8h_source.html">blocks.h</a>&gt;</code></p>
+<p><code>#include &lt;<a class="el" href="linear_8h_source.html">linear.h</a>&gt;</code></p>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:af964d41d840a619032171ab7049107dc"><td class="memItemLeft" align="right" valign="top"><a id="af964d41d840a619032171ab7049107dc"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>deduce_num_params_weights</b> ()</td></tr>
-<tr class="separator:af964d41d840a619032171ab7049107dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ade2372d78871c3c3a6a1aa77ef0a6136"><td class="memItemLeft" align="right" valign="top"><a id="ade2372d78871c3c3a6a1aa77ef0a6136"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>deduce_num_params_bias</b> ()</td></tr>
-<tr class="separator:ade2372d78871c3c3a6a1aa77ef0a6136"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab78a51bc5d6c67f5ab206a5502e877b4"><td class="memItemLeft" align="right" valign="top"><a id="ab78a51bc5d6c67f5ab206a5502e877b4"></a>
-constexpr size_t&#160;</td><td class="memItemRight" valign="bottom"><b>deduce_num_params</b> ()</td></tr>
-<tr class="separator:ab78a51bc5d6c67f5ab206a5502e877b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa4c78803f7d44dfb479ea20f582d4fed"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classrocky_1_1etna_1_1linear.html#aa4c78803f7d44dfb479ea20f582d4fed">feed</a> (T_e *layer_mem_ptr, T_e *in_mem_ptr, T_e *out_mem_ptr)</td></tr>
 <tr class="separator:aa4c78803f7d44dfb479ea20f582d4fed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a0b0a9f8db13ae2e0298ef3a8773fc0de"><td class="memItemLeft" align="right" valign="top"><a id="a0b0a9f8db13ae2e0298ef3a8773fc0de"></a>
+static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>deduce_num_params_weights</b> ()</td></tr>
+<tr class="separator:a0b0a9f8db13ae2e0298ef3a8773fc0de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d2b15381686865c2fb9c34848aaea58"><td class="memItemLeft" align="right" valign="top"><a id="a2d2b15381686865c2fb9c34848aaea58"></a>
+static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>deduce_num_params_bias</b> ()</td></tr>
+<tr class="separator:a2d2b15381686865c2fb9c34848aaea58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a599325dd65e024868be534cbd2495330"><td class="memItemLeft" align="right" valign="top"><a id="a599325dd65e024868be534cbd2495330"></a>
+static constexpr int&#160;</td><td class="memItemRight" valign="bottom"><b>deduce_num_params</b> ()</td></tr>
+<tr class="separator:a599325dd65e024868be534cbd2495330"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><h3>template&lt;typename T_e, size_t T_in_num, size_t T_in_dim, size_t T_out_dim, opt T_opt_bias = opt::bias&gt;<br />
+<div class="textblock"><h3>template&lt;typename T_e, int T_in_num, int T_in_dim, int T_out_dim, opt T_opt_bias = opt::bias&gt;<br />
 class rocky::etna::linear&lt; T_e, T_in_num, T_in_dim, T_out_dim, T_opt_bias &gt;</h3>
 
 <p>base class for static layers </p>
@@ -131,7 +135,7 @@ class rocky::etna::linear&lt; T_e, T_in_num, T_in_dim, T_out_dim, T_opt_bias &gt
 <div class="memitem">
 <div class="memproto">
 <div class="memtemplate">
-template&lt;typename T_e , size_t T_in_num, size_t T_in_dim, size_t T_out_dim, opt T_opt_bias = opt::bias&gt; </div>
+template&lt;typename T_e , int T_in_num, int T_in_dim, int T_out_dim, opt T_opt_bias = opt::bias&gt; </div>
 <table class="mlabels">
   <tr>
   <td class="mlabels-left">
@@ -171,7 +175,7 @@ template&lt;typename T_e , size_t T_in_num, size_t T_in_dim, size_t T_out_dim, o
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following file:<ul>
-<li>include/rocky/etna/<a class="el" href="blocks_8h_source.html">blocks.h</a></li>
+<li>include/rocky/etna/<a class="el" href="linear_8h_source.html">linear.h</a></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['create_20your_20first_20optimizer_20with_20dena_20and_20zagros_336',['Create your first optimizer with Dena and Zagros',['../zagros_minimal.html',1,'zagros']]]
+  ['block_20optimization_20for_20large_20problems_344',['Block optimization for large problems',['../block_optimization.html',1,'zagros']]]
 ];

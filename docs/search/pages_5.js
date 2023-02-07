@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['landscapes_2c_20test_20problems_20for_20optimization_342',['Landscapes, Test problems for optimization',['../landscapes.html',1,'zagros']]]
+  ['getting_20started_350',['Getting Started',['../getting_started.html',1,'guide']]],
+  ['guide_351',['Guide',['../guide.html',1,'']]]
 ];
