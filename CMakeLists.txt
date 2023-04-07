@@ -16,7 +16,7 @@ find_package(nlohmann_json CONFIG REQUIRED)
 find_package(cpr CONFIG REQUIRED)
 find_package(Catch2 CONFIG REQUIRED)
 
-add_executable(tests tests/catch_main.cc tests/scontainer.cc tests/flow.cc tests/strategy.cc)
+add_executable(tests tests/catch_main.cc tests/scontainer.cc tests/flow.cc tests/strategy.cc tests/linear.cc tests/activation.cc)
 target_link_libraries(tests PRIVATE Catch2::Catch2 TBB::tbb TBB::tbbmalloc Eigen3::Eigen cpr::cpr spdlog::spdlog nlohmann_json::nlohmann_json)
 
 if(ROCKY_BUILD_MPI_TESTS)
